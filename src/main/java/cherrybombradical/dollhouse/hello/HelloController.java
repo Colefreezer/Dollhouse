@@ -1,4 +1,4 @@
-package cherrybombradical.dollhouse;
+package cherrybombradical.dollhouse.hello;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

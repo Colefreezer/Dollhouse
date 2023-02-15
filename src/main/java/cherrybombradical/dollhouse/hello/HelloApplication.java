@@ -1,4 +1,4 @@
-package cherrybombradical.dollhouse;
+package cherrybombradical.dollhouse.hello;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
