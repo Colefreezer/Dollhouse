@@ -1,42 +1,38 @@
 package cherrybombradical.dollhouse;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+public class MainMenu extends Application {
 
-public class HelloApplication extends Application {
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+
+
+
+
     @Override
-
-
-    public void start(Stage stage) throws IOException {
-        ImageView mainMenu = new ImageView();
-        ImageView groupName = new ImageView();
-        mainMenu.setFitWidth(700);
-        mainMenu.setPreserveRatio(true);
-
-
-
+    public void start(Stage primaryStage) {
 
         //  ==========  Start game logo  ==========
         Button startGame = new Button();
         ImageView startGameImg = new ImageView(new Image("Images/ui_startImage.png"));
-        startGameImg.setFitHeight(100);
+        startGameImg.setFitHeight(80);
         startGameImg.setPreserveRatio(true);
         startGame.setGraphic(startGameImg);
         startGame.setContentDisplay(ContentDisplay.TOP);
         startGame.setStyle("-fx-background-color: #000000");
+        startGame.setLayoutX(10);
+        startGame.setLayoutY(640);
 
         //  ==========  Settings Button ==========
         Button settingsButton = new Button();
@@ -46,6 +42,8 @@ public class HelloApplication extends Application {
         settingsButton.setGraphic(settingsButtonImg);
         settingsButton.setContentDisplay(ContentDisplay.TOP);
         settingsButton.setStyle("-fx-background-color: #000000");
+        settingsButton.setLayoutX(400);
+        settingsButton.setLayoutY(640);
 
         //  ==========  Quit Button ==========
         Button quitButton = new Button();
@@ -55,35 +53,36 @@ public class HelloApplication extends Application {
         quitButton.setGraphic(quitButtonImg);
         quitButton.setContentDisplay(ContentDisplay.TOP);
         quitButton.setStyle("-fx-background-color: #000000");
+        quitButton.setLayoutX(730);
+        quitButton.setLayoutY(640);
 
 
 
+        //  ==========  Background Image  ==========
+        Image background = new Image("images/MMBG1.png");
+        ImageView bg = new ImageView(background);
 
-        BorderPane root = new BorderPane();
-        root.setStyle("-fx-background-color: #000000");
-        VBox vbox = new VBox();
-
-
-        Image logo = new Image("Images/Logo.png");
-        Image groupLogo = new Image("Images/GroupLogo.png");
-        mainMenu.setImage(logo);
-
-        root.setCenter(vbox);
-        vbox.setAlignment(Pos.CENTER);
+        //  ==========  Logo Image  ==========
+        Image gameLogo = new Image("images/Logo.png");
+        ImageView logo1 = new ImageView(gameLogo);
+        logo1.setX(46);
+        logo1.setY(200);
 
 
+        Group root = new Group();
+        root.getChildren().addAll(bg, logo1, startGame, settingsButton, quitButton);
 
 
-
-        vbox.getChildren().addAll(mainMenu, startGame, settingsButton, quitButton, groupName);
-        Scene scene = new Scene(root, 1449, 814, Color.BLACK);
-        stage.setResizable(false);
-        stage.setTitle("Dollhouse");
-        stage.setScene(scene);
-        stage.show();
+        //Scene play
+        primaryStage.setResizable(false);
+        primaryStage.setTitle("Dollhouse");
+        Scene scene = new Scene(root, 1449, 814);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
+
+
+
+
 }
