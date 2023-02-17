@@ -34,6 +34,8 @@ public class DH_Map1 extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         imageView.requestFocus();
+
+
         scene.setOnKeyPressed(event -> {
             if (!isMoving) {
                 TranslateTransition tt = new TranslateTransition(Duration.seconds(1), imageView);
