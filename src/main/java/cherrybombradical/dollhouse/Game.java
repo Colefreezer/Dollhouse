@@ -119,43 +119,30 @@ public class Game extends Application {
         primaryStage.show();
     }
 
-    public static Scene gameScene(){
+    public static Scene gameScene() {
 
-        BorderPane bp = new BorderPane();
-        Scene scene = new Scene(bp, 1449, 814);
+        Group root = new Group();
+        Scene scene = new Scene(root, 1449, 814);
+        Player player = new Player("sprites/Maria_Walk1.png", 0, 0, 10);
 
-
-
-
-        ImageView player = new ImageView(new Image("sprites/Maria_Walk1.png"));
-        player.setFitHeight(250);
-        player.setPreserveRatio(true);
-
-
-
-
-
-
+        player.getImageView().setFitHeight(150);
+        player.getImageView().setPreserveRatio(true);
 
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.LEFT) {
-                player.setTranslateX(player.getTranslateX() - 10);
+                player.moveLeft();
+
             }
 
             if (event.getCode() == KeyCode.RIGHT) {
-                player.setTranslateX(player.getTranslateX() + 10);
+                player.moveRight();
             }
-
-
         });
 
-
-
-        bp.setCenter(player);
-
-
+        root.getChildren().add(player.getImageView());
         return scene;
     }
+
 
 
 
