@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Game extends Application {
+    public static double X_position = 167.00;
+    public static int mapID = 0;
 
     public static void main(String[] args) {
         launch(args);
@@ -119,30 +121,76 @@ public class Game extends Application {
         primaryStage.show();
     }
 
-    public static Scene gameScene() {
+    public static Scene gameScene(){
 
-        Group root = new Group();
-        Scene scene = new Scene(root, 1449, 814);
-        Player player = new Player("sprites/Maria_Walk1.png", 0, 0, 10);
 
-        player.getImageView().setFitHeight(150);
-        player.getImageView().setPreserveRatio(true);
+        ImageView hud = new ImageView(new Image("sprites/ui/ui_hud1.png"));
+        hud.setX(0);
+        hud.setY(564);
 
+
+        ImageView mariahud = new ImageView(new Image("sprites/ui/ui_maria1.png"));
+        mariahud.setX(28);
+        mariahud.setY(604);
+
+
+        ImageView Map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
+        hud.setX(0);
+        hud.setY(564);
+
+        ImageView Lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
+        Lighting.setX(0);
+        Lighting.setY(0);
+
+
+
+
+
+        //PLAYER SPRITE
+        ImageView player = new ImageView(new Image("sprites/Maria_Walk1.png"));
+        player.setFitHeight(250);
+        player.setPreserveRatio(true);
+        player.setX(167);
+        player.setY(303);
+
+
+
+
+
+
+
+
+
+
+
+
+        Group bp = new Group(Map, hud, mariahud, player, Lighting);
+
+        Scene scene = new Scene(bp, 1449, 814);
+
+
+
+        //key is pressed
         scene.setOnKeyPressed(event -> {
+            //Left Key is pressed
             if (event.getCode() == KeyCode.LEFT) {
-                player.moveLeft();
-
+                X_position -= 10;
             }
-
+            //Right Key is pressed
             if (event.getCode() == KeyCode.RIGHT) {
-                player.moveRight();
+                X_position += 10;
+
             }
+            player.setTranslateX(X_position);
+
+
+
         });
 
-        root.getChildren().add(player.getImageView());
+
+
         return scene;
     }
-
 
 
 
