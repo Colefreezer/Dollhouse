@@ -121,76 +121,48 @@ public class Game extends Application {
         primaryStage.show();
     }
 
-    public static Scene gameScene(){
-
-
+    public static Scene gameScene() {
         ImageView hud = new ImageView(new Image("sprites/ui/ui_hud1.png"));
         hud.setX(0);
         hud.setY(564);
-
 
         ImageView mariahud = new ImageView(new Image("sprites/ui/ui_maria1.png"));
         mariahud.setX(28);
         mariahud.setY(604);
 
+        ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
+        map.setX(0);
+        map.setY(0);
 
-        ImageView Map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
-        hud.setX(0);
-        hud.setY(564);
+        ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
+        lighting.setX(0);
+        lighting.setY(0);
 
-        ImageView Lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
-        Lighting.setX(0);
-        Lighting.setY(0);
+        Player player = new Player("sprites/Maria_Walk1.png", "sprites/Maria_Walk2.png",167, 303, 10);
+        player.getImageView().setFitHeight(250);
+        player.getImageView().setPreserveRatio(true);
 
+        Group root = new Group(map, hud, mariahud, player.getImageView(), lighting);
 
+        Scene scene = new Scene(root, 1449, 814);
 
-
-
-        //PLAYER SPRITE
-        ImageView player = new ImageView(new Image("sprites/Maria_Walk1.png"));
-        player.setFitHeight(250);
-        player.setPreserveRatio(true);
-        player.setX(167);
-        player.setY(303);
-
-
-
-
-
-
-
-
-
-
-
-
-        Group bp = new Group(Map, hud, mariahud, player, Lighting);
-
-        Scene scene = new Scene(bp, 1449, 814);
-
-
-
-        //key is pressed
         scene.setOnKeyPressed(event -> {
-            //Left Key is pressed
             if (event.getCode() == KeyCode.LEFT) {
-                X_position -= 10;
+                player.moveLeft();
+            } else if (event.getCode() == KeyCode.RIGHT) {
+                player.moveRight();
             }
-            //Right Key is pressed
-            if (event.getCode() == KeyCode.RIGHT) {
-                X_position += 10;
-
-            }
-            player.setTranslateX(X_position);
-
-
-
         });
 
-
+        scene.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
+                player.stopMoving();
+            }
+        });
 
         return scene;
     }
+
 
 
 

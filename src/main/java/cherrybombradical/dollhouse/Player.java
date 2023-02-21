@@ -7,7 +7,11 @@ import javafx.scene.layout.Pane;
 import java.security.Key;
 
 public class Player extends Pane {
-    private ImageView standingSprite;
+
+
+    private Image standingImage;
+    private Image movingImage;
+    private ImageView imageView;
     private double xPosition;
     private double yPosition;
     private double moveSpeed;
@@ -15,25 +19,32 @@ public class Player extends Pane {
 
     private boolean facingRight = true;
 
-    public Player(String standingSprite, double xPosition, double yPosition, double moveSpeed) {
-        this.standingSprite = new ImageView(new Image(standingSprite));
+    public Player(String standingImagePath, String movingImagePath, double xPosition, double yPosition, double moveSpeed) {
+        this.standingImage = new Image(standingImagePath);
+        this.movingImage = new Image(movingImagePath);
+        this.imageView = new ImageView(standingImage);
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.moveSpeed = moveSpeed;
-        this.standingSprite.setX(xPosition);
-        this.standingSprite.setY(yPosition);
+        this.imageView.setX(xPosition);
+        this.imageView.setY(yPosition);
     }
 
     public ImageView getImageView() {
-        return standingSprite;
+        return imageView;
     }
 
     public void moveLeft() {
         xPosition -= moveSpeed;
-        standingSprite.setLayoutX(xPosition);
+        imageView.setLayoutX(xPosition);
+
+        if (!isMoving) {
+            imageView.setImage(movingImage);
+            isMoving = true;
+        }
 
         if (facingRight) {
-            standingSprite.setScaleX(-1);
+            imageView.setScaleX(-1);
             facingRight = false;
         }
 
@@ -41,11 +52,21 @@ public class Player extends Pane {
 
     public void moveRight() {
         xPosition += moveSpeed;
-        standingSprite.setLayoutX(xPosition);
+        imageView.setLayoutX(xPosition);
+
+        if (!isMoving) {
+            imageView.setImage(movingImage);
+            isMoving = true;
+        }
 
         if (!facingRight) {
-            standingSprite.setScaleX(1);
+            imageView.setScaleX(1);
             facingRight = true;
         }
+    }
+
+    public void stopMoving(){
+        imageView.setImage(standingImage);
+        isMoving = false;
     }
 }
