@@ -1,171 +1,31 @@
 package cherrybombradical.dollhouse;
 
-import javafx.animation.FadeTransition;
+import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class Game extends Application {
-    public static double X_position = 167.00;
-    public static int mapID = 0;
 
+    public static Stage mainStage; // mainStage variable to hold the primary stage
+
+    // The entry point of the application, which launches the game
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
+        // set the mainStage variable to the primaryStage
+        mainStage = primaryStage;
 
+        // Set window properties
+        mainStage.setResizable(false);
+        mainStage.setTitle("Dollhouse");
 
-        //  ==========  Start game logo  ==========
-        Button startGame = new Button();
-        ImageView startGameImg = new ImageView(new Image("Images/ui_startImage.png"));
-        startGameImg.setFitHeight(80);
-        startGameImg.setPreserveRatio(true);
-        startGame.setGraphic(startGameImg);
-        startGame.setContentDisplay(ContentDisplay.TOP);
-        startGame.setStyle("-fx-background-color: #000000");
-        startGame.setLayoutX(10);
-        startGame.setLayoutY(640);
+        // Set the main menu scene as the starting scene
+        mainStage.setScene(new MainMenuScene());
 
-        // Fade screen to black upon clicking "Start Game"
-        startGame.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                // create a rectangle that covers the screen
-                Rectangle rectangle = new Rectangle(0,0, primaryStage.getWidth(), primaryStage.getHeight());
-                rectangle.setFill(Color.BLACK);
-
-                // add the rectangle to the stack pane
-                Group root = (Group) primaryStage.getScene().getRoot();
-                root.getChildren().add(rectangle);
-
-                // create a fade transition that lasts for 2 seconds
-                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), rectangle);
-                fadeTransition.setFromValue(0);
-                fadeTransition.setToValue(1);
-
-                //Play the fade animation
-                fadeTransition.play();
-
-                fadeTransition.setOnFinished(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        Stage stage = (Stage) startGame.getScene().getWindow();
-                        stage.setScene(gameScene());
-                    }
-                });
-
-            }
-        });
-
-
-
-        //  ==========  Settings Button ==========
-        Button settingsButton = new Button();
-        ImageView settingsButtonImg = new ImageView(new Image("Images/ui_settings.png"));
-        settingsButtonImg.setFitHeight(70);
-        settingsButtonImg.setPreserveRatio(true);
-        settingsButton.setGraphic(settingsButtonImg);
-        settingsButton.setContentDisplay(ContentDisplay.TOP);
-        settingsButton.setStyle("-fx-background-color: #000000");
-        settingsButton.setLayoutX(400);
-        settingsButton.setLayoutY(640);
-
-        //  ==========  Quit Button ==========
-        Button quitButton = new Button();
-        ImageView quitButtonImg = new ImageView(new Image("Images/ui_quit.png"));
-        quitButtonImg.setFitHeight(70);
-        quitButtonImg.setPreserveRatio(true);
-        quitButton.setGraphic(quitButtonImg);
-        quitButton.setContentDisplay(ContentDisplay.TOP);
-        quitButton.setStyle("-fx-background-color: #000000");
-        quitButton.setLayoutX(730);
-        quitButton.setLayoutY(640);
-
-
-
-        //  ==========  Background Image  ==========
-        Image background = new Image("images/MMBG1.png");
-        ImageView bg = new ImageView(background);
-
-        //  ==========  Logo Image  ==========
-        Image gameLogo = new Image("images/Logo.png");
-        ImageView logo1 = new ImageView(gameLogo);
-        logo1.setX(46);
-        logo1.setY(200);
-
-        Group root = new Group();
-        root.getChildren().addAll(bg, logo1, startGame, settingsButton, quitButton);
-
-
-        //Scene play
-        primaryStage.setResizable(false);
-        primaryStage.setTitle("Dollhouse");
-        Scene scene = new Scene(root, 1449, 814);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        // Display the game window
+        mainStage.show();
     }
-
-    public static Scene gameScene() {
-        ImageView hud = new ImageView(new Image("sprites/ui/ui_hud1.png"));
-        hud.setX(0);
-        hud.setY(564);
-
-        ImageView mariahud = new ImageView(new Image("sprites/ui/ui_maria1.png"));
-        mariahud.setX(28);
-        mariahud.setY(604);
-
-        ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
-        map.setX(0);
-        map.setY(0);
-
-        ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
-        lighting.setX(0);
-        lighting.setY(0);
-
-        Player player = new Player("sprites/Maria_Walk1.png", "sprites/Maria_Walk2.png",167, 303, 10);
-        player.getImageView().setFitHeight(250);
-        player.getImageView().setPreserveRatio(true);
-
-        Group root = new Group(map, hud, mariahud, player.getImageView(), lighting);
-
-        Scene scene = new Scene(root, 1449, 814);
-
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.LEFT) {
-                player.moveLeft();
-            } else if (event.getCode() == KeyCode.RIGHT) {
-                player.moveRight();
-            }
-        });
-
-        scene.setOnKeyReleased(event -> {
-            if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
-                player.stopMoving();
-            }
-        });
-
-        return scene;
-    }
-
-
-
-
-
-
 }
