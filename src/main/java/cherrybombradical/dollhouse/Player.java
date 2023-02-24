@@ -44,6 +44,10 @@ public class Player extends Pane {
         return imageView;
     }
 
+    public double getXPosition(){
+        return xPosition;
+    }
+
     /**
      * Move the player left by moveSpeed pixels
      */

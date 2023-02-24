@@ -6,7 +6,6 @@ import cherrybombradical.dollhouse.GameManager;
 import cherrybombradical.dollhouse.Player;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
-import cherrybombradical.dollhouse.scenes.Map2Scene;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -24,12 +23,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class Map1Pane extends Pane {
+public class Map2Pane extends Pane {
 
     // Store the current map ID
-    public static int mapID = 0;
+    public static int mapID = 1;
 
-    public Map1Pane(){
+    public Map2Pane(){
 
         // Create HUD and Maria HUD
         ImageView hud = new ImageView(new Image("sprites/ui/ui_hud1.png"));
@@ -39,15 +38,23 @@ public class Map1Pane extends Pane {
         mariahud.setX(28);
         mariahud.setY(604);
 
+        // Load the map image and the shadow overlay for the current map ID
+        ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
+        map.setX(0);
+        map.setY(0);
+        ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
+        lighting.setX(0);
+        lighting.setY(0);
+
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowL.setX(190);
-        arrowL.setY(200);
+        arrowL.setX(10);
+        arrowL.setY(150);
         arrowL.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowL).play();
 
         //Set Left Arrow HitBox
-        Rectangle leftArrowHitBox = new Rectangle(150, 260, 50, 250);
+        Rectangle leftArrowHitBox = new Rectangle(10, 260, 50, 250);
         leftArrowHitBox.setVisible(false);
 
         //Load the Arrow Image for when near the right door
@@ -61,16 +68,6 @@ public class Map1Pane extends Pane {
         Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
 
-        // Load the map image and the shadow overlay for the current map ID
-        ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
-        map.setX(0);
-        map.setY(0);
-        ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
-        lighting.setX(0);
-        lighting.setY(0);
-
-
-
         // Create buttons for moving left and right
         Button leftButton = new Button("Left");
         Button rightButton = new Button("Right");
@@ -80,14 +77,14 @@ public class Map1Pane extends Pane {
         rightButton.setScaleX(2); rightButton.setScaleY(2);
 
         // Create the player object and add its ImageView to the scene
-        Player player = new Player("sprites/Maria_Walk1.png", "sprites/Maria_Walk2.png",500, 303, 50);
+        Player player = new Player("sprites/Maria_Walk1.png", "sprites/Maria_Walk2.png",580, 303, 50);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());
 
         // Add all the nodes to the group
-        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox,
-                hud, mariahud, player.getImageView(), lighting, arrowL, arrowR, leftButton, rightButton);
+        this.getChildren().addAll(map, arrowL, arrowR, leftArrowHitBox, rightArrowHitBox,
+                hud, mariahud, player.getImageView(), lighting, leftButton, rightButton);
 
         // Set up event handlers for the left and right buttons
         leftButton.setOnAction(event -> {
@@ -108,7 +105,7 @@ public class Map1Pane extends Pane {
                     fadeTransition.play();
 
                     fadeTransition.setOnFinished(event1 -> {
-                        Game.mainStage.setScene(new Map2Scene());
+                        Game.mainStage.setScene(new Map1Scene());
                     });
                 });
 

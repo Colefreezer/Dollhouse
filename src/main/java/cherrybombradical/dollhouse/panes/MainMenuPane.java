@@ -1,16 +1,18 @@
 package cherrybombradical.dollhouse.panes;
 
+import cherrybombradical.dollhouse.Animations;
 import cherrybombradical.dollhouse.Game;
 import cherrybombradical.dollhouse.GameManager;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
 import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -20,7 +22,6 @@ public class MainMenuPane extends BorderPane {
     /**
      * This class extends BorderPane to create a custom main menu pane.
      */
-
     public MainMenuPane() {
         // Create Start Game button
         Button startGame = new Button();
@@ -55,9 +56,22 @@ public class MainMenuPane extends BorderPane {
         quitButton.setLayoutX(980);
         quitButton.setLayoutY(640);
 
-        // Set the background image
-        Image background = new Image("images/MMBG1.png");
-        ImageView bg = new ImageView(background);
+        // Set the background images
+        Image background0 = new Image("images/backgroundSky.png");
+        ImageView bg0 = new ImageView(background0);
+
+        Image background01 = new Image("images/backgroundSky.png");
+        ImageView bg01 = new ImageView(background0);
+
+        Image background1 = new Image("images/backgroundHouse.png");
+        ImageView bg1 = new ImageView(background1);
+
+        //Add the two sky images to an HBox
+        HBox skybox = new HBox();
+        skybox.getChildren().addAll(bg0, bg01);
+
+        //Set the HBox skybox to an infinite scroll
+        Animations.scroll(Duration.seconds(30), skybox).play();
 
         // Set the game logo image
         Image gameLogo = new Image("images/Logo.png");
@@ -66,16 +80,11 @@ public class MainMenuPane extends BorderPane {
         logo1.setY(200);
 
         // Add all the UI elements to the pane
-        this.getChildren().addAll(bg, logo1, startGame, settingsButton, quitButton);
+        this.getChildren().addAll(skybox, bg1, logo1, startGame, settingsButton, quitButton);
 
         // When Start Game button is clicked, fade to black then change the scene to Map1Scene
         startGame.setOnAction(event -> {
-            Rectangle fadeOut = new Rectangle(0, 0, GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT);
-            fadeOut.setFill(Color.BLACK);
-            this.getChildren().add(fadeOut);
-            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), fadeOut);
-            fadeTransition.setFromValue(0.0);
-            fadeTransition.setToValue(1.0);
+            FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(2), this);
             fadeTransition.play();
 
             fadeTransition.setOnFinished(event1 -> {
@@ -83,5 +92,17 @@ public class MainMenuPane extends BorderPane {
             });
 
         });
+
+        quitButton.setOnAction(event -> {
+
+            QuitConfirmPane quitConfirmPane = new QuitConfirmPane();
+            ScaleTransition scaleTransition = Animations.expandIn(Duration.millis(300), quitConfirmPane);
+            scaleTransition.play();
+            this.setCenter(quitConfirmPane);
+            this.setAlignment(quitConfirmPane, Pos.CENTER);
+
+        });
+
+
     }
 }
