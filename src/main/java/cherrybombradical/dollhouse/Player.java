@@ -1,8 +1,11 @@
 package cherrybombradical.dollhouse;
 
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 public class Player extends Pane {
 
@@ -15,6 +18,8 @@ public class Player extends Pane {
     private double moveSpeed;       // the player's move speed
     private boolean isMoving = false;   // whether the player is currently moving
     private boolean facingRight = true; // whether the player is currently facing right
+
+    private final TranslateTransition transition;
 
     /**
      * Constructor for the Player class
@@ -34,6 +39,12 @@ public class Player extends Pane {
         this.moveSpeed = moveSpeed;
         this.imageView.setX(xPosition);
         this.imageView.setY(yPosition);
+
+        // create a TranslateTransition for movement
+        transition = new TranslateTransition();
+        transition.setNode(imageView);
+        transition.setDuration(Duration.millis(500));
+        transition.setInterpolator(Interpolator.LINEAR);
     }
 
     /**
@@ -48,12 +59,13 @@ public class Player extends Pane {
         return xPosition;
     }
 
+
     /**
      * Move the player left by moveSpeed pixels
      */
     public void moveLeft() {
-        xPosition -= moveSpeed;
-        imageView.setLayoutX(xPosition);
+        transition.setByX(-moveSpeed);
+        transition.play();
 
         // if the player is not already moving, set the image to the moving image
         if (!isMoving) {
@@ -72,8 +84,8 @@ public class Player extends Pane {
      * Move the player right by moveSpeed pixels
      */
     public void moveRight() {
-        xPosition += moveSpeed;
-        imageView.setLayoutX(xPosition);
+        transition.setByX(moveSpeed);
+        transition.play();
 
         // if the player is not already moving, set the image to the moving image
         if (!isMoving) {
@@ -95,4 +107,5 @@ public class Player extends Pane {
         imageView.setImage(standingImage);
         isMoving = false;
     }
+
 }

@@ -7,9 +7,7 @@ import cherrybombradical.dollhouse.Player;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
 import cherrybombradical.dollhouse.scenes.Map2Scene;
-import javafx.animation.Animation;
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -22,12 +20,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class Map1Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 0;
+    public static boolean mapToggle = false;
 
     public Map1Pane(){
 
@@ -38,6 +38,9 @@ public class Map1Pane extends Pane {
         ImageView mariahud = new ImageView(new Image("sprites/ui/ui_maria1.png"));
         mariahud.setX(28);
         mariahud.setY(604);
+
+        ImageView mariahud2 = new ImageView(new Image("sprites/ui/ui_maria2.png"));
+
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
@@ -69,32 +72,135 @@ public class Map1Pane extends Pane {
         lighting.setX(0);
         lighting.setY(0);
 
+        //Map images
+        ImageView mapLayer1 = new ImageView(new Image("sprites/ui/ui_mapLayer1.png"));
+        mapLayer1.setX(0);
+        mapLayer1.setY(0);
+
+        ImageView mapLayer2 = new ImageView(new Image("sprites/ui/ui_mapLayer2.png"));
+        mapLayer2.setX(0);
+        mapLayer2.setY(0);
+
+        Text mapNameText = new Text("whatever");
+
 
 
         // Create buttons for moving left and right
         Button leftButton = new Button("Left");
         Button rightButton = new Button("Right");
+        Button mapButton = new Button("Map");
         leftButton.setLayoutX(600); leftButton.setLayoutY(20);
         leftButton.setScaleX(2); leftButton.setScaleY(2);
         rightButton.setLayoutX(800); rightButton.setLayoutY(20);
         rightButton.setScaleX(2); rightButton.setScaleY(2);
+        mapButton.setLayoutX(1000); mapButton.setLayoutY(20);
+        mapButton.setScaleX(2); mapButton.setScaleY(2);
 
         // Create the player object and add its ImageView to the scene
-        Player player = new Player("sprites/Maria_Walk1.png", "sprites/Maria_Walk2.png",500, 303, 50);
+        Player player = new Player("sprites/Maria_Walk1.png", "sprites/Maria_Walk2.png",500, 303, 150);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());
 
         // Add all the nodes to the group
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox,
-                hud, mariahud, player.getImageView(), lighting, arrowL, arrowR, leftButton, rightButton);
+                hud, mariahud, player.getImageView(), lighting, arrowL, arrowR,
+                leftButton, rightButton, mapButton);
 
         // Set up event handlers for the left and right buttons
-        leftButton.setOnAction(event -> {
-            player.moveLeft();
+//        leftButton.setOnAction(event -> {
+//            player.moveLeft();
+//        });
+//        rightButton.setOnAction(event -> {
+//            player.moveRight();
+//        });
+        leftButton.setOnMousePressed(event -> {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.millis(50), e -> player.moveLeft())
+            );
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+
+            leftButton.setOnMouseReleased(event1 -> {
+                player.stopMoving();
+                timeline.stop();
+            });
         });
-        rightButton.setOnAction(event -> {
-            player.moveRight();
+
+        leftButton.setOnMousePressed(event -> {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.millis(50), e -> player.moveLeft())
+            );
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+
+            leftButton.setOnMouseReleased(event1 -> {
+                player.stopMoving();
+                timeline.stop();
+            });
+        });
+
+        rightButton.setOnMousePressed(event -> {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.millis(50), e -> player.moveRight())
+            );
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+
+            rightButton.setOnMouseReleased(event1 -> {
+                player.stopMoving();
+                timeline.stop();
+            });
+        });
+
+
+        //=============
+        mapButton.setOnAction(event -> {
+            String[] mapName = {"Main Room", "West Hallway", "Backyard", "Upstairs, Basement Main"};
+                if (mapToggle == false){
+                this.getChildren().addAll(mapLayer2, mapLayer1);
+
+                //Maria portrait change
+                    mariahud2.setX(28);
+                    mariahud2.setY(604);
+                    this.getChildren().addAll(mariahud2);
+
+                //Map animation
+                TranslateTransition translateTransition2 =
+                        new TranslateTransition(Duration.millis(200), mapLayer1);
+                translateTransition2.setFromY(-640);
+                translateTransition2.setToY(0);
+
+
+                TranslateTransition translateTransition =
+                        new TranslateTransition(Duration.millis(200), mapLayer2);
+                translateTransition.setFromX(-640);
+                translateTransition.setToX(0);
+
+                ScaleTransition scale = new ScaleTransition(Duration.millis(200), mapLayer2);
+                scale.setFromX(0);
+                scale.setToX(1);
+
+                ScaleTransition scale2 = new ScaleTransition(Duration.millis(0), mapLayer2);
+                scale2.setToX(0);
+
+                ParallelTransition parallelTransition2 = new ParallelTransition();
+                parallelTransition2.getChildren().addAll(translateTransition, scale);
+
+                ParallelTransition parallelTransition1 = new ParallelTransition();
+                parallelTransition1.getChildren().addAll(translateTransition2, scale2);
+
+
+                SequentialTransition sequentialTransition = new SequentialTransition();
+                sequentialTransition.getChildren().addAll(
+                        parallelTransition1, parallelTransition2
+                );
+                mapToggle = true;
+                sequentialTransition.play();
+                } else {
+                    this.getChildren().removeAll(mapLayer1, mapLayer2, mariahud2);
+                    mapToggle = false;
+                }
         });
 
         //Detect if player (image) is colliding with the left HitBox

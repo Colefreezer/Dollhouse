@@ -4,6 +4,7 @@ import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
 import cherrybombradical.dollhouse.scenes.Map2Scene;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Game extends Application {
@@ -23,7 +24,7 @@ public class Game extends Application {
         // Set window properties
         mainStage.setResizable(false);
         mainStage.setTitle("Dollhouse");
-
+        mainStage.getIcons().add(new Image("sprites/Maria_Walk1.png"));
         // Set the main menu scene as the starting scene
         mainStage.setScene(new MainMenuScene());
 

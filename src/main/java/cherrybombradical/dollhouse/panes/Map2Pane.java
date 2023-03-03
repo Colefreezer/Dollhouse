@@ -77,7 +77,7 @@ public class Map2Pane extends Pane {
         rightButton.setScaleX(2); rightButton.setScaleY(2);
 
         // Create the player object and add its ImageView to the scene
-        Player player = new Player("sprites/Maria_Walk1.png", "sprites/Maria_Walk2.png",580, 303, 50);
+        Player player = new Player("sprites/Maria_Walk1.png", "sprites/Maria_Walk2.png",580, 303, 150);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());
