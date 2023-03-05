@@ -20,12 +20,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class Map1Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 0;
+    public static boolean mapToggle = false;
 
     public Map1Pane(){
 
@@ -36,6 +38,9 @@ public class Map1Pane extends Pane {
         ImageView mariahud = new ImageView(new Image("sprites/ui/ui_maria1.png"));
         mariahud.setX(28);
         mariahud.setY(604);
+
+        ImageView mariahud2 = new ImageView(new Image("sprites/ui/ui_maria2.png"));
+
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
@@ -66,6 +71,17 @@ public class Map1Pane extends Pane {
         ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
         lighting.setX(0);
         lighting.setY(0);
+
+        //Map images
+        ImageView mapLayer1 = new ImageView(new Image("sprites/ui/ui_mapLayer1.png"));
+        mapLayer1.setX(0);
+        mapLayer1.setY(0);
+
+        ImageView mapLayer2 = new ImageView(new Image("sprites/ui/ui_mapLayer2.png"));
+        mapLayer2.setX(0);
+        mapLayer2.setY(0);
+
+        Text mapNameText = new Text("whatever");
 
 
 
@@ -138,48 +154,53 @@ public class Map1Pane extends Pane {
         });
 
 
-
+        //=============
         mapButton.setOnAction(event -> {
-            ImageView mapLayer1 = new ImageView(new Image("sprites/ui/ui_mapLayer1.png"));
-            mapLayer1.setX(0);
-            mapLayer1.setY(0);
+            String[] mapName = {"Main Room", "West Hallway", "Backyard", "Upstairs, Basement Main"};
+                if (mapToggle == false){
+                this.getChildren().addAll(mapLayer2, mapLayer1);
 
-            ImageView mapLayer2 = new ImageView(new Image("sprites/ui/ui_mapLayer2.png"));
-            mapLayer2.setX(0);
-            mapLayer2.setY(0);
-            this.getChildren().addAll(mapLayer2, mapLayer1);
+                //Maria portrait change
+                    mariahud2.setX(28);
+                    mariahud2.setY(604);
+                    this.getChildren().addAll(mariahud2);
 
-
-            TranslateTransition translateTransition2 =
-                    new TranslateTransition(Duration.millis(200), mapLayer1);
-            translateTransition2.setFromY(-640);
-            translateTransition2.setToY(0);
-
-
-            TranslateTransition translateTransition =
-                    new TranslateTransition(Duration.millis(200), mapLayer2);
-            translateTransition.setFromX(-640);
-            translateTransition.setToX(0);
-
-            ScaleTransition scale = new ScaleTransition(Duration.millis(200), mapLayer2);
-            scale.setFromX(0);
-            scale.setToX(1);
-
-            ScaleTransition scale2 = new ScaleTransition(Duration.millis(0), mapLayer2);
-            scale2.setToX(0);
-
-            ParallelTransition parallelTransition2 = new ParallelTransition();
-            parallelTransition2.getChildren().addAll(translateTransition, scale);
-
-            ParallelTransition parallelTransition1 = new ParallelTransition();
-            parallelTransition1.getChildren().addAll(translateTransition2, scale2);
+                //Map animation
+                TranslateTransition translateTransition2 =
+                        new TranslateTransition(Duration.millis(200), mapLayer1);
+                translateTransition2.setFromY(-640);
+                translateTransition2.setToY(0);
 
 
-            SequentialTransition sequentialTransition = new SequentialTransition();
-            sequentialTransition.getChildren().addAll(
-                    parallelTransition1, parallelTransition2
-            );
-            sequentialTransition.play();
+                TranslateTransition translateTransition =
+                        new TranslateTransition(Duration.millis(200), mapLayer2);
+                translateTransition.setFromX(-640);
+                translateTransition.setToX(0);
+
+                ScaleTransition scale = new ScaleTransition(Duration.millis(200), mapLayer2);
+                scale.setFromX(0);
+                scale.setToX(1);
+
+                ScaleTransition scale2 = new ScaleTransition(Duration.millis(0), mapLayer2);
+                scale2.setToX(0);
+
+                ParallelTransition parallelTransition2 = new ParallelTransition();
+                parallelTransition2.getChildren().addAll(translateTransition, scale);
+
+                ParallelTransition parallelTransition1 = new ParallelTransition();
+                parallelTransition1.getChildren().addAll(translateTransition2, scale2);
+
+
+                SequentialTransition sequentialTransition = new SequentialTransition();
+                sequentialTransition.getChildren().addAll(
+                        parallelTransition1, parallelTransition2
+                );
+                mapToggle = true;
+                sequentialTransition.play();
+                } else {
+                    this.getChildren().removeAll(mapLayer1, mapLayer2, mariahud2);
+                    mapToggle = false;
+                }
         });
 
         //Detect if player (image) is colliding with the left HitBox
