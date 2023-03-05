@@ -6,6 +6,7 @@ import cherrybombradical.dollhouse.panes.Map1Pane;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class MainMenuScene extends Scene {
 
@@ -15,7 +16,7 @@ public class MainMenuScene extends Scene {
      * Also sets a custom image cursor for the scene.
      */
     public MainMenuScene(){
-        super(new MainMenuPane(), GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT);
+        super(new MainMenuPane(), GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT, Color.BLACK);
 
         // Set a custom cursor for the scene
         Image cursor = new Image("misc/Cursor.png");

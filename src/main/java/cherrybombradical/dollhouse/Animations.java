@@ -2,12 +2,32 @@ package cherrybombradical.dollhouse;
 
 import javafx.animation.*;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Animations {
+
+    public static Timeline spriteWalk (Player player, ImageView imageView, Image[] sprites){
+        KeyFrame frame1 = new KeyFrame(Duration.millis(0), e -> {imageView.setImage(sprites[0]);});
+        KeyFrame frame2 = new KeyFrame(Duration.millis(200), e -> {imageView.setImage(sprites[1]);});
+        KeyFrame frame3 = new KeyFrame(Duration.millis(400), e -> {imageView.setImage(sprites[0]);});
+        KeyFrame frame4 = new KeyFrame(Duration.millis(600), e -> {imageView.setImage(sprites[2]);});
+        KeyFrame frame5 = new KeyFrame(Duration.millis(800), e -> {imageView.setImage(sprites[0]);});
+
+        Timeline walking = new Timeline(
+                frame1,
+                frame2,
+                frame3,
+                frame4,
+                frame5
+        );
+        walking.setCycleCount(Animation.INDEFINITE);
+        return walking;
+    }
 
     public static TranslateTransition hover(Duration duration, Node node){
         TranslateTransition translateTransition = new TranslateTransition(duration, node);
@@ -29,12 +49,9 @@ public class Animations {
     }
 
     public static FadeTransition fadeIn(Duration duration, Pane pane){
-        Rectangle fadeIn = new Rectangle(0, 0, GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT);
-        fadeIn.setFill(Color.BLACK);
-        pane.getChildren().add(fadeIn);
-        FadeTransition fadeTransition = new FadeTransition(duration, fadeIn);
-        fadeTransition.setFromValue(1.0);
-        fadeTransition.setToValue(0.0);
+        FadeTransition fadeTransition = new FadeTransition(duration, pane);
+        fadeTransition.setFromValue(0);
+        fadeTransition.setToValue(1);
         return fadeTransition;
     }
 
@@ -63,5 +80,38 @@ public class Animations {
         translateTransition.setInterpolator(Interpolator.LINEAR);
         translateTransition.setCycleCount(Animation.INDEFINITE);
         return translateTransition;
+    }
+
+    public static SequentialTransition mapIntro(Node mapLayer1, Node mapLayer2){
+        TranslateTransition translateTransition2 =
+                new TranslateTransition(Duration.millis(200), mapLayer1);
+        translateTransition2.setFromY(-640);
+        translateTransition2.setToY(0);
+
+
+        TranslateTransition translateTransition =
+                new TranslateTransition(Duration.millis(200), mapLayer2);
+        translateTransition.setFromX(-640);
+        translateTransition.setToX(0);
+
+        ScaleTransition scale = new ScaleTransition(Duration.millis(200), mapLayer2);
+        scale.setFromX(0);
+        scale.setToX(1);
+
+        ScaleTransition scale2 = new ScaleTransition(Duration.millis(0), mapLayer2);
+        scale2.setToX(0);
+
+        ParallelTransition parallelTransition2 = new ParallelTransition();
+        parallelTransition2.getChildren().addAll(translateTransition, scale);
+
+        ParallelTransition parallelTransition1 = new ParallelTransition();
+        parallelTransition1.getChildren().addAll(translateTransition2, scale2);
+
+
+        SequentialTransition sequentialTransition = new SequentialTransition();
+        sequentialTransition.getChildren().addAll(
+                parallelTransition1, parallelTransition2
+        );
+        return sequentialTransition;
     }
 }
