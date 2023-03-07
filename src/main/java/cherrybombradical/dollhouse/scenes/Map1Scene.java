@@ -13,6 +13,15 @@ public class Map1Scene extends Scene {
         super(new Map1Pane(), GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT, Color.BLACK);
         Image cursor = new Image("misc/Cursor.png");
         this.setCursor(new ImageCursor(cursor));
+        this.getRoot().requestFocus();
+        this.getRoot().setOnKeyPressed(event -> {
+            switch (event.getCode()){
+                case LEFT -> Map1Pane.player.moveLeft();
+                case RIGHT -> Map1Pane.player.moveRight();
+            }
+            event.consume();
+        }
+        );
 
         
     }

@@ -29,11 +29,13 @@ public class Map1Pane extends Pane {
     public static int mapID = 0;
     public static boolean mapToggle = false;
 
+    public static Player player;
+
     public Map1Pane(){
         Animations.fadeIn(Duration.seconds(3), this).play();
 
         // Create the player object
-        Player player = new Player(500, 303, 150);
+        player = new Player(500, 303, 150);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());
@@ -101,7 +103,7 @@ public class Map1Pane extends Pane {
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox,
                 hud, player.getImageView(), lighting, arrowL, arrowR,
-                leftButton, rightButton, mapButton);
+                 mapButton);
 
 
 
