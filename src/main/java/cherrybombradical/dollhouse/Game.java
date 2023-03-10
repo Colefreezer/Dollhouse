@@ -26,7 +26,7 @@ public class Game extends Application {
         mainStage.setTitle("Dollhouse");
         mainStage.getIcons().add(new Image("sprites/Maria_Walk1.png"));
         // Set the main menu scene as the starting scene
-        mainStage.setScene(new Map1Scene());
+        mainStage.setScene(new MainMenuScene());
 
         // Display the game window
         mainStage.show();
