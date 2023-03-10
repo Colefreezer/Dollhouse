@@ -6,9 +6,7 @@ import cherrybombradical.dollhouse.GameManager;
 import cherrybombradical.dollhouse.Player;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
-import javafx.animation.Animation;
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -29,6 +27,7 @@ public class Map2Pane extends Pane {
     public static int mapID = 1;
 
     public Map2Pane(){
+        Animations.fadeIn(Duration.seconds(3), this).play();
 
         // Create HUD and Maria HUD
         ImageView hud = new ImageView(new Image("sprites/ui/ui_hud1.png"));
@@ -77,7 +76,7 @@ public class Map2Pane extends Pane {
         rightButton.setScaleX(2); rightButton.setScaleY(2);
 
         // Create the player object and add its ImageView to the scene
-        Player player = new Player("sprites/Maria_Walk1.png", "sprites/Maria_Walk2.png",580, 303, 150);
+        Player player = new Player(580, 303, 150);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());
@@ -87,11 +86,30 @@ public class Map2Pane extends Pane {
                 hud, mariahud, player.getImageView(), lighting, leftButton, rightButton);
 
         // Set up event handlers for the left and right buttons
-        leftButton.setOnAction(event -> {
-            player.moveLeft();
+        leftButton.setOnMousePressed(event -> {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.millis(1), e -> player.moveLeft())
+            );
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+
+            leftButton.setOnMouseReleased(event1 -> {
+                player.stopMoving();
+                timeline.stop();
+            });
         });
-        rightButton.setOnAction(event -> {
-            player.moveRight();
+
+        rightButton.setOnMousePressed(event -> {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.millis(1), e -> player.moveRight())
+            );
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+
+            rightButton.setOnMouseReleased(event1 -> {
+                player.stopMoving();
+                timeline.stop();
+            });
         });
 
         //Detect if player (image) is colliding with the left HitBox

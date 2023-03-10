@@ -29,18 +29,19 @@ public class Map1Pane extends Pane {
     public static int mapID = 0;
     public static boolean mapToggle = false;
 
+    public static Player player;
+
     public Map1Pane(){
+        Animations.fadeIn(Duration.seconds(3), this).play();
 
-        // Create HUD and Maria HUD
-        ImageView hud = new ImageView(new Image("sprites/ui/ui_hud1.png"));
-        hud.setX(0);
-        hud.setY(564);
-        ImageView mariahud = new ImageView(new Image("sprites/ui/ui_maria1.png"));
-        mariahud.setX(28);
-        mariahud.setY(604);
+        // Create the player object
+        player = new Player(500, 303, 150);
+        player.getImageView().setFitHeight(250);
+        player.getImageView().setPreserveRatio(true);
+        player.getImageView().setLayoutX(player.getXPosition());
 
-        ImageView mariahud2 = new ImageView(new Image("sprites/ui/ui_maria2.png"));
-
+        // Create HUD
+        HUDPane hud = new HUDPane();
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
@@ -96,40 +97,19 @@ public class Map1Pane extends Pane {
         mapButton.setLayoutX(1000); mapButton.setLayoutY(20);
         mapButton.setScaleX(2); mapButton.setScaleY(2);
 
-        // Create the player object and add its ImageView to the scene
-        Player player = new Player("sprites/Maria_Walk1.png", "sprites/Maria_Walk2.png",500, 303, 150);
-        player.getImageView().setFitHeight(250);
-        player.getImageView().setPreserveRatio(true);
-        player.getImageView().setLayoutX(player.getXPosition());
+
 
         // Add all the nodes to the group
+
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox,
-                hud, mariahud, player.getImageView(), lighting, arrowL, arrowR,
-                leftButton, rightButton, mapButton);
+                hud, player.getImageView(), lighting, arrowL, arrowR,
+                 mapButton);
 
-        // Set up event handlers for the left and right buttons
-//        leftButton.setOnAction(event -> {
-//            player.moveLeft();
-//        });
-//        rightButton.setOnAction(event -> {
-//            player.moveRight();
-//        });
-        leftButton.setOnMousePressed(event -> {
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.millis(50), e -> player.moveLeft())
-            );
-            timeline.setCycleCount(Animation.INDEFINITE);
-            timeline.play();
 
-            leftButton.setOnMouseReleased(event1 -> {
-                player.stopMoving();
-                timeline.stop();
-            });
-        });
 
         leftButton.setOnMousePressed(event -> {
             Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.millis(50), e -> player.moveLeft())
+                    new KeyFrame(Duration.millis(1), e -> player.moveLeft())
             );
             timeline.setCycleCount(Animation.INDEFINITE);
             timeline.play();
@@ -142,7 +122,7 @@ public class Map1Pane extends Pane {
 
         rightButton.setOnMousePressed(event -> {
             Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.millis(50), e -> player.moveRight())
+                    new KeyFrame(Duration.millis(1), e -> player.moveRight())
             );
             timeline.setCycleCount(Animation.INDEFINITE);
             timeline.play();
@@ -153,54 +133,9 @@ public class Map1Pane extends Pane {
             });
         });
 
-
-        //=============
+        //Toggle Map on
         mapButton.setOnAction(event -> {
-            String[] mapName = {"Main Room", "West Hallway", "Backyard", "Upstairs, Basement Main"};
-                if (mapToggle == false){
-                this.getChildren().addAll(mapLayer2, mapLayer1);
-
-                //Maria portrait change
-                    mariahud2.setX(28);
-                    mariahud2.setY(604);
-                    this.getChildren().addAll(mariahud2);
-
-                //Map animation
-                TranslateTransition translateTransition2 =
-                        new TranslateTransition(Duration.millis(200), mapLayer1);
-                translateTransition2.setFromY(-640);
-                translateTransition2.setToY(0);
-
-
-                TranslateTransition translateTransition =
-                        new TranslateTransition(Duration.millis(200), mapLayer2);
-                translateTransition.setFromX(-640);
-                translateTransition.setToX(0);
-
-                ScaleTransition scale = new ScaleTransition(Duration.millis(200), mapLayer2);
-                scale.setFromX(0);
-                scale.setToX(1);
-
-                ScaleTransition scale2 = new ScaleTransition(Duration.millis(0), mapLayer2);
-                scale2.setToX(0);
-
-                ParallelTransition parallelTransition2 = new ParallelTransition();
-                parallelTransition2.getChildren().addAll(translateTransition, scale);
-
-                ParallelTransition parallelTransition1 = new ParallelTransition();
-                parallelTransition1.getChildren().addAll(translateTransition2, scale2);
-
-
-                SequentialTransition sequentialTransition = new SequentialTransition();
-                sequentialTransition.getChildren().addAll(
-                        parallelTransition1, parallelTransition2
-                );
-                mapToggle = true;
-                sequentialTransition.play();
-                } else {
-                    this.getChildren().removeAll(mapLayer1, mapLayer2, mariahud2);
-                    mapToggle = false;
-                }
+            player.toggleMap(this, mapLayer2, mapLayer1);
         });
 
         //Detect if player (image) is colliding with the left HitBox
@@ -211,6 +146,7 @@ public class Map1Pane extends Pane {
 
                 this.setOnMouseClicked(event -> {
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(2), this);
+
                     fadeTransition.play();
 
                     fadeTransition.setOnFinished(event1 -> {
@@ -238,23 +174,6 @@ public class Map1Pane extends Pane {
                 arrowR.setVisible(false);
             }
         });
-
-        // Key events for player movement (not currently working):
-
-        /*
-        // set focus on Map1Pane so that it can receive key events
-        this.setFocusTraversable(true);
-        this.requestFocus();
-
-        // add event handler for arrow keys
-        setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.LEFT) {
-                player.moveLeft();
-            } else if (event.getCode() == KeyCode.RIGHT) {
-                player.moveRight();
-            }
-        });
-        */
 
     }
 
