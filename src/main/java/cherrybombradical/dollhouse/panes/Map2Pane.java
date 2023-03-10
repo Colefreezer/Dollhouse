@@ -2,6 +2,7 @@ package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.Animations;
 import cherrybombradical.dollhouse.Game;
+import cherrybombradical.dollhouse.GameManager;
 import cherrybombradical.dollhouse.Player;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
@@ -20,6 +21,7 @@ public class Map2Pane extends Pane {
     public static Player player;
 
     public Map2Pane(){
+
         Animations.fadeIn(Duration.seconds(3), this).play();
         // Create the player object and add its ImageView to the scene
         player = new Player(580, 303, 150);

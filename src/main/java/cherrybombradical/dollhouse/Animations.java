@@ -86,7 +86,8 @@ public class Animations {
         return translateTransition;
     }
 
-    public static SequentialTransition mapIntro(Node mapLayer1, Node mapLayer2){
+    public static SequentialTransition mapIntro(Node mapLayer1, Node mapLayer2, Node mapPointer, int mapXVar, int mapYVar){
+        mapPointer.relocate(0, 999);
         TranslateTransition translateTransition2 =
                 new TranslateTransition(Duration.millis(200), mapLayer1);
         translateTransition2.setFromY(-640);
@@ -116,6 +117,11 @@ public class Animations {
         sequentialTransition.getChildren().addAll(
                 parallelTransition1, parallelTransition2
         );
+
+        sequentialTransition.setOnFinished(event -> {
+            mapPointer.relocate(mapXVar, mapYVar);
+
+        });
         return sequentialTransition;
     }
 

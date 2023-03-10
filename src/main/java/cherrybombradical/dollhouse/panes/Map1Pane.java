@@ -1,9 +1,6 @@
 package cherrybombradical.dollhouse.panes;
 
-import cherrybombradical.dollhouse.Animations;
-import cherrybombradical.dollhouse.Game;
-import cherrybombradical.dollhouse.Player;
-import cherrybombradical.dollhouse.SoundPlayer;
+import cherrybombradical.dollhouse.*;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import cherrybombradical.dollhouse.scenes.Map2Scene;
 import javafx.animation.FadeTransition;
@@ -19,10 +16,17 @@ public class Map1Pane extends Pane {
     public static int mapID = 0;
 
     public static Player player;
-
+    private final MusicPlayer musicPlayer = new MusicPlayer("Audio/Music/Upstairs.mp3", true);
+    private void initializeBGM(){
+        musicPlayer.play();
+    }
 
     public Map1Pane(){
+        musicPlayer.play();
+
+
         Animations.fadeIn(Duration.seconds(3), this).play();
+
 
         // Create the player object
         player = new Player(500, 303, 150);
@@ -82,6 +86,7 @@ public class Map1Pane extends Pane {
 
                     fadeTransition.setOnFinished(event1 -> {
                         Game.mainStage.setScene(new Map2Scene());
+
                     });
                 });
 
