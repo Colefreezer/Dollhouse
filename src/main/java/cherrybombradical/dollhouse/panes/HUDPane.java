@@ -1,9 +1,6 @@
 package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.GameManager;
-import cherrybombradical.dollhouse.Player;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;

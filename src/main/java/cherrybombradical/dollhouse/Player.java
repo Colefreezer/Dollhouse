@@ -1,18 +1,12 @@
 package cherrybombradical.dollhouse;
 
-import cherrybombradical.dollhouse.panes.HUDPane;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
 
 public class Player extends Pane {
 
@@ -99,21 +93,26 @@ public class Player extends Pane {
      * Move the player right by moveSpeed pixels
      */
     public void moveRight() {
-        transition.setByX(moveSpeed);
-        transition.play();
-        System.out.println("Moving");
-        // if the player is not already moving, set the image to the moving image
-        if (!isMoving) {
-            isMoving = true;
-            walkingAnimation = Animations.spriteWalk(this, imageView, sprites);
-            walkingAnimation.play();
+        if (!GameManager.mapToggle){
+            transition.setByX(moveSpeed);
+            transition.play();
+
+            System.out.println("Moving");
+            // if the player is not already moving, set the image to the moving image
+            if (!isMoving) {
+                isMoving = true;
+                walkingAnimation = Animations.spriteWalk(this, imageView, sprites);
+                walkingAnimation.play();
+            }
+
+            // if the player is facing left, flip the image horizontally to face right
+            if (!facingRight) {
+                imageView.setScaleX(1);
+                facingRight = true;
+            }
         }
 
-        // if the player is facing left, flip the image horizontally to face right
-        if (!facingRight) {
-            imageView.setScaleX(1);
-            facingRight = true;
-        }
+
     }
 
     /**
@@ -128,16 +127,6 @@ public class Player extends Pane {
         }
     }
 
-    public void toggleMap(Pane pane, ImageView map1, ImageView map2){
-        if (!GameManager.mapToggle){
-            pane.getChildren().addAll(map2, map1);
-            GameManager.mapToggle = true;
-            Animations.mapIntro(map2, map1).play();
-        }
-        else{
-            pane.getChildren().removeAll(map2, map1);
-            GameManager.mapToggle = false;
-        }
-    }
+
 
 }

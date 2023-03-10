@@ -1,6 +1,7 @@
 module cherrybombradical.dollhouse {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
 
 
     opens cherrybombradical.dollhouse to javafx.fxml;

@@ -2,22 +2,14 @@ package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.Animations;
 import cherrybombradical.dollhouse.Game;
-import cherrybombradical.dollhouse.GameManager;
 import cherrybombradical.dollhouse.Player;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
 import javafx.animation.*;
-import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -25,17 +17,18 @@ public class Map2Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 1;
+    public static Player player;
 
     public Map2Pane(){
         Animations.fadeIn(Duration.seconds(3), this).play();
+        // Create the player object and add its ImageView to the scene
+        player = new Player(580, 303, 150);
+        player.getImageView().setFitHeight(250);
+        player.getImageView().setPreserveRatio(true);
+        player.getImageView().setLayoutX(player.getXPosition());
 
-        // Create HUD and Maria HUD
-        ImageView hud = new ImageView(new Image("sprites/ui/ui_hud1.png"));
-        hud.setX(0);
-        hud.setY(564);
-        ImageView mariahud = new ImageView(new Image("sprites/ui/ui_maria1.png"));
-        mariahud.setX(28);
-        mariahud.setY(604);
+        // Create HUD
+        HUDPane hud = new HUDPane();
 
         // Load the map image and the shadow overlay for the current map ID
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
@@ -67,50 +60,11 @@ public class Map2Pane extends Pane {
         Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
 
-        // Create buttons for moving left and right
-        Button leftButton = new Button("Left");
-        Button rightButton = new Button("Right");
-        leftButton.setLayoutX(600); leftButton.setLayoutY(20);
-        leftButton.setScaleX(2); leftButton.setScaleY(2);
-        rightButton.setLayoutX(800); rightButton.setLayoutY(20);
-        rightButton.setScaleX(2); rightButton.setScaleY(2);
 
-        // Create the player object and add its ImageView to the scene
-        Player player = new Player(580, 303, 150);
-        player.getImageView().setFitHeight(250);
-        player.getImageView().setPreserveRatio(true);
-        player.getImageView().setLayoutX(player.getXPosition());
 
         // Add all the nodes to the group
         this.getChildren().addAll(map, arrowL, arrowR, leftArrowHitBox, rightArrowHitBox,
-                hud, mariahud, player.getImageView(), lighting, leftButton, rightButton);
-
-        // Set up event handlers for the left and right buttons
-        leftButton.setOnMousePressed(event -> {
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.millis(1), e -> player.moveLeft())
-            );
-            timeline.setCycleCount(Animation.INDEFINITE);
-            timeline.play();
-
-            leftButton.setOnMouseReleased(event1 -> {
-                player.stopMoving();
-                timeline.stop();
-            });
-        });
-
-        rightButton.setOnMousePressed(event -> {
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.millis(1), e -> player.moveRight())
-            );
-            timeline.setCycleCount(Animation.INDEFINITE);
-            timeline.play();
-
-            rightButton.setOnMouseReleased(event1 -> {
-                player.stopMoving();
-                timeline.stop();
-            });
-        });
+                hud, player.getImageView(), lighting);
 
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {

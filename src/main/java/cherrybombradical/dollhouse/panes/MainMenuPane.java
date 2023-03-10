@@ -2,7 +2,7 @@ package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.Animations;
 import cherrybombradical.dollhouse.Game;
-import cherrybombradical.dollhouse.panes.QuitConfirmPane;
+import cherrybombradical.dollhouse.MusicPlayer;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -49,6 +49,8 @@ public class MainMenuPane extends BorderPane {
     private final Button settingsButton = new Button();
     private final Button quitButton = new Button();
 
+    private final MusicPlayer musicPlayer = new MusicPlayer("Audio/Music/dollhouseTheme.mp3", true);
+
     // Constructor for the main menu screen
     public MainMenuPane() {
         // Initialize the background elements and add the scrolling animation
@@ -59,8 +61,14 @@ public class MainMenuPane extends BorderPane {
         initializeButtons();
         // Set the actions to be taken when each button is clicked
         setButtonActions();
+        //Initialize the background music
+        initializeBGM();
         // Add all elements to the main menu screen
         addElements();
+    }
+
+    private void initializeBGM(){
+        musicPlayer.play();
     }
 
     // Initializes the background elements and starts the scrolling animation
@@ -100,7 +108,11 @@ public class MainMenuPane extends BorderPane {
         // ==== Start Game Button event ====
         startGame.setOnAction(event -> {
             FadeTransition fadeTransition = Animations.fadeOut(FADE_DURATION, this);
-            fadeTransition.setOnFinished(event1 -> Game.mainStage.setScene(new Map1Scene()));
+            fadeTransition.setOnFinished(event1 -> {
+                musicPlayer.stop();
+                Game.mainStage.setScene(new Map1Scene());
+            });
+
             fadeTransition.play();
         });
         startGame.setOnMouseEntered(event -> {
