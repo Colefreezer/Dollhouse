@@ -6,26 +6,24 @@ import cherrybombradical.dollhouse.GameManager;
 import cherrybombradical.dollhouse.Player;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
-import cherrybombradical.dollhouse.scenes.Map3Scene;
-import javafx.animation.*;
-import javafx.scene.control.Button;
+import cherrybombradical.dollhouse.scenes.Map2Scene;
+import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class Map2Pane extends Pane {
+public class Map3Pane extends Pane {
 
     // Store the current map ID
-    public static int mapID = 1;
+    public static int mapID = 2;
     public static Player player;
 
-    public Map2Pane(){
-
+    public Map3Pane(){
         Animations.fadeIn(Duration.seconds(3), this).play();
         // Create the player object and add its ImageView to the scene
-        player = new Player(GameManager.getNewLocation(), 303, 150);
+        player = new Player(580, 290, 150);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());
@@ -43,24 +41,24 @@ public class Map2Pane extends Pane {
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowL.setX(10);
+        arrowL.setX(200);
         arrowL.setY(150);
         arrowL.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowL).play();
 
         //Set Left Arrow HitBox
-        Rectangle leftArrowHitBox = new Rectangle(10, 260, 50, 250);
-        leftArrowHitBox.setVisible(false);
+        Rectangle leftArrowHitBox = new Rectangle(250, 260, 50, 250);
+        leftArrowHitBox.setVisible(true);
 
         //Load the Arrow Image for when near the right door
         ImageView arrowR = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowR.setX(1200);
+        arrowR.setX(1360);
         arrowR.setY(200);
         arrowR.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowR).play();
 
         //Set Right Arrow HitBox
-        Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
+        Rectangle rightArrowHitBox = new Rectangle(1250, 260, 125, 250);
         rightArrowHitBox.setVisible(false);
 
 
@@ -79,10 +77,8 @@ public class Map2Pane extends Pane {
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(1), this);
                     fadeTransition.play();
 
-                    GameManager.setNewLocation(700);
-
                     fadeTransition.setOnFinished(event1 -> {
-                        Game.mainStage.setScene(new Map3Scene());
+                        Game.mainStage.setScene(new Map1Scene());
                     });
                 });
 
@@ -101,11 +97,9 @@ public class Map2Pane extends Pane {
                 this.setOnMouseClicked(event -> {
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(1), this);
                     fadeTransition.play();
-
-                    GameManager.setNewLocation(75);
-
+                    GameManager.setNewLocation(0);
                     fadeTransition.setOnFinished(event1 -> {
-                        Game.mainStage.setScene(new Map1Scene());
+                        Game.mainStage.setScene(new Map2Scene());
                     });
                 });
 

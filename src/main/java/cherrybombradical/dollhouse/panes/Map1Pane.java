@@ -16,7 +16,7 @@ public class Map1Pane extends Pane {
     public static int mapID = 0;
 
     public static Player player;
-    private final MusicPlayer musicPlayer = new MusicPlayer("Audio/Music/Upstairs.mp3", true);
+    private final AudioPlayer musicPlayer = new AudioPlayer("Audio/Music/Upstairs.mp3", true);
     private void initializeBGM(){
         musicPlayer.play();
     }
@@ -29,7 +29,7 @@ public class Map1Pane extends Pane {
 
 
         // Create the player object
-        player = new Player(500, 303, 150);
+        player = new Player(GameManager.getNewLocation(), 303, 150);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());
@@ -80,9 +80,10 @@ public class Map1Pane extends Pane {
                 arrowL.setVisible(true);
 
                 this.setOnMouseClicked(event -> {
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(2), this);
-                    SoundPlayer door = new SoundPlayer(SoundPlayer.doorOpen);
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(1), this);
                     fadeTransition.play();
+
+                    GameManager.setNewLocation(580);
 
                     fadeTransition.setOnFinished(event1 -> {
                         Game.mainStage.setScene(new Map2Scene());

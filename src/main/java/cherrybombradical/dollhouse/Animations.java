@@ -12,15 +12,60 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.util.Random;
 
 public class Animations {
 
-    public static Timeline spriteWalk (Player player, ImageView imageView, Image[] sprites){
-        KeyFrame frame1 = new KeyFrame(Duration.millis(0), e -> {imageView.setImage(sprites[0]);});
-        KeyFrame frame2 = new KeyFrame(Duration.millis(200), e -> {imageView.setImage(sprites[1]);});
-        KeyFrame frame3 = new KeyFrame(Duration.millis(400), e -> {imageView.setImage(sprites[0]);});
-        KeyFrame frame4 = new KeyFrame(Duration.millis(600), e -> {imageView.setImage(sprites[2]);});
-        KeyFrame frame5 = new KeyFrame(Duration.millis(800), e -> {imageView.setImage(sprites[0]);});
+
+    public static Timeline spriteWalk (Player player, ImageView imageView, Image[] sprites) {
+
+        String[] footstepPaths = {
+                "Audio/Sounds/footstep1.wav",
+                "Audio/Sounds/footstep2.wav",
+                "Audio/Sounds/footstep3.wav",
+                "Audio/Sounds/footstep4.wav",
+                "Audio/Sounds/footstep5.wav"
+        };
+
+        Random randomFootstep = new Random();
+        Random randomVolume = new Random();
+
+        KeyFrame frame1 = new KeyFrame(
+                Duration.millis(0),
+                e -> {
+                    imageView.setImage(sprites[0]);
+                }
+        );
+        KeyFrame frame2 = new KeyFrame(
+                Duration.millis(200),
+                e -> {
+                    imageView.setImage(sprites[1]);
+                    AudioPlayer footstepSounds = new AudioPlayer(footstepPaths[randomFootstep.nextInt(5)], false);
+                    footstepSounds.setVolume(0.2 + randomVolume.nextDouble(0.3));
+                    footstepSounds.play();
+                }
+        );
+        KeyFrame frame3 = new KeyFrame(
+                Duration.millis(400),
+                e -> {
+                    imageView.setImage(sprites[0]);
+                }
+        );
+        KeyFrame frame4 = new KeyFrame(
+                Duration.millis(600),
+                e -> {
+                    imageView.setImage(sprites[2]);
+                    AudioPlayer footstepSounds = new AudioPlayer(footstepPaths[randomFootstep.nextInt(5)], false);
+                    footstepSounds.setVolume(0.2 + randomVolume.nextDouble(0.3));
+                    footstepSounds.play();
+                }
+        );
+        KeyFrame frame5 = new KeyFrame(
+                Duration.millis(800),
+                e -> {
+                    imageView.setImage(sprites[0]);
+                }
+        );
 
         Timeline walking = new Timeline(
                 frame1,
@@ -29,7 +74,9 @@ public class Animations {
                 frame4,
                 frame5
         );
+
         walking.setCycleCount(Animation.INDEFINITE);
+
         return walking;
     }
 

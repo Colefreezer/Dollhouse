@@ -2,7 +2,7 @@ package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.Animations;
 import cherrybombradical.dollhouse.Game;
-import cherrybombradical.dollhouse.MusicPlayer;
+import cherrybombradical.dollhouse.AudioPlayer;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -13,6 +13,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class MainMenuPane extends BorderPane {
@@ -49,7 +52,12 @@ public class MainMenuPane extends BorderPane {
     private final Button settingsButton = new Button();
     private final Button quitButton = new Button();
 
-    private final MusicPlayer musicPlayer = new MusicPlayer("Audio/Music/dollhouseTheme.mp3", true);
+    private final Text credit = new Text("© 2023 Cherrybomb Radical - Colton Thibert & Cole Dennie");
+    private final Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/Pixel.ttf"), 18);
+
+    private final AudioPlayer BGM = new AudioPlayer("Audio/Music/dollhouseTheme.mp3", true);
+    private final AudioPlayer buttonHoverSFX = new AudioPlayer("Audio/Sounds/Cursor_Move.mp3", false);
+    private final AudioPlayer buttonClickSFX = new AudioPlayer("Audio/Sounds/Select_OK4.mp3", false);
 
     // Constructor for the main menu screen
     public MainMenuPane() {
@@ -57,6 +65,7 @@ public class MainMenuPane extends BorderPane {
         initializeBackground();
         // Initialize the game logo element
         initializeLogo();
+        initializeCredit();
         // Initialize the buttons for starting the game, accessing settings, and quitting
         initializeButtons();
         // Set the actions to be taken when each button is clicked
@@ -68,7 +77,7 @@ public class MainMenuPane extends BorderPane {
     }
 
     private void initializeBGM(){
-        musicPlayer.play();
+        BGM.play();
     }
 
     // Initializes the background elements and starts the scrolling animation
@@ -82,6 +91,12 @@ public class MainMenuPane extends BorderPane {
     private void initializeLogo() {
         logoFinal.setX(GAME_LOGO_X);
         logoFinal.setY(GAME_LOGO_Y);
+    }
+    private void initializeCredit(){
+        credit.setFont(pixelFont);
+        credit.setFill(Color.DARKRED);
+        credit.setX(10);
+        credit.setY(805);
     }
     // Initializes the start, settings, and quit buttons
     private void initializeButtons() {
@@ -107,9 +122,10 @@ public class MainMenuPane extends BorderPane {
     private void setButtonActions() {
         // ==== Start Game Button event ====
         startGame.setOnAction(event -> {
+            buttonClickSFX.play();
             FadeTransition fadeTransition = Animations.fadeOut(FADE_DURATION, this);
             fadeTransition.setOnFinished(event1 -> {
-                musicPlayer.stop();
+                BGM.stop();
                 Game.mainStage.setScene(new Map1Scene());
             });
 
@@ -117,6 +133,7 @@ public class MainMenuPane extends BorderPane {
         });
         startGame.setOnMouseEntered(event -> {
             ScaleTransition hoverStart = Animations.buttonHover(startGame);
+            buttonHoverSFX.play();
             hoverStart.play();
         });
         startGame.setOnMouseExited(event -> {
@@ -127,6 +144,7 @@ public class MainMenuPane extends BorderPane {
 
         // ==== Settings Button event ====
         settingsButton.setOnAction(event -> {
+            buttonClickSFX.play();
             SettingsPane settingsPane = new SettingsPane();
             ScaleTransition scaleTransition = Animations.expandIn(SCALE_DURATION, settingsPane);
             scaleTransition.play();
@@ -135,6 +153,7 @@ public class MainMenuPane extends BorderPane {
         });
         settingsButton.setOnMouseEntered(event -> {
             ScaleTransition hoverStart = Animations.buttonHover(settingsButton);
+            buttonHoverSFX.play();
             hoverStart.play();
         });
         settingsButton.setOnMouseExited(event -> {
@@ -145,6 +164,7 @@ public class MainMenuPane extends BorderPane {
 
         // ==== Quit Button event ====
         quitButton.setOnAction(event -> {
+            buttonClickSFX.play();
             QuitConfirmPane quitConfirmPane = new QuitConfirmPane();
             ScaleTransition scaleTransition = Animations.expandIn(SCALE_DURATION, quitConfirmPane);
             scaleTransition.play();
@@ -153,6 +173,7 @@ public class MainMenuPane extends BorderPane {
         });
         quitButton.setOnMouseEntered(event -> {
             ScaleTransition hoverStart = Animations.buttonHover(quitButton);
+            buttonHoverSFX.play();
             hoverStart.play();
         });
         quitButton.setOnMouseExited(event -> {
@@ -165,7 +186,7 @@ public class MainMenuPane extends BorderPane {
 
     //Adds all the elements into the pane
     private void addElements() {
-        getChildren().addAll(skybox, bg1, logoFinal, buttonLayout, Black, logo1Shadow, logo2, logo1);
+        getChildren().addAll(skybox, bg1, logoFinal, buttonLayout, credit, Black, logo1Shadow, logo2, logo1);
         Animations.intro(logo1Shadow, logo2, logo1, Black).play();
     }
 }

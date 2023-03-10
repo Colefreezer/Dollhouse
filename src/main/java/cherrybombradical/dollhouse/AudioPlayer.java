@@ -6,17 +6,21 @@ import javafx.util.Duration;
 
 import java.io.File;
 
-public class MusicPlayer {
+public class AudioPlayer {
     private MediaPlayer mediaPlayer;
+    private String filePath;
 
-    public MusicPlayer(String musicFilePath, boolean shouldLoop) {
-        Media sound = new Media(new File(musicFilePath).toURI().toString());
+    public AudioPlayer(String musicFilePath, boolean shouldLoop) {
+        this.filePath = musicFilePath;
+        Media sound = new Media(new File(filePath).toURI().toString());
         mediaPlayer = new MediaPlayer(sound);
 
         mediaPlayer.setOnEndOfMedia(() -> {
             if (shouldLoop) {
                 mediaPlayer.seek(Duration.ZERO);
                 mediaPlayer.play();
+            }else {
+                mediaPlayer.stop();
             }
         });
 
@@ -25,8 +29,17 @@ public class MusicPlayer {
         }
     }
 
+    public void setFilePath(String filePath){
+        this.filePath = filePath;
+    }
+
     public void play() {
-        mediaPlayer.play();
+        if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING){
+            mediaPlayer.stop();
+            mediaPlayer.play();
+        }else {
+            mediaPlayer.play();
+        }
     }
 
     public void pause() {
@@ -43,5 +56,9 @@ public class MusicPlayer {
 
     public boolean isPlaying() {
         return mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
     }
 }

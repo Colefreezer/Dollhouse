@@ -3,6 +3,7 @@ package cherrybombradical.dollhouse;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
 import cherrybombradical.dollhouse.scenes.Map2Scene;
+import cherrybombradical.dollhouse.scenes.Map3Scene;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;

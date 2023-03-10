@@ -15,6 +15,9 @@ public class GameManager {
     public static final int SCREEN_WIDTH = 1449;
     public static final int SCREEN_HEIGHT = 814;
 
+    //Set the default value for the players location when they start the game
+    public static int NEW_LOCATION = 300;
+
     //Map Names
     public static final String[] MAP_NAME = {"Main Room", "West Hallway", "Backyard", "Upstairs, Basement Main"};
 
@@ -27,6 +30,7 @@ public class GameManager {
     public static int mapX = 0;
     public static int mapY = 0;
 
+    //Sound Effects
     public static Media mapSound = new Media(new File("Audio/Sounds/SFX_MapOut.mp3").toURI().toString());
     public static MediaPlayer mediaPlayer = new MediaPlayer(mapSound);
 
@@ -47,5 +51,16 @@ public class GameManager {
             mediaPlayer.stop();
             System.out.println(GameManager.mapToggle);
         }
+    }
+
+    //Set the location variable to a new value,
+    //used for setting where the player will spawn when they interact with a door
+    public static void setNewLocation(int newLocation) {
+        NEW_LOCATION = newLocation;
+    }
+
+    //Gets the current location value. Used for initializing the player object.
+    public static int getNewLocation() {
+        return NEW_LOCATION;
     }
 }

@@ -20,4 +20,7 @@ public class SoundPlayer{
         });
     }
 
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
 }
