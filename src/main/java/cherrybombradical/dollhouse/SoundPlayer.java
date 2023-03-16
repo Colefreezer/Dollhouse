@@ -14,7 +14,6 @@ public class SoundPlayer{
         Media sound = new Media(new File(soundPath).toURI().toString());
         mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
-
         mediaPlayer.setOnEndOfMedia(() -> {
             mediaPlayer.stop();
         });

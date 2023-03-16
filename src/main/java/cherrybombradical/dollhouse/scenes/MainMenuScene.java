@@ -17,9 +17,5 @@ public class MainMenuScene extends Scene {
      */
     public MainMenuScene(){
         super(new MainMenuPane(), GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT, Color.BLACK);
-
-        // Set a custom cursor for the scene
-        Image cursor = new Image("misc/Cursor.png");
-        this.setCursor(new ImageCursor(cursor));
     }
 }

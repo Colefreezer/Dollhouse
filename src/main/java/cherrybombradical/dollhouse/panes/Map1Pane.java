@@ -3,9 +3,11 @@ package cherrybombradical.dollhouse.panes;
 import cherrybombradical.dollhouse.*;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import cherrybombradical.dollhouse.scenes.Map2Scene;
+import cherrybombradical.dollhouse.scenes.Map5Scene;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -17,19 +19,18 @@ public class Map1Pane extends Pane {
 
     public static Player player;
     private final AudioPlayer musicPlayer = new AudioPlayer("Audio/Music/Upstairs.mp3", true);
+    private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
+    private final AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
     private void initializeBGM(){
         musicPlayer.play();
     }
 
     public Map1Pane(){
+        Animations.fadeIn(Duration.seconds(1), this).play();
         musicPlayer.play();
 
-
-        Animations.fadeIn(Duration.seconds(3), this).play();
-
-
         // Create the player object
-        player = new Player(GameManager.getNewLocation(), 303, 150);
+        player = new Player(GameManager.getNewLocation(), 303, 180);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());
@@ -59,6 +60,17 @@ public class Map1Pane extends Pane {
         Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
 
+        //Load the Arrow Image for when near the Stairs
+        ImageView arrowS = new ImageView(new Image("sprites/UI/arrow2.png"));
+        arrowS.setX(595);
+        arrowS.setY(145);
+        arrowS.setVisible(false);
+        Animations.hover(Duration.millis(1000), arrowS).play();
+
+        //Set Stairs Arrow HitBox
+        Rectangle stairsArrowHitBox = new Rectangle(730, 260, 50, 250);
+        stairsArrowHitBox.setVisible(false);
+
         // Load the map image and the shadow overlay for the current map ID
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
         map.setX(0);
@@ -70,22 +82,26 @@ public class Map1Pane extends Pane {
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR);
+                player.getImageView(), lighting, arrowL, arrowR, arrowS);
 
 
+
+        // ============ DOOR LEFT ============
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(leftArrowHitBox.getBoundsInParent())) {
                 // player is colliding with door
                 arrowL.setVisible(true);
-
                 this.setOnMouseClicked(event -> {
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(1), this);
+                    //Fade Transition
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
                     fadeTransition.play();
-
+                    //Door Sound
+                    doorSFX.play();
+                    //Location for next scene
                     GameManager.setNewLocation(580);
-
                     fadeTransition.setOnFinished(event1 -> {
+                        //Load Scene
                         Game.mainStage.setScene(new Map2Scene());
 
                     });
@@ -97,18 +113,59 @@ public class Map1Pane extends Pane {
             }
         });
 
+
+
+        // ============ DOOR RIGHT ============
         //Detect if player (image) is colliding with the Right HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(rightArrowHitBox.getBoundsInParent())) {
-                // player is colliding with door hitbox
+                // player is colliding with door
                 arrowR.setVisible(true);
                 this.setOnMouseClicked(event -> {
-                    Game.mainStage.setScene(new MainMenuScene());
+                    //Fade Transition
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    fadeTransition.play();
+                    //Door Sound
+                    doorSFX.play();
+                    //Location for next scene
+                    GameManager.setNewLocation(580);
+                    fadeTransition.setOnFinished(event1 -> {
+                        //Load Scene
+                        Game.mainStage.setScene(new Map2Scene());
+
+                    });
                 });
 
             } else {
-                // player is not colliding with door hitbox
+                // player is not colliding with door
                 arrowR.setVisible(false);
+            }
+        });
+
+        // ============ STAIRS ============
+        //Detect if player (image) is colliding with the Right HitBox
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(stairsArrowHitBox.getBoundsInParent())) {
+                // player is colliding with door
+                arrowS.setVisible(true);
+                this.setOnMouseClicked(event -> {
+                    //Fade Transition
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    fadeTransition.play();
+                    //Door Sound
+                    stairsSFX.play();
+                    //Location for next scene
+                    GameManager.setNewLocation(320);
+                    fadeTransition.setOnFinished(event1 -> {
+                        //Load Scene
+                        Game.mainStage.setScene(new Map5Scene());
+
+                    });
+                });
+
+            } else {
+                // player is not colliding with door
+                arrowS.setVisible(false);
             }
         });
 

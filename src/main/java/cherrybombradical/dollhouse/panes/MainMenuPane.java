@@ -26,12 +26,10 @@ public class MainMenuPane extends BorderPane {
     private static final Image UI_START = new Image("Images/ui_startImage.png");
     private static final Image UI_SETTINGS = new Image("Images/ui_settings.png");
     private static final Image UI_QUIT = new Image("Images/ui_quit.png");
-
     private static final ImageView Black = new ImageView(new Image("Images/Black.png"));
     private static final ImageView logo2 = new ImageView(new Image("Images/Logo2.png"));
     private static final ImageView logo1 = new ImageView(new Image("Images/Logo.png"));
     private static final ImageView logo1Shadow = new ImageView(new Image("Images/LogoShadow1.png"));
-
 
     // Static final button and image dimensions and positions
     private static final double BUTTON_HEIGHT = 70.0;

@@ -20,11 +20,11 @@ public class Animations {
     public static Timeline spriteWalk (Player player, ImageView imageView, Image[] sprites) {
 
         String[] footstepPaths = {
-                "Audio/Sounds/footstep1.wav",
-                "Audio/Sounds/footstep2.wav",
-                "Audio/Sounds/footstep3.wav",
-                "Audio/Sounds/footstep4.wav",
-                "Audio/Sounds/footstep5.wav"
+                "Audio/Sounds/SFX_footstep1.mp3",
+                "Audio/Sounds/SFX_footstep2.mp3",
+                "Audio/Sounds/SFX_footstep3.mp3",
+                "Audio/Sounds/SFX_footstep4.mp3",
+                "Audio/Sounds/SFX_footstep5.mp3"
         };
 
         Random randomFootstep = new Random();

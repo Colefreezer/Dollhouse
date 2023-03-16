@@ -4,26 +4,30 @@ import cherrybombradical.dollhouse.*;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
 import cherrybombradical.dollhouse.scenes.Map2Scene;
-import cherrybombradical.dollhouse.scenes.Map3Scene;
-import javafx.animation.*;
-import javafx.scene.control.Button;
+import cherrybombradical.dollhouse.scenes.Map5Scene;
+import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class Map2Pane extends Pane {
+public class Map6Pane extends Pane {
 
     // Store the current map ID
-    public static int mapID = 1;
+    public static int mapID = 6;
+
     public static Player player;
-
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
+    public Map6Pane(){
 
-    public Map2Pane(){
-        Animations.fadeIn(Duration.seconds(1), this).play();
-        // Create the player object and add its ImageView to the scene
+
+
+        Animations.fadeIn(Duration.seconds(3), this).play();
+
+
+        // Create the player object
         player = new Player(GameManager.getNewLocation(), 303, 180);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
@@ -32,23 +36,15 @@ public class Map2Pane extends Pane {
         // Create HUD
         HUDPane hud = new HUDPane();
 
-        // Load the map image and the shadow overlay for the current map ID
-        ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
-        map.setX(0);
-        map.setY(0);
-        ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
-        lighting.setX(0);
-        lighting.setY(0);
-
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowL.setX(10);
-        arrowL.setY(150);
+        arrowL.setX(190);
+        arrowL.setY(200);
         arrowL.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowL).play();
 
         //Set Left Arrow HitBox
-        Rectangle leftArrowHitBox = new Rectangle(10, 260, 50, 250);
+        Rectangle leftArrowHitBox = new Rectangle(150, 260, 50, 250);
         leftArrowHitBox.setVisible(false);
 
         //Load the Arrow Image for when near the right door
@@ -62,12 +58,33 @@ public class Map2Pane extends Pane {
         Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
 
+        //Load the Arrow Image for when near the middle door
+        ImageView arrowM = new ImageView(new Image("sprites/UI/arrow.png"));
+        arrowM.setX(595);
+        arrowM.setY(145);
+        arrowM.setVisible(false);
+        Animations.hover(Duration.millis(1000), arrowM).play();
 
+        //Set middle Arrow HitBox
+        Rectangle midArrowHitBox = new Rectangle(730, 260, 50, 250);
+        midArrowHitBox.setVisible(false);
+
+        // Load the map image and the shadow overlay for the current map ID
+        ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
+        map.setX(0);
+        map.setY(0);
+        ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
+        lighting.setX(0);
+        lighting.setY(0);
 
         // Add all the nodes to the group
-        this.getChildren().addAll(map, arrowL, arrowR, leftArrowHitBox, rightArrowHitBox,
-                hud, player.getImageView(), lighting);
 
+        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
+                player.getImageView(), lighting, arrowL, arrowR, arrowM);
+
+
+
+        // ============ DOOR LEFT ============
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(leftArrowHitBox.getBoundsInParent())) {
@@ -80,10 +97,10 @@ public class Map2Pane extends Pane {
                     //Door Sound
                     doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(700);
+                    GameManager.setNewLocation(580);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
-                        Game.mainStage.setScene(new Map3Scene());
+                        Game.mainStage.setScene(new Map2Scene());
 
                     });
                 });
@@ -94,6 +111,9 @@ public class Map2Pane extends Pane {
             }
         });
 
+
+
+        // ============ DOOR RIGHT ============
         //Detect if player (image) is colliding with the Right HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(rightArrowHitBox.getBoundsInParent())) {
@@ -106,10 +126,10 @@ public class Map2Pane extends Pane {
                     //Door Sound
                     doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(75);
+                    GameManager.setNewLocation(580);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
-                        Game.mainStage.setScene(new Map1Scene());
+                        Game.mainStage.setScene(new Map2Scene());
 
                     });
                 });
@@ -120,22 +140,32 @@ public class Map2Pane extends Pane {
             }
         });
 
-        // Key events for player movement (not currently working):
+        // ============ STAIRS ============
+        //Detect if player (image) is colliding with the Right HitBox
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(midArrowHitBox.getBoundsInParent())) {
+                // player is colliding with door
+                arrowM.setVisible(true);
+                this.setOnMouseClicked(event -> {
+                    //Fade Transition
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    fadeTransition.play();
+                    //Door Sound
+                    doorSFX.play();
+                    //Location for next scene
+                    GameManager.setNewLocation(580);
+                    fadeTransition.setOnFinished(event1 -> {
+                        //Load Scene
+                        Game.mainStage.setScene(new Map5Scene());
 
-        /*
-        // set focus on Map1Pane so that it can receive key events
-        this.setFocusTraversable(true);
-        this.requestFocus();
+                    });
+                });
 
-        // add event handler for arrow keys
-        setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.LEFT) {
-                player.moveLeft();
-            } else if (event.getCode() == KeyCode.RIGHT) {
-                player.moveRight();
+            } else {
+                // player is not colliding with door
+                arrowM.setVisible(false);
             }
         });
-        */
 
     }
 

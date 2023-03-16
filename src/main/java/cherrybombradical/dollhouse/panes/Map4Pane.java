@@ -1,7 +1,12 @@
 package cherrybombradical.dollhouse.panes;
 
-import cherrybombradical.dollhouse.*;
-import cherrybombradical.dollhouse.scenes.*;
+import cherrybombradical.dollhouse.Animations;
+import cherrybombradical.dollhouse.Game;
+import cherrybombradical.dollhouse.GameManager;
+import cherrybombradical.dollhouse.Player;
+import cherrybombradical.dollhouse.scenes.MainMenuScene;
+import cherrybombradical.dollhouse.scenes.Map1Scene;
+import cherrybombradical.dollhouse.scenes.Map2Scene;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,15 +14,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class Map3Pane extends Pane {
+public class Map4Pane extends Pane {
 
     // Store the current map ID
-    public static int mapID = 2;
+    public static int mapID = 5;
     public static Player player;
-    private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
 
-    public Map3Pane(){
-        Animations.fadeIn(Duration.seconds(1), this).play();
+    public Map4Pane(){
+        Animations.fadeIn(Duration.seconds(3), this).play();
         // Create the player object and add its ImageView to the scene
         player = new Player(GameManager.getNewLocation(), 303, 180);
         player.getImageView().setFitHeight(250);
@@ -68,18 +72,13 @@ public class Map3Pane extends Pane {
             if (newBounds.intersects(leftArrowHitBox.getBoundsInParent())) {
                 // player is colliding with door
                 arrowL.setVisible(true);
-                this.setOnMouseClicked(event -> {
-                    //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
-                    fadeTransition.play();
-                    //Door Sound
-                    doorSFX.play();
-                    //Location for next scene
-                    GameManager.setNewLocation(75);
-                    fadeTransition.setOnFinished(event1 -> {
-                        //Load Scene
-                        Game.mainStage.setScene(new Map4Scene());
 
+                this.setOnMouseClicked(event -> {
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(1), this);
+                    fadeTransition.play();
+
+                    fadeTransition.setOnFinished(event1 -> {
+                        Game.mainStage.setScene(new Map1Scene());
                     });
                 });
 
@@ -89,26 +88,7 @@ public class Map3Pane extends Pane {
             }
         });
 
-        //Detect if player (image) is colliding with the Right HitBox
-        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(rightArrowHitBox.getBoundsInParent())) {
-                // player is colliding with door
-                arrowR.setVisible(true);
 
-                this.setOnMouseClicked(event -> {
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(1), this);
-                    fadeTransition.play();
-                    GameManager.setNewLocation(0);
-                    fadeTransition.setOnFinished(event1 -> {
-                        Game.mainStage.setScene(new Map2Scene());
-                    });
-                });
-
-            } else {
-                // player is not colliding with door hitbox
-                arrowR.setVisible(false);
-            }
-        });
 
         // Key events for player movement (not currently working):
 
