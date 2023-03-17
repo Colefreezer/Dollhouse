@@ -13,6 +13,7 @@ public class Map3Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 2;
+    // ==== MAP = HALLWAY LEFT
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
 
