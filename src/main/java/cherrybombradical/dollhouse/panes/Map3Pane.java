@@ -18,9 +18,13 @@ public class Map3Pane extends Pane {
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
 
     public Map3Pane(){
+        if (GameManager.backgroundMusicIndoors.isPlaying()){
+            GameManager.backgroundMusicIndoors.stop();
+            GameManager.backgroundMusicOutside.play();
+        }
         Animations.fadeIn(Duration.seconds(1), this).play();
         // Create the player object and add its ImageView to the scene
-        player = new Player(GameManager.getNewLocation(), 303, 180);
+        player = new Player(GameManager.getNewLocation(), 303, 0);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());
@@ -74,7 +78,7 @@ public class Map3Pane extends Pane {
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
                     fadeTransition.play();
                     //Door Sound
-                    doorSFX.play();
+                    GameManager.doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(75);
                     fadeTransition.setOnFinished(event1 -> {
@@ -100,6 +104,7 @@ public class Map3Pane extends Pane {
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(1), this);
                     fadeTransition.play();
                     GameManager.setNewLocation(0);
+                    GameManager.doorSFX.play();
                     fadeTransition.setOnFinished(event1 -> {
                         Game.mainStage.setScene(new Map2Scene());
                     });

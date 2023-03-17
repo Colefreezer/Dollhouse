@@ -20,7 +20,7 @@ public class Player extends Pane {
     private double yPosition;       // the player's y position on the screen
     private double moveSpeed = 200;       // the player's move speed
     private boolean isMoving = false;   // whether the player is currently moving
-    private boolean facingRight = true; // whether the player is currently facing righ
+    private boolean facingRight = true; // whether the player is currently facing right
     private final TranslateTransition transition;
 
     /**
@@ -71,29 +71,32 @@ public class Player extends Pane {
      * Move the player left by moveSpeed pixels
      */
     public void moveLeft() {
-        transition.setByX(-moveSpeed);
-        transition.play();
-        System.out.println("Moving");
-        // if the player is not already moving, set the image to the moving image
-        if (!isMoving) {
-            isMoving = true;
-            walkingAnimation = Animations.spriteWalk(this, imageView, sprites);
-            walkingAnimation.play();
+        if (!GameManager.mapToggle){
+            transition.setByX(-moveSpeed);
+            transition.play();
+            System.out.println("Moving");
+            // if the player is not already moving, set the image to the moving image
+            if (!isMoving) {
+                isMoving = true;
+                walkingAnimation = Animations.spriteWalk(this, imageView, sprites);
+                walkingAnimation.play();
 
+            }
+
+            // if the player is facing right, flip the image horizontally to face left
+            if (facingRight) {
+                imageView.setScaleX(-1);
+                facingRight = false;
+            }
         }
 
-        // if the player is facing right, flip the image horizontally to face left
-        if (facingRight) {
-            imageView.setScaleX(-1);
-            facingRight = false;
-        }
     }
 
     /**
      * Move the player right by moveSpeed pixels
      */
     public void moveRight() {
-        if (!GameManager.mapToggle){
+        if (!GameManager.mapToggle || !GameManager.safeToggle){
             transition.setByX(moveSpeed);
             transition.play();
 
@@ -127,6 +130,9 @@ public class Player extends Pane {
         }
     }
 
+    public void pauseMovement(){
+
+    }
 
 
 }

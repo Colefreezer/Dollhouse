@@ -21,8 +21,8 @@ public class Map2Scene extends Scene {
 
         this.getRoot().setOnKeyPressed(event -> {
             switch (event.getCode()){
-                case LEFT -> Map2Pane.player.moveLeft();
-                case RIGHT -> Map2Pane.player.moveRight();
+                case A -> Map2Pane.player.moveLeft();
+                case D -> Map2Pane.player.moveRight();
                 case TAB -> GameManager.toggleMap((Pane) this.getRoot());
             }
             event.consume();
@@ -30,7 +30,7 @@ public class Map2Scene extends Scene {
 
         this.getRoot().setOnKeyReleased(event -> {
             switch (event.getCode()){
-                case LEFT, RIGHT -> Map2Pane.player.stopMoving();
+                case A, D -> Map2Pane.player.stopMoving();
             }
             event.consume();
         });

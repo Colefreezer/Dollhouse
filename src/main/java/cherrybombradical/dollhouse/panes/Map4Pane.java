@@ -17,6 +17,8 @@ public class Map4Pane extends Pane {
     public static int mapID = 5;
     // ==== MAP = SHED
     public static Player player;
+
+    public static SafePane safePane = new SafePane();
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     private final AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
 
@@ -63,6 +65,7 @@ public class Map4Pane extends Pane {
 
 
 
+
         // Add all the nodes to the group
         this.getChildren().addAll(map, arrowL, arrowR, leftArrowHitBox, rightArrowHitBox,
                 hud, player.getImageView(), lighting);
@@ -79,7 +82,7 @@ public class Map4Pane extends Pane {
                     //Door Sound
                     doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(700);
+                    GameManager.setNewLocation(75);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map3Scene());
@@ -99,38 +102,22 @@ public class Map4Pane extends Pane {
                 // player is colliding with door
                 arrowR.setVisible(true);
                 this.setOnMouseClicked(event -> {
-                    ImageView safe1 = new ImageView(new Image("sprites/UI/ui_safe1.png"));
-                    this.getChildren().add(safe1);
+                    GameManager.safeToggle = true;
+
+                    this.getChildren().add(safePane);
                     arrowL.setY(150);
-
-
                 });
 
             } else {
                 // player is not colliding with door
                 arrowR.setVisible(false);
+                GameManager.safeToggle = false;
+                System.out.println(GameManager.safeToggle);
             }
         });
-
-
-
-        // Key events for player movement (not currently working):
-
-        /*
-        // set focus on Map1Pane so that it can receive key events
-        this.setFocusTraversable(true);
-        this.requestFocus();
-
-        // add event handler for arrow keys
-        setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.LEFT) {
-                player.moveLeft();
-            } else if (event.getCode() == KeyCode.RIGHT) {
-                player.moveRight();
-            }
-        });
-        */
 
     }
+
+
 
 }

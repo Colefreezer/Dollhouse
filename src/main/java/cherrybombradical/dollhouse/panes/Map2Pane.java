@@ -19,12 +19,14 @@ public class Map2Pane extends Pane {
     public static int mapID = 1;
     public static Player player;
 
-    private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
-
     public Map2Pane(){
         Animations.fadeIn(Duration.seconds(1), this).play();
+        if (!GameManager.backgroundMusicIndoors.isPlaying()){
+            GameManager.backgroundMusicOutside.stop();
+            GameManager.backgroundMusicIndoors.play();
+        }
         // Create the player object and add its ImageView to the scene
-        player = new Player(GameManager.getNewLocation(), 303, 180);
+        player = new Player(GameManager.getNewLocation(), 303, 0);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());
@@ -78,7 +80,7 @@ public class Map2Pane extends Pane {
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
                     fadeTransition.play();
                     //Door Sound
-                    doorSFX.play();
+                    GameManager.doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(700);
                     fadeTransition.setOnFinished(event1 -> {
@@ -104,7 +106,7 @@ public class Map2Pane extends Pane {
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
                     fadeTransition.play();
                     //Door Sound
-                    doorSFX.play();
+                    GameManager.doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(75);
                     fadeTransition.setOnFinished(event1 -> {
@@ -119,23 +121,6 @@ public class Map2Pane extends Pane {
                 arrowR.setVisible(false);
             }
         });
-
-        // Key events for player movement (not currently working):
-
-        /*
-        // set focus on Map1Pane so that it can receive key events
-        this.setFocusTraversable(true);
-        this.requestFocus();
-
-        // add event handler for arrow keys
-        setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.LEFT) {
-                player.moveLeft();
-            } else if (event.getCode() == KeyCode.RIGHT) {
-                player.moveRight();
-            }
-        });
-        */
 
     }
 

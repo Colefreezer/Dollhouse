@@ -20,11 +20,5 @@ public class HUDPane extends Pane {
 
         this.getChildren().addAll(hud, mariaPOV);
 
-        if (GameManager.mapToggle == true){
-            mariaPOV.setImage(mariaMap);
-        }else {
-            mariaPOV.setImage(mariaBase);
-        }
-
     }
 }

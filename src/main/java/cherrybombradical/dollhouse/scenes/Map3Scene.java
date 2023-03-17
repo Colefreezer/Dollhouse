@@ -18,8 +18,8 @@ public class Map3Scene extends Scene {
 
         this.getRoot().setOnKeyPressed(event -> {
             switch (event.getCode()){
-                case LEFT -> Map3Pane.player.moveLeft();
-                case RIGHT -> Map3Pane.player.moveRight();
+                case A -> Map3Pane.player.moveLeft();
+                case D -> Map3Pane.player.moveRight();
                 case TAB -> GameManager.toggleMap((Pane) this.getRoot());
             }
             event.consume();
@@ -27,7 +27,7 @@ public class Map3Scene extends Scene {
 
         this.getRoot().setOnKeyReleased(event -> {
             switch (event.getCode()){
-                case LEFT, RIGHT -> Map3Pane.player.stopMoving();
+                case A, D -> Map3Pane.player.stopMoving();
             }
             event.consume();
         });
