@@ -2,9 +2,9 @@ package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
+import cherrybombradical.dollhouse.scenes.Map1Scene;
 import cherrybombradical.dollhouse.scenes.Map2Scene;
 import cherrybombradical.dollhouse.scenes.Map5Scene;
-import cherrybombradical.dollhouse.scenes.Map7Scene;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,18 +13,19 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class Map1Pane extends Pane {
+public class Map9Pane extends Pane {
 
     // Store the current map ID
-    public static int mapID = 0;
+    public static int mapID = 8;
 
     public static Player player;
+    private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
+    public Map9Pane(){
 
-    public Map1Pane(){
-        Animations.fadeIn(Duration.seconds(1), this).play();
-        if (!GameManager.backgroundMusicIndoors.isPlaying()){
-            GameManager.backgroundMusicIndoors.play();
-        }
+
+
+        Animations.fadeIn(Duration.seconds(3), this).play();
+
 
         // Create the player object
         player = new Player(GameManager.getNewLocation(), 303, 150);
@@ -57,16 +58,16 @@ public class Map1Pane extends Pane {
         Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
 
-        //Load the Arrow Image for when near the Stairs
-        ImageView arrowS = new ImageView(new Image("sprites/UI/arrow2.png"));
-        arrowS.setX(595);
-        arrowS.setY(145);
-        arrowS.setVisible(false);
-        Animations.hover(Duration.millis(1000), arrowS).play();
+        //Load the Arrow Image for when near the middle door
+        ImageView arrowM = new ImageView(new Image("sprites/UI/arrow.png"));
+        arrowM.setX(595);
+        arrowM.setY(145);
+        arrowM.setVisible(false);
+        Animations.hover(Duration.millis(1000), arrowM).play();
 
-        //Set Stairs Arrow HitBox
-        Rectangle stairsArrowHitBox = new Rectangle(730, 260, 50, 250);
-        stairsArrowHitBox.setVisible(false);
+        //Set middle Arrow HitBox
+        Rectangle midArrowHitBox = new Rectangle(730, 260, 50, 250);
+        midArrowHitBox.setVisible(false);
 
         // Load the map image and the shadow overlay for the current map ID
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
@@ -79,7 +80,7 @@ public class Map1Pane extends Pane {
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowS);
+                player.getImageView(), lighting, arrowL, arrowR, arrowM);
 
 
 
@@ -94,7 +95,7 @@ public class Map1Pane extends Pane {
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
                     fadeTransition.play();
                     //Door Sound
-                    GameManager.doorSFX.play();
+                    doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(580);
                     fadeTransition.setOnFinished(event1 -> {
@@ -123,12 +124,12 @@ public class Map1Pane extends Pane {
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
                     fadeTransition.play();
                     //Door Sound
-                    GameManager.doorSFX.play();
+                    doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(580);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
-                        Game.mainStage.setScene(new Map7Scene());
+                        Game.mainStage.setScene(new Map2Scene());
 
                     });
                 });
@@ -142,17 +143,17 @@ public class Map1Pane extends Pane {
         // ============ STAIRS ============
         //Detect if player (image) is colliding with the Right HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(stairsArrowHitBox.getBoundsInParent())) {
+            if (newBounds.intersects(midArrowHitBox.getBoundsInParent())) {
                 // player is colliding with door
-                arrowS.setVisible(true);
+                arrowM.setVisible(true);
                 this.setOnMouseClicked(event -> {
                     //Fade Transition
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
                     fadeTransition.play();
                     //Door Sound
-                    GameManager.stairsSFX.play();
+                    doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(320);
+                    GameManager.setNewLocation(580);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map5Scene());
@@ -162,7 +163,7 @@ public class Map1Pane extends Pane {
 
             } else {
                 // player is not colliding with door
-                arrowS.setVisible(false);
+                arrowM.setVisible(false);
             }
         });
 

@@ -1,10 +1,7 @@
 package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
-import cherrybombradical.dollhouse.scenes.MainMenuScene;
-import cherrybombradical.dollhouse.scenes.Map1Scene;
-import cherrybombradical.dollhouse.scenes.Map2Scene;
-import cherrybombradical.dollhouse.scenes.Map5Scene;
+import cherrybombradical.dollhouse.scenes.*;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,10 +10,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class Map6Pane extends Pane {
+public class
+Map6Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 6;
+    // LITTLE ROOM
 
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
@@ -38,13 +37,13 @@ public class Map6Pane extends Pane {
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowL.setX(190);
+        arrowL.setX(390);
         arrowL.setY(200);
         arrowL.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowL).play();
 
         //Set Left Arrow HitBox
-        Rectangle leftArrowHitBox = new Rectangle(150, 260, 50, 250);
+        Rectangle leftArrowHitBox = new Rectangle(350, 260, 50, 250);
         leftArrowHitBox.setVisible(false);
 
         //Load the Arrow Image for when near the right door
@@ -100,7 +99,7 @@ public class Map6Pane extends Pane {
                     GameManager.setNewLocation(580);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
-                        Game.mainStage.setScene(new Map2Scene());
+                        Game.mainStage.setScene(new Map9Scene());
 
                     });
                 });
