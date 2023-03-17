@@ -26,7 +26,7 @@ public class Map1Pane extends Pane {
         }
 
         // Create the player object
-        player = new Player(GameManager.getNewLocation(), 303, 0);
+        player = new Player(GameManager.getNewLocation(), 303, 150);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());

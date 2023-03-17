@@ -25,7 +25,7 @@ public class Map4Pane extends Pane {
     public Map4Pane(){
         Animations.fadeIn(Duration.seconds(3), this).play();
         // Create the player object and add its ImageView to the scene
-        player = new Player(GameManager.getNewLocation(), 303, 180);
+        player = new Player(GameManager.getNewLocation(), 303, 150);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());

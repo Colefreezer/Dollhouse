@@ -26,7 +26,7 @@ public class Map2Pane extends Pane {
             GameManager.backgroundMusicIndoors.play();
         }
         // Create the player object and add its ImageView to the scene
-        player = new Player(GameManager.getNewLocation(), 303, 0);
+        player = new Player(GameManager.getNewLocation(), 303, 150);
         player.getImageView().setFitHeight(250);
         player.getImageView().setPreserveRatio(true);
         player.getImageView().setLayoutX(player.getXPosition());
