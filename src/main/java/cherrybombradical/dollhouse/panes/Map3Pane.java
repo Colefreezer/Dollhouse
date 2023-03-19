@@ -13,16 +13,17 @@ public class Map3Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 2;
-    // ==== MAP = HALLWAY LEFT
+    // ==== MAP = OUTSIDE
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
 
     public Map3Pane(){
+        Animations.fadeIn(Duration.seconds(0.5), this).play();
         if (GameManager.backgroundMusicIndoors.isPlaying()){
             GameManager.backgroundMusicIndoors.stop();
             GameManager.backgroundMusicOutside.play();
         }
-        Animations.fadeIn(Duration.seconds(1), this).play();
+
         // Create the player object and add its ImageView to the scene
         player = new Player(GameManager.getNewLocation(), 303, 150);
         player.getImageView().setFitHeight(250);

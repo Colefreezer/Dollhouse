@@ -1,10 +1,7 @@
 package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
-import cherrybombradical.dollhouse.scenes.MainMenuScene;
-import cherrybombradical.dollhouse.scenes.Map1Scene;
-import cherrybombradical.dollhouse.scenes.Map2Scene;
-import cherrybombradical.dollhouse.scenes.Map5Scene;
+import cherrybombradical.dollhouse.scenes.*;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,14 +14,16 @@ public class Map8Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 4;
+    // ==== MAP = BASEMENT
 
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     public Map8Pane(){
-
-
-
-        Animations.fadeIn(Duration.seconds(3), this).play();
+        Animations.fadeIn(Duration.seconds(0.5), this).play();
+        if (GameManager.backgroundMusicFirePlace.isPlaying()){
+            GameManager.backgroundMusicFirePlace.stop();
+            GameManager.backgroundMusicBasement.play();
+        }
 
 
         // Create the player object
@@ -129,7 +128,7 @@ public class Map8Pane extends Pane {
                     GameManager.setNewLocation(580);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
-                        Game.mainStage.setScene(new Map2Scene());
+                        Game.mainStage.setScene(new Map7Scene());
 
                     });
                 });
@@ -148,7 +147,7 @@ public class Map8Pane extends Pane {
                 arrowM.setVisible(true);
                 this.setOnMouseClicked(event -> {
                     //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.3), this);
                     fadeTransition.play();
                     //Door Sound
                     doorSFX.play();
@@ -156,7 +155,7 @@ public class Map8Pane extends Pane {
                     GameManager.setNewLocation(580);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
-                        Game.mainStage.setScene(new Map5Scene());
+                        Game.mainStage.setScene(new Map7Scene());
 
                     });
                 });

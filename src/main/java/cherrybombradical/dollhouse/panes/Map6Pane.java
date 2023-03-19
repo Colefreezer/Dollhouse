@@ -16,14 +16,13 @@ Map6Pane extends Pane {
     // Store the current map ID
     public static int mapID = 6;
     // LITTLE ROOM
-
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     public Map6Pane(){
 
 
 
-        Animations.fadeIn(Duration.seconds(3), this).play();
+        Animations.fadeIn(Duration.seconds(0.5), this).play();
 
 
         // Create the player object

@@ -17,10 +17,11 @@ public class Map2Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 1;
+    // ==== MAP = LEFT HALLWAY
     public static Player player;
 
     public Map2Pane(){
-        Animations.fadeIn(Duration.seconds(1), this).play();
+        Animations.fadeIn(Duration.seconds(0.5), this).play();
         if (!GameManager.backgroundMusicIndoors.isPlaying()){
             GameManager.backgroundMusicOutside.stop();
             GameManager.backgroundMusicIndoors.play();

@@ -6,6 +6,7 @@ import cherrybombradical.dollhouse.scenes.Map1Scene;
 import cherrybombradical.dollhouse.scenes.Map2Scene;
 import cherrybombradical.dollhouse.scenes.Map5Scene;
 import javafx.animation.FadeTransition;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -17,14 +18,13 @@ public class Map9Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 8;
-
+    // ==== MAP = BOILER ROOM
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
+    public boolean inEvent = false;
     public Map9Pane(){
 
-
-
-        Animations.fadeIn(Duration.seconds(3), this).play();
+        Animations.fadeIn(Duration.seconds(0.5), this).play();
 
 
         // Create the player object
@@ -58,15 +58,15 @@ public class Map9Pane extends Pane {
         Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
 
-        //Load the Arrow Image for when near the middle door
-        ImageView arrowM = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowM.setX(595);
+        //Load the Interact Image for when near the Music Box
+        ImageView arrowM = new ImageView(new Image("sprites/UI/interact.png"));
+        arrowM.setX(875);
         arrowM.setY(145);
         arrowM.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowM).play();
 
         //Set middle Arrow HitBox
-        Rectangle midArrowHitBox = new Rectangle(730, 260, 50, 250);
+        Rectangle midArrowHitBox = new Rectangle(870, 260, 50, 250);
         midArrowHitBox.setVisible(false);
 
         // Load the map image and the shadow overlay for the current map ID
@@ -140,25 +140,31 @@ public class Map9Pane extends Pane {
             }
         });
 
-        // ============ STAIRS ============
+        // ============ MUSIC BOX ============
         //Detect if player (image) is colliding with the Right HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(midArrowHitBox.getBoundsInParent())) {
                 // player is colliding with door
                 arrowM.setVisible(true);
                 this.setOnMouseClicked(event -> {
-                    //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
-                    fadeTransition.play();
-                    //Door Sound
-                    doorSFX.play();
-                    //Location for next scene
-                    GameManager.setNewLocation(580);
-                    fadeTransition.setOnFinished(event1 -> {
-                        //Load Scene
-                        Game.mainStage.setScene(new Map5Scene());
+                    if (inEvent == false){
+                        ImageView MusicBox = new ImageView(new Image("sprites/UI/ui_musicBox1.png"));
+                        Button MusicButton = new Button();
+                        MusicButton.setLayoutX(236);
+                        MusicButton.setLayoutY(356);
+                        MusicButton.setOpacity(0);
+                        MusicButton.setScaleX(2);
+                        this.getChildren().addAll(MusicBox, MusicButton);
+                        System.out.println("In");
+                        inEvent = true;
+                    } else {
 
-                    });
+
+
+                    }
+
+
+
                 });
 
             } else {

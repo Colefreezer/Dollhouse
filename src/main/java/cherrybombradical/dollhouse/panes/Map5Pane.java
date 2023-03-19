@@ -17,7 +17,7 @@ public class Map5Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 3;
-
+    // ==== MAP = Upstairs
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     private final AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
@@ -27,7 +27,7 @@ public class Map5Pane extends Pane {
 
 
 
-        Animations.fadeIn(Duration.seconds(3), this).play();
+        Animations.fadeIn(Duration.seconds(0.5), this).play();
 
 
         // Create the player object

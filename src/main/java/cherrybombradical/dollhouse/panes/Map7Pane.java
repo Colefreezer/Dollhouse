@@ -14,15 +14,21 @@ public class Map7Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 7;
+    // ==== MAP = LIVING ROOM
 
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     private final AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
     public Map7Pane(){
-
-
-
-        Animations.fadeIn(Duration.seconds(3), this).play();
+        Animations.fadeIn(Duration.seconds(0.5), this).play();
+        if (GameManager.backgroundMusicIndoors.isPlaying()){
+            GameManager.backgroundMusicIndoors.stop();
+            GameManager.backgroundMusicFirePlace.play();
+        }
+        if (GameManager.backgroundMusicBasement.isPlaying()){
+            GameManager.backgroundMusicBasement.stop();
+            GameManager.backgroundMusicFirePlace.play();
+        }
 
 
         // Create the player object
@@ -75,9 +81,14 @@ public class Map7Pane extends Pane {
         lighting.setX(0);
         lighting.setY(0);
 
+        // Load the Fire Sprite
+        ImageView fire = new ImageView(new Image("sprites/Misc/sprite_fire.gif"));
+        fire.setX(586);
+        fire.setY(390);
+
         // Add all the nodes to the group
 
-        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
+        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud, fire,
                 player.getImageView(), lighting, arrowL, arrowR, arrowM);
 
 
@@ -90,7 +101,7 @@ public class Map7Pane extends Pane {
                 arrowL.setVisible(true);
                 this.setOnMouseClicked(event -> {
                     //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.3), this);
                     fadeTransition.play();
                     //Door Sound
                     doorSFX.play();
@@ -119,7 +130,7 @@ public class Map7Pane extends Pane {
                 arrowR.setVisible(true);
                 this.setOnMouseClicked(event -> {
                     //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.3), this);
                     fadeTransition.play();
                     //Door Sound
                     doorSFX.play();
@@ -146,7 +157,7 @@ public class Map7Pane extends Pane {
                 arrowM.setVisible(true);
                 this.setOnMouseClicked(event -> {
                     //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.3), this);
                     fadeTransition.play();
                     //Door Sound
                     stairsSFX.play();

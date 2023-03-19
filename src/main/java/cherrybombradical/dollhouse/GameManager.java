@@ -42,6 +42,8 @@ public class GameManager {
     public static AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
     public static AudioPlayer backgroundMusicIndoors = new AudioPlayer("Audio/Music/Upstairs.mp3", true);
     public static AudioPlayer backgroundMusicOutside = new AudioPlayer("Audio/Music/Outside.mp3", true);
+    public static AudioPlayer backgroundMusicFirePlace = new AudioPlayer("Audio/Music/Fireplace.mp3", true);
+    public static AudioPlayer backgroundMusicBasement = new AudioPlayer("Audio/Music/Basement.mp3", true);
 
     /**
      * Toggles the map display on or off.

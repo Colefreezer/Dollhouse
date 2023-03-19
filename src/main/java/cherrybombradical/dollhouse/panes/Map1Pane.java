@@ -17,12 +17,17 @@ public class Map1Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 0;
+    // ==== MAP = MAIN ROOM
 
     public static Player player;
 
     public Map1Pane(){
-        Animations.fadeIn(Duration.seconds(1), this).play();
+        Animations.fadeIn(Duration.seconds(0.5), this).play();
         if (!GameManager.backgroundMusicIndoors.isPlaying()){
+            GameManager.backgroundMusicIndoors.play();
+        }
+        if (!GameManager.backgroundMusicFirePlace.isPlaying()){
+            GameManager.backgroundMusicFirePlace.stop();
             GameManager.backgroundMusicIndoors.play();
         }
 
@@ -91,7 +96,7 @@ public class Map1Pane extends Pane {
                 arrowL.setVisible(true);
                 this.setOnMouseClicked(event -> {
                     //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.3), this);
                     fadeTransition.play();
                     //Door Sound
                     GameManager.doorSFX.play();
@@ -120,12 +125,12 @@ public class Map1Pane extends Pane {
                 arrowR.setVisible(true);
                 this.setOnMouseClicked(event -> {
                     //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.3), this);
                     fadeTransition.play();
                     //Door Sound
                     GameManager.doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(580);
+                    GameManager.setNewLocation(75);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map7Scene());
@@ -147,7 +152,7 @@ public class Map1Pane extends Pane {
                 arrowS.setVisible(true);
                 this.setOnMouseClicked(event -> {
                     //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.3), this);
                     fadeTransition.play();
                     //Door Sound
                     GameManager.stairsSFX.play();
