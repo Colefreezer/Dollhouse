@@ -21,14 +21,10 @@ public class Map4Scene extends Scene {
         this.getRoot().setOnKeyPressed(event -> {
             switch (event.getCode()){
                 case A -> {
-                    if(!GameManager.safeToggle){
-                        Map4Pane.player.moveLeft();
-                    }
+                    Map4Pane.player.moveLeft();
                 }
                 case D -> {
-                    if(!GameManager.safeToggle){
-                        Map4Pane.player.moveRight();
-                    }
+                    Map4Pane.player.moveRight();
                 }
                 case TAB -> GameManager.toggleMap((Pane) this.getRoot());
             }

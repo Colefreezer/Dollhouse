@@ -1,14 +1,25 @@
 package cherrybombradical.dollhouse;
 
-
-import cherrybombradical.dollhouse.scenes.*;
+import cherrybombradical.dollhouse.scenes.MainMenuScene;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 public class Game extends Application {
 
-    public static Stage mainStage; // mainStage variable to hold the primary stage
+    private static final int SPLASH_SCREEN_WIDTH = 923;
+    private static final int SPLASH_SCREEN_HEIGHT = 866;
+    private static final int SPLASH_SCREEN_DURATION = 5000; // in milliseconds
+
+    private Stage splashScreenStage; // stage for the splash screen
+    public static Stage mainStage; // main stage for the game
 
     // The entry point of the application, which launches the game
     public static void main(String[] args) {
@@ -17,19 +28,49 @@ public class Game extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        // Create the splash screen
+        createSplashScreen();
 
-
-        // set the mainStage variable to the primaryStage
+        // Set the main stage variable to the primary stage
         mainStage = primaryStage;
 
         // Set window properties
         mainStage.setResizable(false);
         mainStage.setTitle("Dollhouse");
         mainStage.getIcons().add(new Image("sprites/Maria_Walk1.png"));
-        // Set the main menu scene as the starting scene
-        mainStage.setScene(new Map9Scene());
 
-        // Display the game window
-        mainStage.show();
+
+
+        // Show the main stage after the splash screen duration
+        Timeline splashScreenTimer = new Timeline(
+                new KeyFrame(Duration.millis(SPLASH_SCREEN_DURATION), event -> {
+                    splashScreenStage.close();
+                    mainStage.setScene(new MainMenuScene()); // Set the main menu scene as the starting scene
+                    mainStage.show();
+                })
+        );
+        splashScreenTimer.play();
+    }
+
+    private void createSplashScreen() {
+        // Create the splash screen stage
+        splashScreenStage = new Stage(StageStyle.UNDECORATED);
+        splashScreenStage.setWidth(SPLASH_SCREEN_WIDTH);
+        splashScreenStage.setHeight(SPLASH_SCREEN_HEIGHT);
+        splashScreenStage.setResizable(false);
+
+        // Create the splash screen image
+        Image splashScreenImage = new Image("Images/Splash.png");
+        ImageView splashScreenImageView = new ImageView(splashScreenImage);
+        splashScreenImageView.setFitWidth(SPLASH_SCREEN_WIDTH);
+        splashScreenImageView.setFitHeight(SPLASH_SCREEN_HEIGHT);
+
+        // Add the splash screen image to a stack pane
+        StackPane splashScreenPane = new StackPane(splashScreenImageView);
+        Scene splashScreenScene = new Scene(splashScreenPane);
+        splashScreenStage.setScene(splashScreenScene);
+
+        // Show the splash screen stage
+        splashScreenStage.show();
     }
 }

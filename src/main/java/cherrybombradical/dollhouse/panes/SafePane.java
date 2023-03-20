@@ -33,9 +33,9 @@ public class SafePane extends Pane {
     private Text section4Text;
 
 
-    private AudioPlayer sectionTick = new AudioPlayer("Audio/Sounds/SFX_SafeClick.mp3", false);
-    private AudioPlayer confirmSFX = new AudioPlayer("Audio/Sounds/SFX_Safe_Open.mp3", false);
-    private AudioPlayer denySFX = new AudioPlayer("Audio/Sounds/SFX_Safe_Deny.mp3", false);
+    private AudioPlayer sectionTick = new AudioPlayer("Audio/Sounds/Cursor_Move.mp3", false);
+    private AudioPlayer confirmSFX = new AudioPlayer("Audio/Sounds/Select_OK4.mp3", false);
+    private AudioPlayer denySFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
 
     public SafePane() {
         // Load the safe image and set its position

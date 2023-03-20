@@ -96,7 +96,7 @@ public class Player extends Pane {
      * Move the player right by moveSpeed pixels
      */
     public void moveRight() {
-        if (!GameManager.mapToggle || !GameManager.safeToggle){
+        if (!GameManager.mapToggle){
             transition.setByX(moveSpeed);
             transition.play();
 
