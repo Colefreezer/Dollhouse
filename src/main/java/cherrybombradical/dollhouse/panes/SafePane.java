@@ -15,7 +15,7 @@ public class SafePane extends Pane {
 
     private static final String SAFE_IMAGE_PATH = "sprites/UI/ui_safe1.png";
     private static final int BUTTON_WIDTH = 100;
-    private static final int BUTTON_BUTTON = 50;
+    private static final int BUTTON_HEIGHT = 50;
 
     public boolean safeUnlocked = false;
     
@@ -82,7 +82,7 @@ public class SafePane extends Pane {
 
     private Button createUpButton(Text sectionText, int x, int y) {
         Button button = new Button("+");
-        button.setPrefSize(BUTTON_WIDTH, BUTTON_BUTTON);
+        button.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         button.setLayoutX(x);
         button.setLayoutY(y);
         button.setOpacity(0);
@@ -109,7 +109,7 @@ public class SafePane extends Pane {
 
     private Button createDownButton(Text sectionText, int x, int y) {
         Button button = new Button("-");
-        button.setPrefSize(BUTTON_WIDTH, BUTTON_BUTTON);
+        button.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         button.setLayoutX(x);
         button.setLayoutY(y);
         button.setOpacity(0);
