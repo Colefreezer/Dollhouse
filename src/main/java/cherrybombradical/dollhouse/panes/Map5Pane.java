@@ -24,10 +24,12 @@ public class Map5Pane extends Pane {
 
 
     public Map5Pane(){
-
-
-
         Animations.fadeIn(Duration.seconds(0.5), this).play();
+
+        if (!GameManager.backgroundMusicUpstairs.isPlaying()){
+            GameManager.backgroundMusicUpstairs.stop();
+            GameManager.backgroundMusicIndoors.play();
+        }
 
 
         // Create the player object

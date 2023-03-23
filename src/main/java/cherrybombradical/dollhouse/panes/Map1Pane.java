@@ -23,9 +23,6 @@ public class Map1Pane extends Pane {
 
     public Map1Pane(){
         Animations.fadeIn(Duration.seconds(0.5), this).play();
-        if (!GameManager.backgroundMusicIndoors.isPlaying()){
-            GameManager.backgroundMusicIndoors.play();
-        }
         if (!GameManager.backgroundMusicFirePlace.isPlaying()){
             GameManager.backgroundMusicFirePlace.stop();
             GameManager.backgroundMusicIndoors.play();

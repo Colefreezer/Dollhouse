@@ -133,6 +133,21 @@ public class Animations {
         return translateTransition;
     }
 
+    public static TranslateTransition UIShow (Node node){
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), node);
+        translateTransition.setFromX(-900);
+        translateTransition.setToX(0);
+        translateTransition.setInterpolator(Interpolator.EASE_OUT);
+        return translateTransition;
+    }
+    public static TranslateTransition UIMove (Node node){
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), node);
+        translateTransition.setFromX(0);
+        translateTransition.setToX(-900);
+        translateTransition.setInterpolator(Interpolator.EASE_IN);
+        return translateTransition;
+    }
+
     public static SequentialTransition mapIntro(Node mapLayer1, Node mapLayer2, Node mapPointer, int mapXVar, int mapYVar){
         mapPointer.relocate(0, 999);
         TranslateTransition translateTransition2 =

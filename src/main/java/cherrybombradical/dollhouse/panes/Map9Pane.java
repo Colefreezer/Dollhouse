@@ -1,11 +1,10 @@
 package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
-import cherrybombradical.dollhouse.scenes.MainMenuScene;
-import cherrybombradical.dollhouse.scenes.Map1Scene;
-import cherrybombradical.dollhouse.scenes.Map2Scene;
-import cherrybombradical.dollhouse.scenes.Map5Scene;
+import cherrybombradical.dollhouse.scenes.*;
 import javafx.animation.FadeTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,10 +20,26 @@ public class Map9Pane extends Pane {
     // ==== MAP = BOILER ROOM
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
+    private final AudioPlayer musicBoxOpenSFX = new AudioPlayer("Audio/Sounds/SFX_MusicBoxOpen.mp3", false);
+
+    private final AudioPlayer keyGrab = new AudioPlayer("Audio/Sounds/SFX_GetKey.mp3", false);
+    private final AudioPlayer uIShow = new AudioPlayer("Audio/Sounds/SFX_UIShow.mp3", false);
+    private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
     public boolean inEvent = false;
     public Map9Pane(){
-
         Animations.fadeIn(Duration.seconds(0.5), this).play();
+        // EVENT STUFF
+        Button MusicButton = new Button();
+        Button keyButtonSilver = new Button();
+        Button backButton = new Button();
+
+        ImageView MusicBox = new ImageView(new Image("sprites/UI/ui_musicBox1.png"));
+        ImageView keySilver = new ImageView(new Image("sprites/UI/ui_musicBox3.png"));
+
+        keySilver.setOpacity(0);
+        MusicBox.setLayoutX(-600);
+
+
 
 
         // Create the player object
@@ -129,7 +144,7 @@ public class Map9Pane extends Pane {
                     GameManager.setNewLocation(580);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
-                        Game.mainStage.setScene(new Map2Scene());
+                        Game.mainStage.setScene(new Map6Scene());
 
                     });
                 });
@@ -148,24 +163,54 @@ public class Map9Pane extends Pane {
                 arrowM.setVisible(true);
                 this.setOnMouseClicked(event -> {
                     if (inEvent == false){
-                        ImageView MusicBox = new ImageView(new Image("sprites/UI/ui_musicBox1.png"));
-                        Button MusicButton = new Button();
+                        arrowM.setVisible(false);
+                        uIShow.play();
+                        MusicBox.setLayoutX(0);
+
+                        // Music Box Button
                         MusicButton.setLayoutX(236);
                         MusicButton.setLayoutY(356);
                         MusicButton.setOpacity(0);
-                        MusicButton.setScaleX(2);
-                        this.getChildren().addAll(MusicBox, MusicButton);
-                        System.out.println("In");
+                        MusicButton.setScaleX(4);
+                        MusicButton.setScaleY(3);
+
+
+                        // Back Button
+                        backButton.setLayoutX(566);
+                        backButton.setLayoutY(90);
+                        backButton.setOpacity(0);
+                        backButton.setScaleX(4);
+                        backButton.setScaleY(3);
+
+                        this.getChildren().addAll(MusicBox, MusicButton, backButton);
+                        Animations.UIShow(MusicBox).play();
+                        System.out.println("Music Box showing");
                         inEvent = true;
-                    } else {
-
-
-
                     }
-
-
-
+                    MusicButton.setOnAction((e) -> {
+                        musicBoxOpenSFX.play();
+                        GameManager.musicBoxBackgroundMusic.play();
+                        MusicBox.setImage(new Image("sprites/UI/ui_musicBox2.png"));
+                        keySilver.setOpacity(255);
+                        this.getChildren().addAll(keySilver, keyButtonSilver);
+                        keyButtonSilver.setLayoutX(226);
+                        keyButtonSilver.setLayoutY(200);
+                        keyButtonSilver.setOpacity(0);
+                        keyButtonSilver.setScaleX(16);
+                        keyButtonSilver.setScaleY(4);
+                    });
+                    keyButtonSilver.setOnAction((e) -> {
+                        keySilver.setOpacity(0);
+                        keyGrab.play();
+                        HUDPane.AddInventory("SilverKey");
+                    });
+                    backButton.setOnAction((e) -> {
+                        uIMove.play();
+                        Animations.UIMove(MusicBox).play();
+                        inEvent = false;
+                    });
                 });
+
 
             } else {
                 // player is not colliding with door

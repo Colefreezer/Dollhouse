@@ -19,10 +19,15 @@ Map6Pane extends Pane {
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     public Map6Pane(){
-
-
-
         Animations.fadeIn(Duration.seconds(0.5), this).play();
+
+        if (GameManager.backgroundMusicIndoors.isPlaying()){
+            GameManager.backgroundMusicIndoors.stop();
+            GameManager.backgroundMusicUpstairs.play();
+        }
+        if (GameManager.musicBoxBackgroundMusic.isPlaying()){
+            GameManager.musicBoxBackgroundMusic.stop();
+        }
 
 
         // Create the player object

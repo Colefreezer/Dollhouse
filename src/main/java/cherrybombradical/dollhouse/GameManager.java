@@ -44,6 +44,8 @@ public class GameManager {
     public static AudioPlayer backgroundMusicOutside = new AudioPlayer("Audio/Music/Outside.mp3", true);
     public static AudioPlayer backgroundMusicFirePlace = new AudioPlayer("Audio/Music/Fireplace.mp3", true);
     public static AudioPlayer backgroundMusicBasement = new AudioPlayer("Audio/Music/Basement.mp3", true);
+    public static AudioPlayer backgroundMusicUpstairs = new AudioPlayer("Audio/Music/attic.mp3", true);
+    public static AudioPlayer musicBoxBackgroundMusic = new AudioPlayer("Audio/Music/MusicBox.mp3", true);
 
     /**
      * Toggles the map display on or off.
