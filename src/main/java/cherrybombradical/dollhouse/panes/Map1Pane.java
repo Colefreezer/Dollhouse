@@ -165,6 +165,9 @@ public class Map1Pane extends Pane {
             } else {
                 // player is not colliding with door
                 arrowS.setVisible(false);
+                this.setOnMouseClicked(event -> {
+                    //nothing
+                });
             }
         });
 
