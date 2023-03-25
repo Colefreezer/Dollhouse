@@ -67,6 +67,7 @@ public class Map5Pane extends Pane {
         ImageView arrowS = new ImageView(new Image("sprites/UI/arrow2.png"));
         arrowS.setX(595);
         arrowS.setY(145);
+        arrowS.setRotate(180);
         arrowS.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowS).play();
 

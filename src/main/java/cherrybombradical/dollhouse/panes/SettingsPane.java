@@ -62,10 +62,43 @@ public class SettingsPane extends Group {
         buttons.setLayoutY(175);
 
 
+<<<<<<< HEAD
+            if (selected) {
+                musicToggle.setText("Music: On");
+                GameManager.unmuteMusic();
+                GameManager.backgroundMusicMainMenu.setVolume(1);
+
+
+            } else {
+                musicToggle.setText("Music: Off");
+                GameManager.muteMusic();
+                GameManager.backgroundMusicMainMenu.setVolume(0);
+            }
+        });
+
+        soundFXToggle.setOnAction(event -> {
+            boolean selected = soundFXToggle.isSelected();
+            System.out.println(selected);
+
+            if (selected) {
+                soundFXToggle.setText("Sound Effects: On");
+                GameManager.unmuteMusic();
+
+            } else {
+                soundFXToggle.setText("Sound Effects: Off");
+                GameManager.muteMusic();
+
+            }
+        });
+
+
+
+=======
         music.setOnAction(event -> {
             Game.mainStage.close();
         });
 
+>>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
 
 
         back.setOnAction(event -> {

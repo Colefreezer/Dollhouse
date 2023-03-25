@@ -20,6 +20,11 @@ public class GameManager {
     public static final int SCREEN_WIDTH = 1449;
     public static final int SCREEN_HEIGHT = 814;
     public static int NEW_LOCATION = 300;
+<<<<<<< HEAD
+    public static boolean hasKey1 = false;
+    public static boolean hasKey2 = false;
+=======
+>>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
 
     // Constants for map names
     public static final String[] MAP_NAMES = {"Main Room", "West Hallway", "Backyard", "Upstairs, Basement Main"};
@@ -32,10 +37,6 @@ public class GameManager {
     public static int mapX = 0;
     public static int mapY = 0;
     public static AudioPlayer mapToggleSFX = new AudioPlayer("Audio/Sounds/SFX_MapOut.mp3", false);
-
-    // Variables for safe toggle
-    public static boolean safeToggle;
-    public static SafePane safePane;
 
     // Variables for sound effects and background music
     public static AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);

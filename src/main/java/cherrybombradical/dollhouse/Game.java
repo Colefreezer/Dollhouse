@@ -1,6 +1,10 @@
 package cherrybombradical.dollhouse;
 
+<<<<<<< HEAD
+import cherrybombradical.dollhouse.scenes.*;
+=======
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
+>>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -21,7 +25,11 @@ public class Game extends Application {
 
     private static final int SPLASH_SCREEN_WIDTH = 924;
     private static final int SPLASH_SCREEN_HEIGHT = 866;
+<<<<<<< HEAD
+    private static final int SPLASH_SCREEN_DURATION = 4000; // in milliseconds
+=======
     private static final int SPLASH_SCREEN_DURATION = 5000; // in milliseconds
+>>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
 
     private Stage splashScreenStage; // stage for the splash screen
     public static Stage mainStage; // main stage for the game

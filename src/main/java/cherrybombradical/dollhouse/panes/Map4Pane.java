@@ -19,6 +19,8 @@ public class Map4Pane extends Pane {
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     private final AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
+    private final AudioPlayer uIShow = new AudioPlayer("Audio/Sounds/SFX_UIShow.mp3", false);
+
 
     public Map4Pane(){
         Animations.fadeIn(Duration.seconds(0.5), this).play();
@@ -94,24 +96,36 @@ public class Map4Pane extends Pane {
             }
         });
 
-        //Detect if player (image) is colliding with the Right HitBox
+        //Detect if player (image) is colliding with the Safe
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(rightArrowHitBox.getBoundsInParent())) {
-                // player is colliding with door
+                // player is colliding with safe
                 arrowR.setVisible(true);
                 this.setOnMouseClicked(event -> {
-                    safePane.setVisible(true);
+                    if (!GameManager.hasKey2){
+                        if (!safePane.isVisible()){
+                            safePane.setVisible(true);
+                            Animations.UIShow(safePane).play();
+                            uIShow.play();
+                        }else{
+                            Animations.UIShow(safePane).play();
+                            uIShow.play();
+                        }
 
+                    }
                 });
 
             }
             else {
-                // player is not colliding with door
+                // player is not colliding with safe
                 arrowR.setVisible(false);
             }
 
 
         });
+
+
+
 
     }
 

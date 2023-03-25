@@ -162,7 +162,7 @@ public class Map9Pane extends Pane {
                 // player is colliding with door
                 arrowM.setVisible(true);
                 this.setOnMouseClicked(event -> {
-                    if (inEvent == false){
+                    if (inEvent == false ){
                         arrowM.setVisible(false);
                         uIShow.play();
                         MusicBox.setLayoutX(0);
@@ -203,6 +203,15 @@ public class Map9Pane extends Pane {
                         keySilver.setOpacity(0);
                         keyGrab.play();
                         HUDPane.AddInventory("SilverKey");
+<<<<<<< HEAD
+                        Image itemKey1 = new Image("sprites/UI/Icons/icn_key2.png");
+                        ImageView itemKey1view = new ImageView(itemKey1);
+                        itemKey1view.setX(600);
+                        itemKey1view.setY(615);
+                        this.getChildren().add(itemKey1view);
+                        GameManager.hasKey1 = true;
+=======
+>>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
                     });
                     backButton.setOnAction((e) -> {
                         uIMove.play();

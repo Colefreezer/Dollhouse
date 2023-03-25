@@ -1,6 +1,9 @@
 package cherrybombradical.dollhouse.panes;
 
+import cherrybombradical.dollhouse.Animations;
 import cherrybombradical.dollhouse.AudioPlayer;
+import cherrybombradical.dollhouse.GameManager;
+import javafx.animation.TranslateTransition;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,15 +13,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class SafePane extends Pane {
 
     private static final String SAFE_IMAGE_PATH = "sprites/UI/ui_safe1.png";
+    private static final String OPEN_SAFE_IMAGE_PATH = "sprites/UI/ui_safe2.png";
+    private static final String KEY_IMAGE_PATH = "sprites/UI/ui_safeKey.png";
     private static final int BUTTON_WIDTH = 100;
     private static final int BUTTON_HEIGHT = 50;
 
-    public boolean safeUnlocked = false;
-    
+    private boolean safeUnlocked = false;
+
     private Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/Pixel.ttf"), 64);
 
     private int section1Value = 0;
@@ -27,21 +33,42 @@ public class SafePane extends Pane {
     private int section4Value = 0;
 
     private ImageView safeImageView;
+    private ImageView openSafeImageView;
+    private ImageView keyImageView;
     private Text section1Text;
     private Text section2Text;
     private Text section3Text;
     private Text section4Text;
 
 
+<<<<<<< HEAD
+    private final AudioPlayer sectionTick = new AudioPlayer("Audio/Sounds/SFX_SafeClick.mp3", false);
+    private final AudioPlayer confirmSFX = new AudioPlayer("Audio/Sounds/SFX_Safe_Open.mp3", false);
+    private final AudioPlayer denySFX = new AudioPlayer("Audio/Sounds/SFX_Safe_Deny.mp3", false);
+
+    private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
+    private final AudioPlayer keyGrab = new AudioPlayer("Audio/Sounds/SFX_GetKey.mp3", false);
+=======
     private AudioPlayer sectionTick = new AudioPlayer("Audio/Sounds/Cursor_Move.mp3", false);
     private AudioPlayer confirmSFX = new AudioPlayer("Audio/Sounds/Select_OK4.mp3", false);
     private AudioPlayer denySFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
+>>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
 
     public SafePane() {
         // Load the safe image and set its position
         Image safeImage = new Image(SAFE_IMAGE_PATH);
         safeImageView = new ImageView(safeImage);
-        getChildren().add(safeImageView);
+
+        Image openSafeImage = new Image(OPEN_SAFE_IMAGE_PATH);
+        openSafeImageView = new ImageView(openSafeImage);
+        openSafeImageView.setVisible(false);
+
+        Image keyImage = new Image(KEY_IMAGE_PATH);
+        keyImageView = new ImageView(keyImage);
+        keyImageView.setVisible(false);
+
+
+        getChildren().addAll(safeImageView, openSafeImageView, keyImageView);
 
         // Create text nodes for each section and set their positions and font
         section1Text = new Text(String.valueOf(section1Value));
@@ -71,14 +98,19 @@ public class SafePane extends Pane {
         Button section3DownButton = createDownButton(section3Text, 310, 325);
         Button section4UpButton = createUpButton(section4Text, 435, 215);
         Button section4DownButton = createDownButton(section4Text, 435, 325);
-        
+
         Button confirmButton = createConfirmButton(485, 390);
+        Button backButton = createBackButton(460, 100);
+        Button collectKeyButton = createCollectKeyButton(185, 390);
 
         // Add the buttons to the pane
         getChildren().addAll(section1UpButton, section1DownButton, section2UpButton, section2DownButton,
-                section3UpButton, section3DownButton, section4UpButton, section4DownButton, confirmButton);
+                section3UpButton, section3DownButton, section4UpButton, section4DownButton, confirmButton, backButton, collectKeyButton);
     }
 
+    public boolean isSafeUnlocked() {
+        return safeUnlocked;
+    }
 
     private Button createUpButton(Text sectionText, int x, int y) {
         Button button = new Button("+");
@@ -104,7 +136,7 @@ public class SafePane extends Pane {
         });
         return button;
     }
-    
+
 
 
     private Button createDownButton(Text sectionText, int x, int y) {
@@ -143,17 +175,56 @@ public class SafePane extends Pane {
         });
         return button;
     }
-    
 
-    private void checkCode() {
+    private Button createBackButton(int x, int y){
+        Button button = new Button("Back");
+        button.setPrefSize(175, 85);
+        button.setLayoutX(x);
+        button.setLayoutY(y);
+        button.setOpacity(0);
+        button.setOnAction(event -> {
+            //Remove SafePane from Map
+            uIMove.play();
+            Animations.UIMove(this).play();
+        });
+        return button;
+    }
+
+    private Button createCollectKeyButton(int x, int y){
+        Button button = new Button("Collect Key");
+        button.setPrefSize(175, 100);
+        button.setLayoutX(x);
+        button.setLayoutY(y);
+        button.setOpacity(0);
+        button.setOnAction(event -> {
+            GameManager.hasKey2 = true;
+            keyGrab.play();
+            keyImageView.setVisible(false);
+            button.setVisible(false);
+        });
+        return button;
+    }
+
+
+    private boolean checkCode() {
         if (section1Value == 0 && section2Value == 4 && section3Value == 5 && section4Value == 1) {
             System.out.println("Code entered!");
             confirmSFX.play();
             safeUnlocked = true;
-            // Add sound effect and close pane
+
+            safeImageView.setVisible(false);
+            section1Text.setVisible(false); section2Text.setVisible(false);
+            section3Text.setVisible(false); section4Text.setVisible(false);
+            openSafeImageView.setVisible(true);
+            keyImageView.setVisible(true);
+            //moveOut().play();
+            //this.setVisible(false);
         }else{
             System.out.println("Wrong code!");
             denySFX.play();
         }
+        return safeUnlocked;
     }
+
+
 }
