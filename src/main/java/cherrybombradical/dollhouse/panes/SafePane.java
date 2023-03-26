@@ -3,17 +3,12 @@ package cherrybombradical.dollhouse.panes;
 import cherrybombradical.dollhouse.Animations;
 import cherrybombradical.dollhouse.AudioPlayer;
 import cherrybombradical.dollhouse.GameManager;
-import javafx.animation.TranslateTransition;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 public class SafePane extends Pane {
 
@@ -41,20 +36,17 @@ public class SafePane extends Pane {
     private Text section4Text;
 
 
-<<<<<<< HEAD
     private final AudioPlayer sectionTick = new AudioPlayer("Audio/Sounds/SFX_SafeClick.mp3", false);
     private final AudioPlayer confirmSFX = new AudioPlayer("Audio/Sounds/SFX_Safe_Open.mp3", false);
     private final AudioPlayer denySFX = new AudioPlayer("Audio/Sounds/SFX_Safe_Deny.mp3", false);
 
     private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
     private final AudioPlayer keyGrab = new AudioPlayer("Audio/Sounds/SFX_GetKey.mp3", false);
-=======
-    private AudioPlayer sectionTick = new AudioPlayer("Audio/Sounds/Cursor_Move.mp3", false);
-    private AudioPlayer confirmSFX = new AudioPlayer("Audio/Sounds/Select_OK4.mp3", false);
-    private AudioPlayer denySFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
->>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
 
-    public SafePane() {
+    private final Map4Pane map4Pane;
+
+    public SafePane(Map4Pane map4Pane) {
+        this.map4Pane = map4Pane;
         // Load the safe image and set its position
         Image safeImage = new Image(SAFE_IMAGE_PATH);
         safeImageView = new ImageView(safeImage);
@@ -199,6 +191,7 @@ public class SafePane extends Pane {
         button.setOnAction(event -> {
             GameManager.hasKey2 = true;
             keyGrab.play();
+            map4Pane.addKeyImage();
             keyImageView.setVisible(false);
             button.setVisible(false);
         });
@@ -217,8 +210,6 @@ public class SafePane extends Pane {
             section3Text.setVisible(false); section4Text.setVisible(false);
             openSafeImageView.setVisible(true);
             keyImageView.setVisible(true);
-            //moveOut().play();
-            //this.setVisible(false);
         }else{
             System.out.println("Wrong code!");
             denySFX.play();

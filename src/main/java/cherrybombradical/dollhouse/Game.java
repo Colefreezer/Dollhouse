@@ -1,10 +1,8 @@
 package cherrybombradical.dollhouse;
 
-<<<<<<< HEAD
+
 import cherrybombradical.dollhouse.scenes.*;
-=======
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
->>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -25,11 +23,8 @@ public class Game extends Application {
 
     private static final int SPLASH_SCREEN_WIDTH = 924;
     private static final int SPLASH_SCREEN_HEIGHT = 866;
-<<<<<<< HEAD
-    private static final int SPLASH_SCREEN_DURATION = 4000; // in milliseconds
-=======
-    private static final int SPLASH_SCREEN_DURATION = 5000; // in milliseconds
->>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
+
+    private static final int SPLASH_SCREEN_DURATION = 1; // in milliseconds
 
     private Stage splashScreenStage; // stage for the splash screen
     public static Stage mainStage; // main stage for the game
@@ -50,7 +45,7 @@ public class Game extends Application {
         // Set window properties
         mainStage.setResizable(false);
         mainStage.setTitle("Dollhouse");
-        mainStage.getIcons().add(new Image("sprites/Maria_Walk1.png"));
+        //mainStage.getIcons().add(new Image("sprites/Maria_Walk1.png"));
         // Set the main menu scene as the starting scene
 
 
@@ -58,7 +53,7 @@ public class Game extends Application {
         Timeline splashScreenTimer = new Timeline(
                 new KeyFrame(Duration.millis(SPLASH_SCREEN_DURATION), event -> {
                     splashScreenStage.close();
-                    mainStage.setScene(new MainMenuScene());
+                    mainStage.setScene(new Map1Scene());
                     mainStage.show();
                 })
         );

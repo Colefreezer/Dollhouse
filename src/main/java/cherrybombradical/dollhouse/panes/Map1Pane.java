@@ -36,6 +36,7 @@ public class Map1Pane extends Pane {
 
         // Create HUD
         HUDPane hud = new HUDPane();
+        NotePane notePane = new NotePane("0 eyes see what 4 can't,\n\n5 fingers reach where\n1 won't.\n\nBeware the doll's\nwhispers in the night,\nfor its secrets hold the\nkey to your fright.");
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
@@ -81,9 +82,7 @@ public class Map1Pane extends Pane {
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowS);
-
-
+                player.getImageView(), lighting, arrowL, arrowR, arrowS, notePane);
 
         // ============ DOOR LEFT ============
         //Detect if player (image) is colliding with the left HitBox
@@ -165,9 +164,6 @@ public class Map1Pane extends Pane {
             } else {
                 // player is not colliding with door
                 arrowS.setVisible(false);
-                this.setOnMouseClicked(event -> {
-                    //nothing
-                });
             }
         });
 

@@ -8,30 +8,31 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class HUDPane extends Pane {
+
     private Image HUD = new Image("sprites/ui/ui_hud1.png");
     private Image mariaBase = new Image("sprites/ui/ui_maria1.png");
     private Image mariaMap = new Image("sprites/ui/ui_maria2.png");
+    private ImageView hud = new ImageView(HUD);
+    private ImageView mariaPOV = new ImageView(mariaBase);
     public HUDPane(){
-        ImageView hud = new ImageView(HUD);
         hud.setX(0);
         hud.setY(564);
-        ImageView mariaPOV = new ImageView(mariaBase);
+
         mariaPOV.setX(28);
         mariaPOV.setY(604);
-<<<<<<< HEAD
 
-        Image itemKey1 = new Image("sprites/UI/Icons/icn_key2.png");
+        Image itemKey1 = new Image("sprites/UI/Icons/icn_key1.png");
         ImageView itemKey1view = new ImageView(itemKey1);
         itemKey1view.setVisible(false);
 
-        Image itemKey2 = new Image("sprites/UI/Icons/icn_key1.png");
+        Image itemKey2 = new Image("sprites/UI/Icons/icn_key2.png");
         ImageView itemKey2view = new ImageView(itemKey2);
         itemKey2view.setVisible(false);
-        
-        itemKey1view.setX(600);
+
+        itemKey1view.setX(300);
         itemKey1view.setY(615);
 
-        itemKey2view.setX(300);
+        itemKey2view.setX(500);
         itemKey2view.setY(615);
         this.getChildren().addAll(hud, mariaPOV, itemKey1view, itemKey2view);
 
@@ -44,11 +45,10 @@ public class HUDPane extends Pane {
         }
 
 
-=======
-        this.getChildren().addAll(hud, mariaPOV);
->>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
+        //this.getChildren().addAll(hud, mariaPOV);
 
     }
+
     public static void AddInventory(String itemName){
         switch (itemName) {
             case "GoldKey":

@@ -1,10 +1,10 @@
 package cherrybombradical.dollhouse.panes;
 
-import cherrybombradical.dollhouse.Animations;
-import cherrybombradical.dollhouse.Game;
+import cherrybombradical.dollhouse.*;
 import javafx.animation.ScaleTransition;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -36,13 +36,13 @@ public class SettingsPane extends Group {
         confirmation.setFont(pixelFont);
         confirmation.setFill(Color.WHITE);
 
-        Button music = new Button("Music");
-        music.setFont(pixelFontButItsSmaller);
-        music.setStyle("-fx-background-color: #000000; -fx-text-fill: #FF0000; ");
+        ToggleButton musicToggle = new ToggleButton("Music: On");
+        musicToggle.setFont(pixelFontButItsSmaller);
+        musicToggle.setStyle("-fx-background-color: #000000; -fx-text-fill: #FF0000; ");
 
-        Button betterQuit = new Button("Quit in a cool way");
-        betterQuit.setFont(pixelFontButItsSmaller);
-        betterQuit.setStyle("-fx-background-color: #000000; -fx-text-fill: #FF0000; ");
+        ToggleButton soundFXToggle = new ToggleButton("Sound Effects: On");
+        soundFXToggle.setFont(pixelFontButItsSmaller);
+        soundFXToggle.setStyle("-fx-background-color: #000000; -fx-text-fill: #FF0000; ");
 
         Button back = new Button("Back");
         back.setFont(pixelFontButItsSmaller);
@@ -51,7 +51,7 @@ public class SettingsPane extends Group {
         HBox buttons = new HBox(20);
         buttons.setScaleX(2.25);
         buttons.setScaleY(2.25);
-        buttons.getChildren().addAll(music, betterQuit, back);
+        buttons.getChildren().addAll(musicToggle, soundFXToggle, back);
 
         this.getChildren().addAll( border, confirmation, buttons);
 
@@ -61,8 +61,10 @@ public class SettingsPane extends Group {
         buttons.setLayoutX(225);
         buttons.setLayoutY(175);
 
+        musicToggle.setOnAction(event -> {
+            boolean selected = musicToggle.isSelected();
+            System.out.println(selected);
 
-<<<<<<< HEAD
             if (selected) {
                 musicToggle.setText("Music: On");
                 GameManager.unmuteMusic();
@@ -90,16 +92,6 @@ public class SettingsPane extends Group {
 
             }
         });
-
-
-
-=======
-        music.setOnAction(event -> {
-            Game.mainStage.close();
-        });
-
->>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
-
 
         back.setOnAction(event -> {
 

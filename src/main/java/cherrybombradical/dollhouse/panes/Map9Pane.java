@@ -203,15 +203,12 @@ public class Map9Pane extends Pane {
                         keySilver.setOpacity(0);
                         keyGrab.play();
                         HUDPane.AddInventory("SilverKey");
-<<<<<<< HEAD
-                        Image itemKey1 = new Image("sprites/UI/Icons/icn_key2.png");
-                        ImageView itemKey1view = new ImageView(itemKey1);
-                        itemKey1view.setX(600);
-                        itemKey1view.setY(615);
-                        this.getChildren().add(itemKey1view);
+                        Image itemKey2 = new Image("sprites/UI/Icons/icn_key2.png");
+                        ImageView itemKey2view = new ImageView(itemKey2);
+                        itemKey2view.setX(600);
+                        itemKey2view.setY(615);
+                        this.getChildren().add(itemKey2view);
                         GameManager.hasKey1 = true;
-=======
->>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
                     });
                     backButton.setOnAction((e) -> {
                         uIMove.play();

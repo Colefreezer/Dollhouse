@@ -1,8 +1,6 @@
 package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
-import cherrybombradical.dollhouse.scenes.MainMenuScene;
-import cherrybombradical.dollhouse.scenes.Map1Scene;
 import cherrybombradical.dollhouse.scenes.Map3Scene;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
@@ -63,7 +61,7 @@ public class Map4Pane extends Pane {
         Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
 
-        SafePane safePane = new SafePane();
+        SafePane safePane = new SafePane(this);
         safePane.setVisible(false);
 
         // Add all the nodes to the group
@@ -127,6 +125,14 @@ public class Map4Pane extends Pane {
 
 
 
+    }
+
+    public void addKeyImage(){
+        Image itemKey1 = new Image("sprites/UI/Icons/icn_key1.png");
+        ImageView itemKey1view = new ImageView(itemKey1);
+        itemKey1view.setX(300);
+        itemKey1view.setY(615);
+        this.getChildren().add(itemKey1view);
     }
 
 

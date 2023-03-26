@@ -3,6 +3,8 @@ package cherrybombradical.dollhouse.panes;
 import cherrybombradical.dollhouse.Animations;
 import cherrybombradical.dollhouse.Game;
 import cherrybombradical.dollhouse.AudioPlayer;
+import cherrybombradical.dollhouse.GameManager;
+import cherrybombradical.dollhouse.scenes.IntroCutscene;
 import cherrybombradical.dollhouse.scenes.Map1Scene;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -52,8 +54,6 @@ public class MainMenuPane extends BorderPane {
 
     private final Text credit = new Text("© 2023 Cherrybomb Radical - Colton Thibert & Cole Dennie");
     private final Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/Pixel.ttf"), 18);
-
-    private final AudioPlayer BGM = new AudioPlayer("Audio/Music/dollhouseTheme.mp3", true);
     private final AudioPlayer buttonHoverSFX = new AudioPlayer("Audio/Sounds/Cursor_Move.mp3", false);
     private final AudioPlayer buttonClickSFX = new AudioPlayer("Audio/Sounds/Select_OK4.mp3", false);
 
@@ -75,7 +75,7 @@ public class MainMenuPane extends BorderPane {
     }
 
     private void initializeBGM(){
-        BGM.play();
+        GameManager.backgroundMusicMainMenu.play();
     }
 
     // Initializes the background elements and starts the scrolling animation
@@ -123,8 +123,8 @@ public class MainMenuPane extends BorderPane {
             buttonClickSFX.play();
             FadeTransition fadeTransition = Animations.fadeOut(FADE_DURATION, this);
             fadeTransition.setOnFinished(event1 -> {
-                BGM.stop();
-                Game.mainStage.setScene(new Map1Scene());
+                GameManager.backgroundMusicMainMenu.stop();
+                Game.mainStage.setScene(new IntroCutscene());
             });
 
             fadeTransition.play();

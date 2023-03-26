@@ -1,6 +1,9 @@
 package cherrybombradical.dollhouse;
 
+import cherrybombradical.dollhouse.panes.HUDPane;
 import cherrybombradical.dollhouse.panes.SafePane;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -20,11 +23,8 @@ public class GameManager {
     public static final int SCREEN_WIDTH = 1449;
     public static final int SCREEN_HEIGHT = 814;
     public static int NEW_LOCATION = 300;
-<<<<<<< HEAD
-    public static boolean hasKey1 = false;
-    public static boolean hasKey2 = false;
-=======
->>>>>>> parent of 61926c0 (Cutscene, inventory system has a start)
+    public static boolean hasKey1 = true;
+    public static boolean hasKey2 = true;
 
     // Constants for map names
     public static final String[] MAP_NAMES = {"Main Room", "West Hallway", "Backyard", "Upstairs, Basement Main"};
@@ -36,11 +36,13 @@ public class GameManager {
     public static ImageView mapPointer = new ImageView("sprites/ui/ui_mapPointer.png");
     public static int mapX = 0;
     public static int mapY = 0;
-    public static AudioPlayer mapToggleSFX = new AudioPlayer("Audio/Sounds/SFX_MapOut.mp3", false);
+
 
     // Variables for sound effects and background music
+    public static AudioPlayer mapToggleSFX = new AudioPlayer("Audio/Sounds/SFX_MapOut.mp3", false);
     public static AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     public static AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
+    public static AudioPlayer backgroundMusicMainMenu = new AudioPlayer("Audio/Music/dollhouseTheme.mp3", true);
     public static AudioPlayer backgroundMusicIndoors = new AudioPlayer("Audio/Music/Upstairs.mp3", true);
     public static AudioPlayer backgroundMusicOutside = new AudioPlayer("Audio/Music/Outside.mp3", true);
     public static AudioPlayer backgroundMusicFirePlace = new AudioPlayer("Audio/Music/Fireplace.mp3", true);
@@ -89,5 +91,19 @@ public class GameManager {
      */
     public static int getNewLocation() {
         return NEW_LOCATION;
+    }
+
+    public static void muteMusic(){
+        AudioPlayer[] audioPlayers = {backgroundMusicIndoors, backgroundMusicOutside, backgroundMusicBasement, backgroundMusicFirePlace, backgroundMusicUpstairs, musicBoxBackgroundMusic};
+        for (AudioPlayer audioPlayer : audioPlayers) {
+            audioPlayer.setVolume(0);
+        }
+    }
+
+    public static void unmuteMusic(){
+        AudioPlayer[] audioPlayers = {backgroundMusicIndoors, backgroundMusicOutside, backgroundMusicBasement, backgroundMusicFirePlace, backgroundMusicUpstairs, musicBoxBackgroundMusic};
+        for (AudioPlayer audioPlayer : audioPlayers) {
+            audioPlayer.setVolume(1);
+        }
     }
 }
