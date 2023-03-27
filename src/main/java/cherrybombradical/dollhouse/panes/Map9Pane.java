@@ -27,6 +27,7 @@ public class Map9Pane extends Pane {
     private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
     public boolean inEvent = false;
     public Map9Pane(){
+        GameManager.stopTimer();
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         // EVENT STUFF
         Button MusicButton = new Button();
@@ -84,6 +85,31 @@ public class Map9Pane extends Pane {
         Rectangle midArrowHitBox = new Rectangle(870, 260, 50, 250);
         midArrowHitBox.setVisible(false);
 
+        NotePane notePane = new NotePane("LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n" +
+                "LOOK UP AT THE MOON\n", 16);
+        notePane.setVisible(false);
+
+        ImageView noteInteract = new ImageView(new Image("sprites/UI/Read.png"));
+        noteInteract.setX(500);
+        noteInteract.setY(200);
+        noteInteract.setVisible(false);
+        Animations.hover(Duration.millis(1000), noteInteract).play();
+
+        Rectangle noteHitBox = new Rectangle(500, 260, 50, 250);
+        noteHitBox.setVisible(true);
+
         // Load the map image and the shadow overlay for the current map ID
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
         map.setX(0);
@@ -94,37 +120,8 @@ public class Map9Pane extends Pane {
 
         // Add all the nodes to the group
 
-        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowM);
-
-
-
-        // ============ DOOR LEFT ============
-        //Detect if player (image) is colliding with the left HitBox
-        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(leftArrowHitBox.getBoundsInParent())) {
-                // player is colliding with door
-                arrowL.setVisible(true);
-                this.setOnMouseClicked(event -> {
-                    //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
-                    fadeTransition.play();
-                    //Door Sound
-                    doorSFX.play();
-                    //Location for next scene
-                    GameManager.setNewLocation(580);
-                    fadeTransition.setOnFinished(event1 -> {
-                        //Load Scene
-                        Game.mainStage.setScene(new Map2Scene());
-
-                    });
-                });
-
-            } else {
-                // player is not colliding with door
-                arrowL.setVisible(false);
-            }
-        });
+        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox,
+                player.getImageView(), lighting, arrowL, noteInteract, notePane, hud, arrowR, arrowM);
 
 
 
@@ -141,7 +138,7 @@ public class Map9Pane extends Pane {
                     //Door Sound
                     doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(580);
+                    GameManager.setNewLocation(210);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map6Scene());
@@ -221,6 +218,31 @@ public class Map9Pane extends Pane {
             } else {
                 // player is not colliding with door
                 arrowM.setVisible(false);
+            }
+        });
+
+        // ============ NOTE ============
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(noteHitBox.getBoundsInParent())) {
+                // player is colliding with note
+                noteInteract.setVisible(true);
+                this.setOnMouseClicked(event -> {
+                    if (!notePane.isVisible()){
+                        GameManager.noteSFX.play();
+                        notePane.setVisible(true);
+                        Animations.noteMoveIn(notePane).play();
+                    }else {
+                        GameManager.noteCloseSFX.play();
+                        notePane.setVisible(false);
+
+                    }
+
+                });
+
+            } else {
+                // player is not colliding with note
+                notePane.setVisible(false);
+                noteInteract.setVisible(false);
             }
         });
 

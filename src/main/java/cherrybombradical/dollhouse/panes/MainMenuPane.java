@@ -28,6 +28,7 @@ public class MainMenuPane extends BorderPane {
     private static final Image UI_START = new Image("Images/ui_startImage.png");
     private static final Image UI_SETTINGS = new Image("Images/ui_settings.png");
     private static final Image UI_QUIT = new Image("Images/ui_quit.png");
+    private static final Image UI_SCORES = new Image("Images/ui_Scores.png");
     private static final ImageView Black = new ImageView(new Image("Images/Black.png"));
     private static final ImageView logo2 = new ImageView(new Image("Images/Logo2.png"));
     private static final ImageView logo1 = new ImageView(new Image("Images/Logo.png"));
@@ -51,6 +52,11 @@ public class MainMenuPane extends BorderPane {
     private final Button startGame = new Button();
     private final Button settingsButton = new Button();
     private final Button quitButton = new Button();
+    private final Button scoreButton = new Button();
+
+    private SettingsPane settingsPane = new SettingsPane();
+    private EnterNamePane enterNamePane = new EnterNamePane(this);
+    private ScoresPane scoresPane = new ScoresPane();
 
     private final Text credit = new Text("© 2023 Cherrybomb Radical - Colton Thibert & Cole Dennie");
     private final Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/Pixel.ttf"), 18);
@@ -101,8 +107,9 @@ public class MainMenuPane extends BorderPane {
         initializeButton(startGame, UI_START);
         initializeButton(settingsButton, UI_SETTINGS);
         initializeButton(quitButton, UI_QUIT);
+        initializeButton(scoreButton, UI_SCORES);
 
-        buttonLayout.getChildren().addAll(startGame, settingsButton, quitButton);
+        buttonLayout.getChildren().addAll(startGame, settingsButton, scoreButton, quitButton);
 
         buttonLayout.setLayoutX(50);
         buttonLayout.setLayoutY(600);
@@ -114,20 +121,19 @@ public class MainMenuPane extends BorderPane {
         imageView.setPreserveRatio(true);
         button.setGraphic(imageView);
         button.setContentDisplay(ContentDisplay.TOP);
-        button.setStyle("-fx-background-color: #000000");
+        button.setStyle("-fx-background-color: transparent;");
     }
     // Initializes the events to play when a button is clicked
     private void setButtonActions() {
         // ==== Start Game Button event ====
+        enterNamePane.setVisible(false);
         startGame.setOnAction(event -> {
             buttonClickSFX.play();
-            FadeTransition fadeTransition = Animations.fadeOut(FADE_DURATION, this);
-            fadeTransition.setOnFinished(event1 -> {
-                GameManager.backgroundMusicMainMenu.stop();
-                Game.mainStage.setScene(new IntroCutscene());
-            });
-
-            fadeTransition.play();
+            enterNamePane.setVisible(true);
+            ScaleTransition scaleTransition = Animations.expandIn(SCALE_DURATION, enterNamePane);
+            scaleTransition.play();
+            setCenter(enterNamePane);
+            setAlignment(enterNamePane, Pos.CENTER);
         });
         startGame.setOnMouseEntered(event -> {
             ScaleTransition hoverStart = Animations.buttonHover(startGame);
@@ -141,9 +147,10 @@ public class MainMenuPane extends BorderPane {
 
 
         // ==== Settings Button event ====
+        settingsPane.setVisible(false);
         settingsButton.setOnAction(event -> {
             buttonClickSFX.play();
-            SettingsPane settingsPane = new SettingsPane();
+            settingsPane.setVisible(true);
             ScaleTransition scaleTransition = Animations.expandIn(SCALE_DURATION, settingsPane);
             scaleTransition.play();
             setCenter(settingsPane);
@@ -156,6 +163,26 @@ public class MainMenuPane extends BorderPane {
         });
         settingsButton.setOnMouseExited(event -> {
             ScaleTransition hoverStartOff = Animations.buttonHoverOff(settingsButton);
+            hoverStartOff.play();
+        });
+
+        // ==== Score Button event ====
+        scoresPane.setVisible(false);
+        scoreButton.setOnAction(event -> {
+            buttonClickSFX.play();
+            scoresPane.setVisible(true);
+            ScaleTransition scaleTransition = Animations.expandIn(SCALE_DURATION, scoresPane);
+            scaleTransition.play();
+            setCenter(scoresPane);
+            setAlignment(scoresPane, Pos.CENTER);
+        });
+        scoreButton.setOnMouseEntered(event -> {
+            ScaleTransition hoverStart = Animations.buttonHover(scoreButton);
+            buttonHoverSFX.play();
+            hoverStart.play();
+        });
+        scoreButton.setOnMouseExited(event -> {
+            ScaleTransition hoverStartOff = Animations.buttonHoverOff(scoreButton);
             hoverStartOff.play();
         });
 

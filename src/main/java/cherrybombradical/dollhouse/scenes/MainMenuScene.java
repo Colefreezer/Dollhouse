@@ -17,5 +17,6 @@ public class MainMenuScene extends Scene {
      */
     public MainMenuScene(){
         super(new MainMenuPane(), GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT, Color.BLACK);
+        this.getStylesheets().add(getClass().getResource("/misc/listStyles.css").toExternalForm());
     }
 }

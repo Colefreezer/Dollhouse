@@ -22,6 +22,7 @@ public class Map1Pane extends Pane {
     public static Player player;
 
     public Map1Pane(){
+        GameManager.startTimer();
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         if (!GameManager.backgroundMusicFirePlace.isPlaying()){
             GameManager.backgroundMusicFirePlace.stop();
@@ -36,7 +37,7 @@ public class Map1Pane extends Pane {
 
         // Create HUD
         HUDPane hud = new HUDPane();
-        NotePane notePane = new NotePane("0 eyes see what 4 can't,\n\n5 fingers reach where\n1 won't.\n\nBeware the doll's\nwhispers in the night,\nfor its secrets hold the\nkey to your fright.");
+
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
@@ -71,6 +72,34 @@ public class Map1Pane extends Pane {
         Rectangle stairsArrowHitBox = new Rectangle(730, 260, 50, 250);
         stairsArrowHitBox.setVisible(false);
 
+        NotePane notePane = new NotePane("Hey, whats the matter with ya? You\ngot me the wrong clock!\n" +
+                "\n" +
+                "This is a Grandfather clock, and I\nspecifically asked for a Grandmother clock.\n" +
+                "\n" +
+                "Don't you know the difference? I mean,\nseriously, how hard is it to get that right?\n" +
+                "\n" +
+                "I thought you were supposed to be a\nprofessional dollmaker. Guess I was wrong.\n" +
+                "\n" +
+                "Look, I don't want to cause a scene, but\nI'm not going to let this go.\n" +
+                "\n" +
+                "I demand that you fix this mistake and get\nme the right clock ASAP.\n" +
+                "\n" +
+                "Otherwise, you're going to have one angry\nBoston doll on your hands.\n" +
+                "\n" +
+                "And trust me, you don't want to mess with a\nBoston doll when they're angry.\n" +
+                "\n" +
+                "So get on it, and make it right!", 16);
+        notePane.setVisible(false);
+
+        ImageView noteInteract = new ImageView(new Image("sprites/UI/Read.png"));
+        noteInteract.setX(975);
+        noteInteract.setY(200);
+        noteInteract.setVisible(false);
+        Animations.hover(Duration.millis(1000), noteInteract).play();
+
+        Rectangle noteHitBox = new Rectangle(950, 260, 50, 250);
+        noteHitBox.setVisible(false);
+
         // Load the map image and the shadow overlay for the current map ID
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
         map.setX(0);
@@ -81,8 +110,8 @@ public class Map1Pane extends Pane {
 
         // Add all the nodes to the group
 
-        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowS, notePane);
+        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox,
+                player.getImageView(), lighting, arrowL, arrowR, arrowS, notePane, hud,noteHitBox, noteInteract);
 
         // ============ DOOR LEFT ============
         //Detect if player (image) is colliding with the left HitBox
@@ -167,6 +196,30 @@ public class Map1Pane extends Pane {
             }
         });
 
+        // ============ NOTE ============
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(noteHitBox.getBoundsInParent())) {
+                // player is colliding with note
+                noteInteract.setVisible(true);
+                this.setOnMouseClicked(event -> {
+                    if (!notePane.isVisible()){
+                        GameManager.noteSFX.play();
+                        notePane.setVisible(true);
+                        Animations.noteMoveIn(notePane).play();
+                    }else {
+                        GameManager.noteCloseSFX.play();
+                        notePane.setVisible(false);
+
+                    }
+
+                });
+
+            } else {
+                // player is not colliding with note
+                notePane.setVisible(false);
+                noteInteract.setVisible(false);
+            }
+        });
     }
 
 }

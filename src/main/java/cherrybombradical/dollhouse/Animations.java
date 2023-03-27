@@ -282,4 +282,12 @@ public class Animations {
         return buttonHover;
     }
 
+    public static TranslateTransition noteMoveIn(Node node){
+        TranslateTransition moveIn = new TranslateTransition(Duration.millis(200), node);
+        moveIn.setFromY(600);
+        moveIn.setToY(20);
+        moveIn.setCycleCount(1);
+        return moveIn;
+    }
+
 }

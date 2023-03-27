@@ -10,8 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class
-Map6Pane extends Pane {
+public class Map6Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 6;
@@ -19,6 +18,7 @@ Map6Pane extends Pane {
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     public Map6Pane(){
+        System.out.println("Map 6 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
 
         if (GameManager.backgroundMusicIndoors.isPlaying()){
