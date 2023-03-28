@@ -1,14 +1,13 @@
 package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
+import cherrybombradical.dollhouse.panes.eventpanes.NotePane;
 import cherrybombradical.dollhouse.scenes.*;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 public class Map7Pane extends Pane {

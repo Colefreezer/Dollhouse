@@ -1,14 +1,7 @@
 package cherrybombradical.dollhouse;
-import cherrybombradical.dollhouse.panes.HUDPane;
-import cherrybombradical.dollhouse.panes.SafePane;
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import java.io.File;
@@ -22,7 +15,7 @@ public class GameManager {
     public static final String[] MAP_NAMES = {"Main Room", "West Hallway", "Backyard", "Upstairs, Basement Main"};
     // Variables
     public static String playerName;
-    public static int NEW_LOCATION = 300;
+    public static int NEW_LOCATION = 450;
     public static boolean hasKey1 = false;
     public static boolean hasKey2 = true;
     public static boolean hasKey3 = false;

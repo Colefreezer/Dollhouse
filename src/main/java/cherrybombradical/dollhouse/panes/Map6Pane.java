@@ -59,13 +59,13 @@ public class Map6Pane extends Pane {
 
         //Load the Arrow Image for when near the right door
         ImageView arrowR = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowR.setX(1200);
+        arrowR.setX(1025);
         arrowR.setY(200);
         arrowR.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowR).play();
 
         //Set Right Arrow HitBox
-        Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
+        Rectangle rightArrowHitBox = new Rectangle(1000, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
 
         //Load the Arrow Image for when near the middle door
@@ -112,10 +112,10 @@ public class Map6Pane extends Pane {
                         //Door Sound
                         doorSFX.play();
                         //Location for next scene
-                        GameManager.setNewLocation(580);
+                        GameManager.setNewLocation(200);
                         fadeTransition.setOnFinished(event1 -> {
                             //Load Scene
-                            Game.mainStage.setScene(new Map9Scene());
+                            Game.mainStage.setScene(new Map10Scene());
 
                         });
                     }
@@ -145,7 +145,7 @@ public class Map6Pane extends Pane {
                     //Door Sound
                     doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(580);
+                    GameManager.setNewLocation(150);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map10Scene());

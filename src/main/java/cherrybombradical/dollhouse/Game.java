@@ -18,8 +18,8 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 public class Game extends Application {
     // Constants for the splash screen
-    private static final int SPLASH_SCREEN_WIDTH = 924;
-    private static final int SPLASH_SCREEN_HEIGHT = 866;
+    private static final int SPLASH_SCREEN_WIDTH = 500;
+    private static final int SPLASH_SCREEN_HEIGHT = 500;
     private static final int SPLASH_SCREEN_DURATION = 1;
     // Stage for the splash screen
     private Stage splashScreenStage;
@@ -38,7 +38,7 @@ public class Game extends Application {
         Timeline splashScreenTimer = new Timeline(
                 new KeyFrame(Duration.millis(SPLASH_SCREEN_DURATION), event -> {
                     splashScreenStage.close();
-                    mainStage.setScene(new MainMenuScene());
+                    mainStage.setScene(new Map10Scene());
                     mainStage.show();
                 })
         );
