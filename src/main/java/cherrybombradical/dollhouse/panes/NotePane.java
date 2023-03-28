@@ -24,7 +24,10 @@ public class NotePane extends Pane {
         String noteString = text;
         // Create the text object
         Text noteText = new Text(noteString);
-        noteText.setFont(Font.font("Courier New", FontWeight.BOLD, FontPosture.REGULAR, textSize));
+        Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/Pixel.ttf"), 36);
+
+        noteText.setFont(pixelFont);
+
         // Add the background image and text to the pane
         this.getChildren().addAll(noteBG, noteText);
         // Set the position of the background image and text

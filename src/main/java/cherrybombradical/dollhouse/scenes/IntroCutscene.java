@@ -51,9 +51,8 @@ public class IntroCutscene extends Scene {
 
         mediaPlayer.play();
     }
-
     private void changeScene() {
         mediaPlayer.stop();
-        Game.mainStage.setScene(new Map1Scene());
+        Game.mainStage.setScene(new Map6Scene());
     }
 }

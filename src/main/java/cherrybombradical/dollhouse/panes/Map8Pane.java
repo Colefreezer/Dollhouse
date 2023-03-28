@@ -37,13 +37,14 @@ public class Map8Pane extends Pane {
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowL.setX(190);
+        arrowL.setX(80);
         arrowL.setY(200);
+        arrowL.setRotate(90);
         arrowL.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowL).play();
 
         //Set Left Arrow HitBox
-        Rectangle leftArrowHitBox = new Rectangle(150, 260, 50, 250);
+        Rectangle leftArrowHitBox = new Rectangle(80, 260, 50, 250);
         leftArrowHitBox.setVisible(false);
 
         //Load the Arrow Image for when near the right door
@@ -93,13 +94,11 @@ public class Map8Pane extends Pane {
                     //Fade Transition
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
                     fadeTransition.play();
-                    //Door Sound
-                    doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(580);
+                    GameManager.setNewLocation(650);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
-                        Game.mainStage.setScene(new Map2Scene());
+                        Game.mainStage.setScene(new Map11Scene());
 
                     });
                 });
@@ -125,7 +124,7 @@ public class Map8Pane extends Pane {
                     //Door Sound
                     doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(580);
+                    GameManager.setNewLocation(470);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map7Scene());

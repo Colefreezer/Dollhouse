@@ -25,9 +25,10 @@ public class Map9Pane extends Pane {
     private final AudioPlayer keyGrab = new AudioPlayer("Audio/Sounds/SFX_GetKey.mp3", false);
     private final AudioPlayer uIShow = new AudioPlayer("Audio/Sounds/SFX_UIShow.mp3", false);
     private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
+    private final AudioPlayer chairMove = new AudioPlayer("Audio/Sounds/SFX_ChairMove.mp3", false);
     public boolean inEvent = false;
     public Map9Pane(){
-        GameManager.stopTimer();
+
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         // EVENT STUFF
         Button MusicButton = new Button();
@@ -39,6 +40,11 @@ public class Map9Pane extends Pane {
 
         keySilver.setOpacity(0);
         MusicBox.setLayoutX(-600);
+
+
+        ImageView ChairDoor = new ImageView(new Image("sprites/Misc/Chair.png"));
+        ChairDoor.setLayoutX(1103);
+        ChairDoor.setLayoutY(367);
 
 
 
@@ -85,6 +91,18 @@ public class Map9Pane extends Pane {
         Rectangle midArrowHitBox = new Rectangle(870, 260, 50, 250);
         midArrowHitBox.setVisible(false);
 
+
+        //Load the Arrow for Chair
+        ImageView arrowChair = new ImageView(new Image("sprites/UI/interact.png"));
+        arrowChair.setX(1180);
+        arrowChair.setY(200);
+        arrowChair.setVisible(false);
+        Animations.hover(Duration.millis(1000), arrowChair).play();
+
+        //Set Right Arrow HitBox
+        Rectangle ChairArrowHitBox = new Rectangle(1100, 260, 50, 250);
+        ChairArrowHitBox.setVisible(false);
+
         NotePane notePane = new NotePane("LOOK UP AT THE MOON\n" +
                 "LOOK UP AT THE MOON\n" +
                 "LOOK UP AT THE MOON\n" +
@@ -120,8 +138,8 @@ public class Map9Pane extends Pane {
 
         // Add all the nodes to the group
 
-        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox,
-                player.getImageView(), lighting, arrowL, noteInteract, notePane, hud, arrowR, arrowM);
+        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, ChairDoor,
+                player.getImageView(),lighting, arrowL, noteInteract, notePane, hud, arrowR, arrowM);
 
 
 
@@ -151,6 +169,35 @@ public class Map9Pane extends Pane {
                 arrowR.setVisible(false);
             }
         });
+
+        // ============ MOVE CHAIR ============
+        //Detect if player (image) is colliding with the Right HitBox
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(ChairArrowHitBox.getBoundsInParent())) {
+                // player is colliding with door
+                arrowChair.setVisible(true);
+                this.setOnMouseClicked(event -> {
+                    //Fade Transition
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    fadeTransition.play();
+                    //Door Sound
+                    chairMove.play();
+                    //Location for next scene
+                    fadeTransition.setOnFinished(event1 -> {
+                        ChairDoor.setOpacity(0);
+                        FadeTransition fadebackIn = Animations.fadeIn(Duration.seconds(0.6), this);
+                        fadebackIn.play();
+
+
+                    });
+                });
+
+            } else {
+                // player is not colliding with door
+                arrowChair.setVisible(false);
+            }
+        });
+
 
         // ============ MUSIC BOX ============
         //Detect if player (image) is colliding with the Right HitBox

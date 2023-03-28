@@ -106,6 +106,7 @@ public class Animations {
         return fadeTransition;
     }
 
+
     public static ScaleTransition expandIn(Duration duration, Node node){
         ScaleTransition scaleTransition = new ScaleTransition(duration, node);
         scaleTransition.setFromY(0); scaleTransition.setFromX(0);

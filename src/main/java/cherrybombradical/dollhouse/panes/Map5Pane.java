@@ -1,11 +1,11 @@
 package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
-import cherrybombradical.dollhouse.scenes.MainMenuScene;
-import cherrybombradical.dollhouse.scenes.Map1Scene;
-import cherrybombradical.dollhouse.scenes.Map2Scene;
-import cherrybombradical.dollhouse.scenes.Map6Scene;
+import cherrybombradical.dollhouse.scenes.*;
 import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -21,6 +21,10 @@ public class Map5Pane extends Pane {
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     private final AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
+    private final AudioPlayer doorLockedSFX = new AudioPlayer("Audio/Sounds/SFX_DoorLocked.mp3", false);
+    private final AudioPlayer uIShow = new AudioPlayer("Audio/Sounds/SFX_UIShow.mp3", false);
+    private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
+    public boolean inEvent = false;
 
 
     public Map5Pane(){
@@ -30,6 +34,14 @@ public class Map5Pane extends Pane {
             GameManager.backgroundMusicUpstairs.stop();
             GameManager.backgroundMusicIndoors.play();
         }
+
+        // EVENT STUFF
+        Button backButton = new Button();
+        ImageView KeyLock = new ImageView(new Image("sprites/UI/ui_keyhole_Silver.png"));
+        ImageView keySilver = new ImageView(new Image("sprites/UI/ui_musicBox3.png"));
+        keySilver.setOpacity(0);
+        KeyLock.setLayoutX(-600);
+
 
 
         // Create the player object
@@ -97,23 +109,44 @@ public class Map5Pane extends Pane {
                 // player is colliding with door
                 arrowL.setVisible(true);
                 this.setOnMouseClicked(event -> {
-                    //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
-                    fadeTransition.play();
-                    //Door Sound
-                    doorSFX.play();
-                    //Location for next scene
-                    GameManager.setNewLocation(580);
-                    fadeTransition.setOnFinished(event1 -> {
-                        //Load Scene
-                        Game.mainStage.setScene(new Map2Scene());
+                    if (inEvent == false ){
+                        arrowL.setVisible(false);
+                        uIShow.play();
+                        KeyLock.setLayoutX(0);
 
+
+                        // Back Button
+                        backButton.setLayoutX(536);
+                        backButton.setLayoutY(90);
+                        backButton.setOpacity(0);
+                        backButton.setScaleX(4);
+                        backButton.setScaleY(3);
+
+                        this.getChildren().addAll(KeyLock, backButton);
+                        Animations.UIShow(KeyLock).play();
+                        System.out.println("KeyHole Silver showing");
+                        inEvent = true;
+                        GameManager.inventorySelect = true;
+                        GameManager.itemNeeded += 2;
+                    }
+                    backButton.setOnAction((e) -> {
+                        TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
+                        uiMoveAni.setFromX(0);
+                        uiMoveAni.setToX(-900);
+                        uiMoveAni.setInterpolator(Interpolator.EASE_IN);
+                        uiMoveAni.play();
+                        uIMove.play();
+                        inEvent = false;
+                        uiMoveAni.setOnFinished(event1 -> {
+                            this.getChildren().removeAll(KeyLock, backButton);
+                        });
                     });
                 });
 
-            } else {
+                } else {
                 // player is not colliding with door
                 arrowL.setVisible(false);
+
             }
         });
 

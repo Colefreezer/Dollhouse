@@ -17,6 +17,7 @@ public class Map6Pane extends Pane {
     // LITTLE ROOM
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
+    private final AudioPlayer doorLockedSFX = new AudioPlayer("Audio/Sounds/SFX_DoorLocked.mp3", false);
     public Map6Pane(){
         System.out.println("Map 6 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
@@ -28,6 +29,12 @@ public class Map6Pane extends Pane {
         if (GameManager.musicBoxBackgroundMusic.isPlaying()){
             GameManager.musicBoxBackgroundMusic.stop();
         }
+
+        //Load door Locked Text
+        ImageView lockedDoorText = new ImageView(new Image("sprites/UI/Locked.png"));
+        lockedDoorText.setX(64);
+        lockedDoorText.setY(458);
+        lockedDoorText.setVisible(false);
 
 
         // Create the player object
@@ -63,13 +70,13 @@ public class Map6Pane extends Pane {
 
         //Load the Arrow Image for when near the middle door
         ImageView arrowM = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowM.setX(595);
+        arrowM.setX(710);
         arrowM.setY(145);
         arrowM.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowM).play();
 
         //Set middle Arrow HitBox
-        Rectangle midArrowHitBox = new Rectangle(730, 260, 50, 250);
+        Rectangle midArrowHitBox = new Rectangle(710, 260, 50, 250);
         midArrowHitBox.setVisible(false);
 
         // Load the map image and the shadow overlay for the current map ID
@@ -83,7 +90,7 @@ public class Map6Pane extends Pane {
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowM);
+                player.getImageView(), lighting, arrowL, arrowR, arrowM, lockedDoorText);
 
 
 
@@ -94,23 +101,32 @@ public class Map6Pane extends Pane {
                 // player is colliding with door
                 arrowL.setVisible(true);
                 this.setOnMouseClicked(event -> {
-                    //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
-                    fadeTransition.play();
-                    //Door Sound
-                    doorSFX.play();
-                    //Location for next scene
-                    GameManager.setNewLocation(580);
-                    fadeTransition.setOnFinished(event1 -> {
-                        //Load Scene
-                        Game.mainStage.setScene(new Map9Scene());
+                    if (GameManager.UpstairsDoorBlocked == true) {
+                        doorLockedSFX.play();
+                        lockedDoorText.setVisible(true);
 
-                    });
+                    } else {
+                        //Fade Transition
+                        FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                        fadeTransition.play();
+                        //Door Sound
+                        doorSFX.play();
+                        //Location for next scene
+                        GameManager.setNewLocation(580);
+                        fadeTransition.setOnFinished(event1 -> {
+                            //Load Scene
+                            Game.mainStage.setScene(new Map9Scene());
+
+                        });
+                    }
                 });
+
+
 
             } else {
                 // player is not colliding with door
                 arrowL.setVisible(false);
+                lockedDoorText.setVisible(false);
             }
         });
 
@@ -132,7 +148,7 @@ public class Map6Pane extends Pane {
                     GameManager.setNewLocation(580);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
-                        Game.mainStage.setScene(new Map2Scene());
+                        Game.mainStage.setScene(new Map10Scene());
 
                     });
                 });
@@ -143,7 +159,7 @@ public class Map6Pane extends Pane {
             }
         });
 
-        // ============ STAIRS ============
+        // ============ Middle Door ============
         //Detect if player (image) is colliding with the Right HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(midArrowHitBox.getBoundsInParent())) {

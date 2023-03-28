@@ -24,8 +24,13 @@ public class GameManager {
     public static String playerName;
     public static int NEW_LOCATION = 300;
     public static boolean hasKey1 = false;
-    public static boolean hasKey2 = false;
+    public static boolean hasKey2 = true;
+    public static boolean hasKey3 = false;
     public static boolean mapToggle = false;
+    public static boolean inventorySelect = false;
+    public static boolean UpstairsDoorBlocked = true;
+    public static int itemNeeded;
+
     public static ImageView mapLayer1 = new ImageView("sprites/ui/ui_mapLayer1.png");
     public static ImageView mapLayer2 = new ImageView("sprites/ui/ui_mapLayer2.png");
     public static ImageView mapPointer = new ImageView("sprites/ui/ui_mapPointer.png");
@@ -34,8 +39,8 @@ public class GameManager {
     public static AudioPlayer mapToggleSFX = new AudioPlayer("Audio/Sounds/SFX_MapOut.mp3", false);
     public static AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     public static AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
-    public static AudioPlayer noteSFX = new AudioPlayer("Audio/Sounds/SFX_Note.mp3", false);
-    public static AudioPlayer noteCloseSFX = new AudioPlayer("Audio/Sounds/SFX_NoteClose.mp3", false);
+    public static AudioPlayer noteSFX = new AudioPlayer("Audio/Sounds/SFX_NoteIn.mp3", false);
+    public static AudioPlayer noteCloseSFX = new AudioPlayer("Audio/Sounds/SFX_NoteOut.mp3", false);
     public static AudioPlayer backgroundMusicMainMenu = new AudioPlayer("Audio/Music/dollhouseTheme.mp3", true);
     public static AudioPlayer backgroundMusicIndoors = new AudioPlayer("Audio/Music/Upstairs.mp3", true);
     public static AudioPlayer backgroundMusicOutside = new AudioPlayer("Audio/Music/Outside.mp3", true);
