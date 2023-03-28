@@ -42,6 +42,10 @@ public class Map5Pane extends Pane {
         keySilver.setOpacity(0);
         KeyLock.setLayoutX(-600);
 
+        ImageView KeyIn = new ImageView(new Image("sprites/UI/ui_key_Silver.png"));
+        KeyIn.setLayoutY(247);
+        KeyIn.setLayoutX(110);
+
 
 
         // Create the player object
@@ -122,12 +126,12 @@ public class Map5Pane extends Pane {
                         backButton.setScaleX(4);
                         backButton.setScaleY(3);
 
-                        this.getChildren().addAll(KeyLock, backButton);
+                        this.getChildren().addAll(KeyLock, backButton, KeyIn);
                         Animations.UIShow(KeyLock).play();
                         System.out.println("KeyHole Silver showing");
                         inEvent = true;
                         GameManager.inventorySelect = true;
-                        GameManager.itemNeeded += 2;
+                        GameManager.itemNeeded = 2;
                     }
                     backButton.setOnAction((e) -> {
                         TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
@@ -135,6 +139,8 @@ public class Map5Pane extends Pane {
                         uiMoveAni.setToX(-900);
                         uiMoveAni.setInterpolator(Interpolator.EASE_IN);
                         uiMoveAni.play();
+                        GameManager.itemNeeded = 0;
+                        GameManager.inventorySelect = false;
                         uIMove.play();
                         inEvent = false;
                         uiMoveAni.setOnFinished(event1 -> {
