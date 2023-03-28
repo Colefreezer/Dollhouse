@@ -20,27 +20,9 @@ public class Map10Pane extends Pane {
     // ==== MAP = First Room Attic
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
-    private final AudioPlayer musicBoxOpenSFX = new AudioPlayer("Audio/Sounds/SFX_MusicBoxOpen.mp3", false);
-
-    private final AudioPlayer keyGrab = new AudioPlayer("Audio/Sounds/SFX_GetKey.mp3", false);
-    private final AudioPlayer uIShow = new AudioPlayer("Audio/Sounds/SFX_UIShow.mp3", false);
-    private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
-    public boolean inEvent = false;
     public Map10Pane(){
+        System.out.println("Map 10 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
-        // EVENT STUFF
-        Button MusicButton = new Button();
-        Button keyButtonSilver = new Button();
-        Button backButton = new Button();
-
-        ImageView MusicBox = new ImageView(new Image("sprites/UI/ui_musicBox1.png"));
-        ImageView keySilver = new ImageView(new Image("sprites/UI/ui_musicBox3.png"));
-
-        keySilver.setOpacity(0);
-        MusicBox.setLayoutX(-600);
-
-
-
 
         // Create the player object
         player = new Player(GameManager.getNewLocation(), 303, 150);
@@ -53,36 +35,14 @@ public class Map10Pane extends Pane {
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowL.setX(190);
-        arrowL.setY(200);
+        arrowL.setX(225);
+        arrowL.setY(400);
         arrowL.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowL).play();
 
         //Set Left Arrow HitBox
-        Rectangle leftArrowHitBox = new Rectangle(150, 260, 50, 250);
+        Rectangle leftArrowHitBox = new Rectangle(250, 260, 50, 250);
         leftArrowHitBox.setVisible(false);
-
-        //Load the Arrow Image for when near the right door
-        ImageView arrowR = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowR.setX(1200);
-        arrowR.setY(200);
-        arrowR.setVisible(false);
-        Animations.hover(Duration.millis(1000), arrowR).play();
-
-        //Set Right Arrow HitBox
-        Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
-        rightArrowHitBox.setVisible(false);
-
-        //Load the Interact Image for when near the Music Box
-        ImageView arrowM = new ImageView(new Image("sprites/UI/interact.png"));
-        arrowM.setX(875);
-        arrowM.setY(145);
-        arrowM.setVisible(false);
-        Animations.hover(Duration.millis(1000), arrowM).play();
-
-        //Set middle Arrow HitBox
-        Rectangle midArrowHitBox = new Rectangle(870, 260, 50, 250);
-        midArrowHitBox.setVisible(false);
 
         // Load the map image and the shadow overlay for the current map ID
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
@@ -92,12 +52,14 @@ public class Map10Pane extends Pane {
         lighting.setX(0);
         lighting.setY(0);
 
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(1040, 260, 50, 250);
+        leftBound.setVisible(true);
+
         // Add all the nodes to the group
 
-        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowM);
-
-
+        this.getChildren().addAll(map, leftArrowHitBox, hud,
+                player.getImageView(), lighting, arrowL, leftBound);
 
         // ============ DOOR LEFT ============
         //Detect if player (image) is colliding with the left HitBox
@@ -112,10 +74,10 @@ public class Map10Pane extends Pane {
                     //Door Sound
                     doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(580);
+                    GameManager.setNewLocation(450);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
-                        Game.mainStage.setScene(new Map2Scene());
+                        Game.mainStage.setScene(new Map6Scene());
 
                     });
                 });
@@ -126,95 +88,15 @@ public class Map10Pane extends Pane {
             }
         });
 
-
-
-        // ============ DOOR RIGHT ============
-        //Detect if player (image) is colliding with the Right HitBox
+        // ============ DOOR LEFT ============
+        //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(rightArrowHitBox.getBoundsInParent())) {
-                // player is colliding with door
-                arrowR.setVisible(true);
-                this.setOnMouseClicked(event -> {
-                    //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
-                    fadeTransition.play();
-                    //Door Sound
-                    doorSFX.play();
-                    //Location for next scene
-                    GameManager.setNewLocation(580);
-                    fadeTransition.setOnFinished(event1 -> {
-                        //Load Scene
-                        Game.mainStage.setScene(new Map6Scene());
-
-                    });
-                });
+            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveRight = false;
 
             } else {
                 // player is not colliding with door
-                arrowR.setVisible(false);
-            }
-        });
-
-        // ============ MUSIC BOX ============
-        //Detect if player (image) is colliding with the Right HitBox
-        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(midArrowHitBox.getBoundsInParent())) {
-                // player is colliding with door
-                arrowM.setVisible(true);
-                this.setOnMouseClicked(event -> {
-                    if (inEvent == false){
-                        arrowM.setVisible(false);
-                        uIShow.play();
-                        MusicBox.setLayoutX(0);
-
-                        // Music Box Button
-                        MusicButton.setLayoutX(236);
-                        MusicButton.setLayoutY(356);
-                        MusicButton.setOpacity(0);
-                        MusicButton.setScaleX(4);
-                        MusicButton.setScaleY(3);
-
-
-                        // Back Button
-                        backButton.setLayoutX(566);
-                        backButton.setLayoutY(90);
-                        backButton.setOpacity(0);
-                        backButton.setScaleX(4);
-                        backButton.setScaleY(3);
-
-                        this.getChildren().addAll(MusicBox, MusicButton, backButton);
-                        Animations.UIShow(MusicBox).play();
-                        System.out.println("Music Box showing");
-                        inEvent = true;
-                    }
-                    MusicButton.setOnAction((e) -> {
-                        musicBoxOpenSFX.play();
-                        GameManager.musicBoxBackgroundMusic.play();
-                        MusicBox.setImage(new Image("sprites/UI/ui_musicBox2.png"));
-                        keySilver.setOpacity(255);
-                        this.getChildren().addAll(keySilver, keyButtonSilver);
-                        keyButtonSilver.setLayoutX(226);
-                        keyButtonSilver.setLayoutY(200);
-                        keyButtonSilver.setOpacity(0);
-                        keyButtonSilver.setScaleX(16);
-                        keyButtonSilver.setScaleY(4);
-                    });
-                    keyButtonSilver.setOnAction((e) -> {
-                        keySilver.setOpacity(0);
-                        keyGrab.play();
-                        HUDPane.AddInventory("SilverKey");
-                    });
-                    backButton.setOnAction((e) -> {
-                        uIMove.play();
-                        Animations.UIMove(MusicBox).play();
-                        inEvent = false;
-                    });
-                });
-
-
-            } else {
-                // player is not colliding with door
-                arrowM.setVisible(false);
+                player.canMoveRight = true;
             }
         });
 

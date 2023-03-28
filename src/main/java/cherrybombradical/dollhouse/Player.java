@@ -19,8 +19,10 @@ public class Player extends Pane {
     private double moveSpeed = 200;
     private boolean isMoving = false;
     private boolean facingRight = true;
+    public boolean canMoveRight = true;
+    public boolean canMoveLeft = true;
+
     private final TranslateTransition transition;
-    private final Button headPatButton = new Button("Fuck");
     // Constructor
     public Player(double xPosition, double yPosition, double moveSpeed) {
         this.imageView = new ImageView(sprites[0]);
@@ -66,19 +68,27 @@ public class Player extends Pane {
     // Method to move right
     public void moveRight() {
         if (!GameManager.mapToggle){
-            transition.setByX(moveSpeed);
-            transition.play();
-            System.out.println("Moving");
-            if (!isMoving) {
-                isMoving = true;
-                walkingAnimation = Animations.spriteWalk(this, imageView, sprites);
-                walkingAnimation.play();
+            if (canMoveRight){
+                transition.setByX(moveSpeed);
+                transition.play();
+                System.out.println("Moving");
+                if (!isMoving) {
+                    isMoving = true;
+                    walkingAnimation = Animations.spriteWalk(this, imageView, sprites);
+                    walkingAnimation.play();
+                }
+                if (!facingRight) {
+                    imageView.setScaleX(1);
+                    facingRight = true;
+                }
             }
-            if (!facingRight) {
-                imageView.setScaleX(1);
-                facingRight = true;
+            else {
+                transition.setByX(0);
+                transition.stop();
             }
+
         }
+
     }
     // Method to stop moving
     public void stopMoving(){

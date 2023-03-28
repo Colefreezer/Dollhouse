@@ -27,6 +27,7 @@ public class Map11Pane extends Pane {
     private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
     public boolean inEvent = false;
     public Map11Pane(){
+        System.out.println("Map 11 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         // EVENT STUFF
         Button MusicButton = new Button();

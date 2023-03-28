@@ -83,7 +83,7 @@ public class Map2Pane extends Pane {
                     //Door Sound
                     GameManager.doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(700);
+                    GameManager.setNewLocation(600);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map3Scene());

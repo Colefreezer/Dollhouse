@@ -50,7 +50,7 @@ public class Map3Pane extends Pane {
 
         //Set Left Arrow HitBox
         Rectangle leftArrowHitBox = new Rectangle(250, 260, 50, 250);
-        leftArrowHitBox.setVisible(true);
+        leftArrowHitBox.setVisible(false);
 
         //Load the Arrow Image for when near the right door
         ImageView arrowR = new ImageView(new Image("sprites/UI/arrow.png"));

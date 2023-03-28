@@ -1,6 +1,7 @@
 package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
+import cherrybombradical.dollhouse.panes.eventpanes.SafePane;
 import cherrybombradical.dollhouse.scenes.Map3Scene;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
