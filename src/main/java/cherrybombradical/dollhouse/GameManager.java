@@ -15,7 +15,7 @@ public class GameManager {
     public static final String[] MAP_NAMES = {"Main Room", "West Hallway", "Backyard", "Upstairs, Basement Main"};
     // Variables
     public static String playerName;
-    public static int NEW_LOCATION = 450;
+    public static int NEW_LOCATION = 425;
     public static boolean hasKey1 = false;
     public static boolean hasKey2 = true;
     public static boolean hasKey3 = false;

@@ -51,17 +51,23 @@ public class Player extends Pane {
     // Method to move left
     public void moveLeft() {
         if (!GameManager.mapToggle){
-            transition.setByX(-moveSpeed);
-            transition.play();
-            System.out.println("Moving");
-            if (!isMoving) {
-                isMoving = true;
-                walkingAnimation = Animations.spriteWalk(this, imageView, sprites);
-                walkingAnimation.play();
+            if (canMoveLeft){
+                transition.setByX(-moveSpeed);
+                transition.play();
+                System.out.println("Moving");
+                if (!isMoving) {
+                    isMoving = true;
+                    walkingAnimation = Animations.spriteWalk(this, imageView, sprites);
+                    walkingAnimation.play();
+                }
+                if (facingRight) {
+                    imageView.setScaleX(-1);
+                    facingRight = false;
+                }
             }
-            if (facingRight) {
-                imageView.setScaleX(-1);
-                facingRight = false;
+            else {
+                transition.setByX(0);
+                transition.stop();
             }
         }
     }

@@ -41,7 +41,7 @@ public class Map10Pane extends Pane {
         Animations.hover(Duration.millis(1000), arrowL).play();
 
         //Set Left Arrow HitBox
-        Rectangle leftArrowHitBox = new Rectangle(250, 260, 50, 250);
+        Rectangle leftArrowHitBox = new Rectangle(250, 260, 100, 250);
         leftArrowHitBox.setVisible(false);
 
         // Load the map image and the shadow overlay for the current map ID
@@ -53,13 +53,17 @@ public class Map10Pane extends Pane {
         lighting.setY(0);
 
         //Set Left Boundary
-        Rectangle leftBound = new Rectangle(1040, 260, 50, 250);
+        Rectangle rightBound = new Rectangle(1100, 260, 50, 250);
+        rightBound.setVisible(true);
+
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(300, 260, 50, 250);
         leftBound.setVisible(true);
 
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, leftBound);
+                player.getImageView(), lighting, arrowL, leftBound, rightBound);
 
         // ============ DOOR LEFT ============
         //Detect if player (image) is colliding with the left HitBox
@@ -88,18 +92,25 @@ public class Map10Pane extends Pane {
             }
         });
 
-        // ============ DOOR LEFT ============
-        //Detect if player (image) is colliding with the left HitBox
+        //Right Boundary
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+            if (newBounds.intersects(rightBound.getBoundsInParent())) {
                 player.canMoveRight = false;
 
             } else {
-                // player is not colliding with door
                 player.canMoveRight = true;
             }
         });
 
+        //Left Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveLeft = false;
+
+            } else {
+                player.canMoveLeft = true;
+            }
+        });
     }
 
 }
