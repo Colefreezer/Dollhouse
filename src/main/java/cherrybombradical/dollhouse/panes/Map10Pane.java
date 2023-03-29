@@ -54,11 +54,11 @@ public class Map10Pane extends Pane {
 
         //Set Left Boundary
         Rectangle rightBound = new Rectangle(1100, 260, 50, 250);
-        rightBound.setVisible(true);
+        rightBound.setVisible(false);
 
         //Set Left Boundary
         Rectangle leftBound = new Rectangle(300, 260, 50, 250);
-        leftBound.setVisible(true);
+        leftBound.setVisible(false);
 
         // Add all the nodes to the group
 
@@ -78,7 +78,7 @@ public class Map10Pane extends Pane {
                     //Door Sound
                     doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(450);
+                    GameManager.setNewLocation(440);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map6Scene());

@@ -65,9 +65,17 @@ public class Map4Pane extends Pane {
         SafePane safePane = new SafePane(this);
         safePane.setVisible(false);
 
+        //Set Left Boundary
+        Rectangle rightBound = new Rectangle(1400, 260, 50, 250);
+        rightBound.setVisible(false);
+
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(10, 260, 50, 250);
+        leftBound.setVisible(false);
+
         // Add all the nodes to the group
-        this.getChildren().addAll(map, arrowL, arrowR, leftArrowHitBox, rightArrowHitBox,
-                hud, player.getImageView(), lighting, safePane);
+        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox,
+                hud, player.getImageView(), lighting, arrowL, arrowR, safePane, leftBound, rightBound);
 
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
@@ -123,7 +131,25 @@ public class Map4Pane extends Pane {
 
         });
 
+        //Right Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(rightBound.getBoundsInParent())) {
+                player.canMoveRight = false;
 
+            } else {
+                player.canMoveRight = true;
+            }
+        });
+
+        //Left Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveLeft = false;
+
+            } else {
+                player.canMoveLeft = true;
+            }
+        });
 
 
     }

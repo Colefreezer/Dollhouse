@@ -63,11 +63,17 @@ public class Map3Pane extends Pane {
         Rectangle rightArrowHitBox = new Rectangle(1250, 260, 125, 250);
         rightArrowHitBox.setVisible(false);
 
+        //Set Left Boundary
+        Rectangle rightBound = new Rectangle(1400, 260, 50, 250);
+        rightBound.setVisible(false);
 
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(10, 260, 50, 250);
+        leftBound.setVisible(false);
 
         // Add all the nodes to the group
         this.getChildren().addAll(map, arrowL, arrowR, leftArrowHitBox, rightArrowHitBox,
-                hud, player.getImageView(), lighting);
+                hud, player.getImageView(), lighting, rightBound, leftBound);
 
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
@@ -117,22 +123,25 @@ public class Map3Pane extends Pane {
             }
         });
 
-        // Key events for player movement (not currently working):
+        //Right Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(rightBound.getBoundsInParent())) {
+                player.canMoveRight = false;
 
-        /*
-        // set focus on Map1Pane so that it can receive key events
-        this.setFocusTraversable(true);
-        this.requestFocus();
-
-        // add event handler for arrow keys
-        setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.LEFT) {
-                player.moveLeft();
-            } else if (event.getCode() == KeyCode.RIGHT) {
-                player.moveRight();
+            } else {
+                player.canMoveRight = true;
             }
         });
-        */
+
+        //Left Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveLeft = false;
+
+            } else {
+                player.canMoveLeft = true;
+            }
+        });
 
     }
 

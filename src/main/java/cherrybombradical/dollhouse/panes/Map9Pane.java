@@ -134,10 +134,18 @@ public class Map9Pane extends Pane {
         lighting.setX(0);
         lighting.setY(0);
 
+        //Set Right Boundary
+        Rectangle rightBound = new Rectangle(1350, 260, 50, 250);
+        rightBound.setVisible(false);
+
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(200, 260, 50, 250);
+        leftBound.setVisible(false);
+
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, ChairDoor,
-                player.getImageView(),lighting, arrowL, noteInteract, notePane, hud, arrowR, arrowM);
+                player.getImageView(),lighting, arrowL, noteInteract, notePane, hud, arrowR, arrowM, leftBound, rightBound);
 
 
 
@@ -288,6 +296,26 @@ public class Map9Pane extends Pane {
                 // player is not colliding with note
                 notePane.setVisible(false);
                 noteInteract.setVisible(false);
+            }
+        });
+
+        //Right Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(rightBound.getBoundsInParent())) {
+                player.canMoveRight = false;
+
+            } else {
+                player.canMoveRight = true;
+            }
+        });
+
+        //Left Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveLeft = false;
+
+            } else {
+                player.canMoveLeft = true;
             }
         });
 

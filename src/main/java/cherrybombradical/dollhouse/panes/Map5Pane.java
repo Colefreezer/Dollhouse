@@ -99,10 +99,18 @@ public class Map5Pane extends Pane {
         lighting.setX(0);
         lighting.setY(0);
 
+        //Set Left Boundary
+        Rectangle rightBound = new Rectangle(1400, 260, 50, 250);
+        rightBound.setVisible(false);
+
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(10, 260, 50, 250);
+        leftBound.setVisible(false);
+
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowS);
+                player.getImageView(), lighting, arrowL, arrowR, arrowS, rightBound, leftBound);
 
 
 
@@ -209,6 +217,26 @@ public class Map5Pane extends Pane {
             } else {
                 // player is not colliding with door
                 arrowS.setVisible(false);
+            }
+        });
+
+        //Right Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(rightBound.getBoundsInParent())) {
+                player.canMoveRight = false;
+
+            } else {
+                player.canMoveRight = true;
+            }
+        });
+
+        //Left Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveLeft = false;
+
+            } else {
+                player.canMoveLeft = true;
             }
         });
 
