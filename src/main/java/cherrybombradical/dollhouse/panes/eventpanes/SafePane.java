@@ -190,7 +190,7 @@ public class SafePane extends Pane {
         button.setLayoutY(y);
         button.setOpacity(0);
         button.setOnAction(event -> {
-            GameManager.hasKey2 = true;
+            GameManager.hasKey1 = true;
             keyGrab.play();
             map4Pane.addKeyImage();
             keyImageView.setVisible(false);

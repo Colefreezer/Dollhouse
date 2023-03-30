@@ -16,7 +16,7 @@ public class Map13Scene extends Scene {
         super(new Map13Pane(), GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT, Color.BLACK);
 
         this.getRoot().requestFocus();
-        GameManager.mapX = 750;
+        GameManager.mapX = 1050;
         GameManager.mapY = 158;
 
 

@@ -291,4 +291,16 @@ public class Animations {
         return moveIn;
     }
 
+    public static ScaleTransition breathing(Duration duration, Node node) {
+        ScaleTransition scaleTransition = new ScaleTransition(duration, node);
+        scaleTransition.setFromX(1.0);
+        scaleTransition.setFromY(1.0);
+        scaleTransition.setToX(1.07);
+        scaleTransition.setToY(1.07);
+        scaleTransition.setInterpolator(Interpolator.EASE_BOTH);
+        scaleTransition.setAutoReverse(true);
+        scaleTransition.setCycleCount(Animation.INDEFINITE);
+        return scaleTransition;
+    }
+
 }

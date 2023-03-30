@@ -19,7 +19,7 @@ public class Map7Scene extends Scene {
         super(new Map7Pane(), GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT, Color.BLACK);
 
         this.getRoot().requestFocus();
-        GameManager.mapX = 750;
+        GameManager.mapX = 900;
         GameManager.mapY = 158;
 
 

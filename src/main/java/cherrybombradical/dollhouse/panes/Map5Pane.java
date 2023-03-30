@@ -28,6 +28,7 @@ public class Map5Pane extends Pane {
 
 
     public Map5Pane(){
+        System.out.println("Map 5 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
 
         if (!GameManager.backgroundMusicUpstairs.isPlaying()){

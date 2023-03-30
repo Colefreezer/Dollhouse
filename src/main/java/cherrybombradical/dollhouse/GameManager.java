@@ -4,6 +4,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,11 +19,12 @@ public class GameManager {
     public static String playerName;
     public static int NEW_LOCATION = 425;
     public static boolean hasKey1 = false;
-    public static boolean hasKey2 = true;
+    public static boolean hasKey2 = false;
     public static boolean hasKey3 = false;
     public static boolean mapToggle = false;
     public static boolean inventorySelect = false;
     public static boolean UpstairsDoorBlocked = true;
+    public static boolean controlsDismissed = false;
     public static int itemNeeded;
 
     public static ImageView mapLayer1 = new ImageView("sprites/ui/ui_mapLayer1.png");
@@ -56,6 +59,7 @@ public class GameManager {
         pane.getChildren().add(tempFix);
         if (!mapToggle) {
             mapToggleSFX.play();
+            Animations.breathing(Duration.millis(1500), mapPointer).play();
             pane.getChildren().addAll(mapLayer1, mapLayer2, mapPointer);
             System.out.println(pane.getChildren());
             Animations.mapIntro(mapLayer1, mapLayer2, mapPointer, mapX, mapY).play();

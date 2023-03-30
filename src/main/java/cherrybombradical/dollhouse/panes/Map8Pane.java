@@ -19,6 +19,7 @@ public class Map8Pane extends Pane {
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     public Map8Pane(){
+        System.out.println("Map 8 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         if (GameManager.backgroundMusicFirePlace.isPlaying()){
             GameManager.backgroundMusicFirePlace.stop();

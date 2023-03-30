@@ -21,6 +21,7 @@ public class Map10Pane extends Pane {
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     public Map10Pane(){
+        GameManager.startTimer();
         System.out.println("Map 10 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
 
@@ -52,6 +53,13 @@ public class Map10Pane extends Pane {
         lighting.setX(0);
         lighting.setY(0);
 
+        ImageView controlsWindow = new ImageView(new Image("sprites/UI/controlsBorder.png"));
+        controlsWindow.relocate(300, 150);
+        Animations.expandIn(Duration.millis(500), controlsWindow).play();
+        controlsWindow.setOnMouseClicked(event -> {
+            controlsWindow.setVisible(false);
+        });
+
         //Set Left Boundary
         Rectangle rightBound = new Rectangle(1100, 260, 50, 250);
         rightBound.setVisible(false);
@@ -64,6 +72,17 @@ public class Map10Pane extends Pane {
 
         this.getChildren().addAll(map, leftArrowHitBox, hud,
                 player.getImageView(), lighting, arrowL, leftBound, rightBound);
+
+        if (!GameManager.controlsDismissed){
+            this.getChildren().add(controlsWindow);
+            GameManager.controlsDismissed = true;
+        }
+        else{
+            if (this.getChildren().contains(controlsWindow)){
+                this.getChildren().remove(controlsWindow);
+            }
+
+        }
 
         // ============ DOOR LEFT ============
         //Detect if player (image) is colliding with the left HitBox

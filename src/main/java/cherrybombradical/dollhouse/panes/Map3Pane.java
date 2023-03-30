@@ -18,6 +18,7 @@ public class Map3Pane extends Pane {
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
 
     public Map3Pane(){
+        System.out.println("Map 3 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         if (GameManager.backgroundMusicIndoors.isPlaying()){
             GameManager.backgroundMusicIndoors.stop();

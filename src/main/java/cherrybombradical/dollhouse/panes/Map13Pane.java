@@ -24,6 +24,12 @@ public class Map13Pane extends Pane {
     private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
     public boolean inEvent = false;
     public Map13Pane(){
+        GameManager.stopTimer();
+        System.out.println("Map 13 Loaded");
+        if (GameManager.backgroundMusicFirePlace.isPlaying()){
+            GameManager.backgroundMusicFirePlace.stop();
+            GameManager.backgroundMusicOutside.play();
+        }
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         // EVENT STUFF
         Button MusicButton = new Button();
@@ -59,18 +65,6 @@ public class Map13Pane extends Pane {
         Rectangle leftArrowHitBox = new Rectangle(150, 260, 50, 250);
         leftArrowHitBox.setVisible(false);
 
-        //Load the Arrow Image for when near the right door
-        ImageView arrowR = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowR.setX(1340);
-        arrowR.setY(200);
-        arrowR.setVisible(false);
-        arrowR.setRotate(-90);
-        Animations.hover(Duration.millis(1000), arrowR).play();
-
-        //Set Right Arrow HitBox
-        Rectangle rightArrowHitBox = new Rectangle(1340, 260, 50, 250);
-        rightArrowHitBox.setVisible(false);
-
         //Load the Interact Image for when near the Gate
         ImageView arrowM = new ImageView(new Image("sprites/UI/interact.png"));
         arrowM.setX(1010);
@@ -90,10 +84,18 @@ public class Map13Pane extends Pane {
         lighting.setX(0);
         lighting.setY(0);
 
+        //Set Left Boundary
+        Rectangle rightBound = new Rectangle(1400, 260, 50, 250);
+        rightBound.setVisible(false);
+
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(10, 260, 50, 250);
+        leftBound.setVisible(false);
+
         // Add all the nodes to the group
 
-        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowM);
+        this.getChildren().addAll(map, leftArrowHitBox, hud,
+                player.getImageView(), lighting, arrowL, arrowM, leftBound, rightBound);
 
 
 
@@ -108,47 +110,19 @@ public class Map13Pane extends Pane {
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
                     fadeTransition.play();
                     //Door Sound
-
+                    GameManager.doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(210);
+                    GameManager.setNewLocation(540);
                     fadeTransition.setOnFinished(event1 -> {
 
                         //Load Scene
-                        Game.mainStage.setScene(new Map9Scene());
+                        Game.mainStage.setScene(new Map7Scene());
                     });
                 });
 
             } else {
                 // player is not colliding with door
                 arrowL.setVisible(false);
-            }
-        });
-
-
-
-        // ============ DOOR RIGHT ============
-        //Detect if player (image) is colliding with the Right HitBox
-        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(rightArrowHitBox.getBoundsInParent())) {
-                // player is colliding with door
-                arrowR.setVisible(true);
-                this.setOnMouseClicked(event -> {
-                    //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
-                    fadeTransition.play();
-                    //Door Sound
-                    //Location for next scene
-                    GameManager.setNewLocation(25);
-                    fadeTransition.setOnFinished(event1 -> {
-                        //Load Scene
-                        Game.mainStage.setScene(new Map8Scene());
-
-                    });
-                });
-
-            } else {
-                // player is not colliding with door
-                arrowR.setVisible(false);
             }
         });
 
@@ -200,6 +174,26 @@ public class Map13Pane extends Pane {
             } else {
                 // player is not colliding with door
                 arrowM.setVisible(false);
+            }
+        });
+
+        //Right Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(rightBound.getBoundsInParent())) {
+                player.canMoveRight = false;
+
+            } else {
+                player.canMoveRight = true;
+            }
+        });
+
+        //Left Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveLeft = false;
+
+            } else {
+                player.canMoveLeft = true;
             }
         });
 

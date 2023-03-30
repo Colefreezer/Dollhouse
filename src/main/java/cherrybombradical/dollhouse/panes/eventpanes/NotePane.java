@@ -11,8 +11,6 @@ import javafx.scene.text.Text;
  * This class is responsible for creating a NotePane object, which is a pane containing an image and text.
  */
 public class NotePane extends Pane {
-    // Font used for the text
-    Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/Pixel.ttf"), 32);
     /**
      * Constructor for NotePane object.
      * @param text The text to be displayed on the NotePane.
@@ -24,7 +22,7 @@ public class NotePane extends Pane {
         String noteString = text;
         // Create the text object
         Text noteText = new Text(noteString);
-        Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/Pixel.ttf"), 36);
+        Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/Pixel.ttf"), textSize);
 
         noteText.setFont(pixelFont);
 
@@ -32,6 +30,6 @@ public class NotePane extends Pane {
         this.getChildren().addAll(noteBG, noteText);
         // Set the position of the background image and text
         noteBG.relocate(500, 0);
-        noteText.relocate(520,25);
+        noteText.relocate(530,25);
     }
 }

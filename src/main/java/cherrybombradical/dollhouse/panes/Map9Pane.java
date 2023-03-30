@@ -26,7 +26,7 @@ public class Map9Pane extends Pane {
     private final AudioPlayer chairMove = new AudioPlayer("Audio/Sounds/SFX_ChairMove.mp3", false);
     public boolean inEvent = false;
     public Map9Pane(){
-
+        System.out.println("Map 9 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         // EVENT STUFF
         Button MusicButton = new Button();

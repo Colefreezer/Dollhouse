@@ -18,7 +18,7 @@ public class Map5Scene extends Scene {
 
         this.getRoot().requestFocus();
         GameManager.mapX = 750;
-        GameManager.mapY = 158;
+        GameManager.mapY = 105;
 
 
         this.getRoot().setOnKeyPressed(event -> {

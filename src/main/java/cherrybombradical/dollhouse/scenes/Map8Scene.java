@@ -16,8 +16,8 @@ public class Map8Scene extends Scene {
         super(new Map8Pane(), GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT, Color.BLACK);
 
         this.getRoot().requestFocus();
-        GameManager.mapX = 750;
-        GameManager.mapY = 158;
+        GameManager.mapX = 900;
+        GameManager.mapY = 215;
 
 
         this.getRoot().setOnKeyPressed(event -> {

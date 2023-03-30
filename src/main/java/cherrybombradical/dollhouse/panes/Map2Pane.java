@@ -21,6 +21,7 @@ public class Map2Pane extends Pane {
     public static Player player;
 
     public Map2Pane(){
+        System.out.println("Map 2 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         if (!GameManager.backgroundMusicIndoors.isPlaying()){
             GameManager.backgroundMusicOutside.stop();
@@ -61,6 +62,14 @@ public class Map2Pane extends Pane {
         arrowR.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowR).play();
 
+        //Set Left Boundary
+        Rectangle rightBound = new Rectangle(1400, 260, 50, 250);
+        rightBound.setVisible(false);
+
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(10, 260, 50, 250);
+        leftBound.setVisible(false);
+
         //Set Right Arrow HitBox
         Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
@@ -69,7 +78,7 @@ public class Map2Pane extends Pane {
 
         // Add all the nodes to the group
         this.getChildren().addAll(map, arrowL, arrowR, leftArrowHitBox, rightArrowHitBox,
-                hud, player.getImageView(), lighting);
+                hud, player.getImageView(), lighting, rightBound, leftBound);
 
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
@@ -120,6 +129,27 @@ public class Map2Pane extends Pane {
             } else {
                 // player is not colliding with door
                 arrowR.setVisible(false);
+            }
+        });
+
+
+        //Right Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(rightBound.getBoundsInParent())) {
+                player.canMoveRight = false;
+
+            } else {
+                player.canMoveRight = true;
+            }
+        });
+
+        //Left Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveLeft = false;
+
+            } else {
+                player.canMoveLeft = true;
             }
         });
 

@@ -22,12 +22,15 @@ public class Map1Pane extends Pane {
     public static Player player;
 
     public Map1Pane(){
+        System.out.println("Map 1 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
-        if (!GameManager.backgroundMusicFirePlace.isPlaying()){
+        if (GameManager.backgroundMusicFirePlace.isPlaying()){
             GameManager.backgroundMusicFirePlace.stop();
-            GameManager.backgroundMusicIndoors.play();
-        }
+            if (!GameManager.backgroundMusicIndoors.isPlaying()){
+                GameManager.backgroundMusicIndoors.play();
+            }
 
+        }
         // Create the player object
         player = new Player(GameManager.getNewLocation(), 303, 150);
         player.getImageView().setFitHeight(250);
@@ -78,10 +81,18 @@ public class Map1Pane extends Pane {
         lighting.setX(0);
         lighting.setY(0);
 
+        //Set Left Boundary
+        Rectangle rightBound = new Rectangle(1400, 260, 50, 250);
+        rightBound.setVisible(false);
+
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(10, 260, 50, 250);
+        leftBound.setVisible(false);
+
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowS);
+                player.getImageView(), lighting, arrowL, arrowR, arrowS, leftBound, rightBound);
 
 
 
@@ -127,7 +138,7 @@ public class Map1Pane extends Pane {
                     //Door Sound
                     GameManager.doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(75);
+                    GameManager.setNewLocation(100);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map7Scene());
@@ -166,6 +177,27 @@ public class Map1Pane extends Pane {
                 // player is not colliding with door
                 arrowS.setVisible(false);
 
+            }
+        });
+
+
+        //Right Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(rightBound.getBoundsInParent())) {
+                player.canMoveRight = false;
+
+            } else {
+                player.canMoveRight = true;
+            }
+        });
+
+        //Left Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveLeft = false;
+
+            } else {
+                player.canMoveLeft = true;
             }
         });
 
