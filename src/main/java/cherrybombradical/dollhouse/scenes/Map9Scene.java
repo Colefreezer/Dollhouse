@@ -24,7 +24,10 @@ public class Map9Scene extends Scene {
             switch (event.getCode()){
                 case A -> Map9Pane.player.moveLeft();
                 case D -> Map9Pane.player.moveRight();
-                case TAB -> GameManager.toggleMap((Pane) this.getRoot());
+                case TAB -> {
+                    GameManager.toggleMap((Pane) this.getRoot());
+                    Map9Pane.hud.setMariaImage("Map");
+                }
             }
             event.consume();
         });

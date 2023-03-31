@@ -196,6 +196,7 @@ public class SafePane extends Pane {
             keyImageView.setVisible(false);
             button.setVisible(false);
         });
+
         return button;
     }
 

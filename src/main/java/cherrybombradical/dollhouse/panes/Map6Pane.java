@@ -16,6 +16,7 @@ public class Map6Pane extends Pane {
     public static int mapID = 6;
     // LITTLE ROOM
     public static Player player;
+    public static HUDPane hud;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     private final AudioPlayer doorLockedSFX = new AudioPlayer("Audio/Sounds/SFX_DoorLocked.mp3", false);
     public Map6Pane(){
@@ -44,7 +45,7 @@ public class Map6Pane extends Pane {
         player.getImageView().setLayoutX(player.getXPosition());
 
         // Create HUD
-        HUDPane hud = new HUDPane();
+        hud = new HUDPane();
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));

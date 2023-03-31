@@ -24,7 +24,10 @@ public class Map8Scene extends Scene {
             switch (event.getCode()){
                 case A -> Map8Pane.player.moveLeft();
                 case D -> Map8Pane.player.moveRight();
-                case TAB -> GameManager.toggleMap((Pane) this.getRoot());
+                case TAB -> {
+                    GameManager.toggleMap((Pane) this.getRoot());
+                    Map8Pane.hud.setMariaImage("Map");
+                }
             }
             event.consume();
         });

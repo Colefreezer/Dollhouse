@@ -15,6 +15,7 @@ public class Map3Pane extends Pane {
     public static int mapID = 2;
     // ==== MAP = OUTSIDE
     public static Player player;
+    public static HUDPane hud;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
 
     public Map3Pane(){
@@ -32,7 +33,7 @@ public class Map3Pane extends Pane {
         player.getImageView().setLayoutX(player.getXPosition());
 
         // Create HUD
-        HUDPane hud = new HUDPane();
+        hud = new HUDPane();
 
         // Load the map image and the shadow overlay for the current map ID
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));

@@ -1,5 +1,7 @@
 package cherrybombradical.dollhouse;
 import javafx.animation.AnimationTimer;
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -9,6 +11,7 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
 public class GameManager {
     // Constants
@@ -18,7 +21,7 @@ public class GameManager {
     // Variables
     public static String playerName;
     public static int NEW_LOCATION = 425;
-    public static boolean hasKey1 = false;
+    public static boolean hasKey1 = true;
     public static boolean hasKey2 = false;
     public static boolean hasKey3 = false;
     public static boolean mapToggle = false;
@@ -46,6 +49,8 @@ public class GameManager {
     public static AudioPlayer musicBoxBackgroundMusic = new AudioPlayer("Audio/Music/MusicBox.mp3", true);
     private static long startTime;
     private static AnimationTimer timer;
+
+
     /**
      * Toggles the map on and off
      * @param pane The pane to add/remove the map elements from

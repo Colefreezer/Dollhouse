@@ -1,10 +1,7 @@
 package cherrybombradical.dollhouse.scenes;
 
 import cherrybombradical.dollhouse.GameManager;
-import cherrybombradical.dollhouse.panes.Map1Pane;
-import cherrybombradical.dollhouse.panes.Map5Pane;
-import cherrybombradical.dollhouse.panes.Map6Pane;
-import cherrybombradical.dollhouse.panes.Map7Pane;
+import cherrybombradical.dollhouse.panes.*;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -27,7 +24,10 @@ public class Map7Scene extends Scene {
             switch (event.getCode()){
                 case A -> Map7Pane.player.moveLeft();
                 case D -> Map7Pane.player.moveRight();
-                case TAB -> GameManager.toggleMap((Pane) this.getRoot());
+                case TAB -> {
+                    GameManager.toggleMap((Pane) this.getRoot());
+                    Map7Pane.hud.setMariaImage("Map");
+                }
             }
             event.consume();
         });

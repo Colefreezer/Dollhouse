@@ -24,7 +24,10 @@ public class Map13Scene extends Scene {
             switch (event.getCode()){
                 case A -> Map13Pane.player.moveLeft();
                 case D -> Map13Pane.player.moveRight();
-                case TAB -> GameManager.toggleMap((Pane) this.getRoot());
+                case TAB -> {
+                    GameManager.toggleMap((Pane) this.getRoot());
+                    Map13Pane.hud.setMariaImage("Map");
+                }
             }
             event.consume();
         });

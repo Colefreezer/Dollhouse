@@ -17,6 +17,7 @@ public class Map7Pane extends Pane {
     // ==== MAP = LIVING ROOM
 
     public static Player player;
+    public static HUDPane hud;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     private final AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
     public Map7Pane(){
@@ -38,7 +39,7 @@ public class Map7Pane extends Pane {
         player.getImageView().setLayoutX(player.getXPosition());
 
         // Create HUD
-        HUDPane hud = new HUDPane();
+        hud = new HUDPane();
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));

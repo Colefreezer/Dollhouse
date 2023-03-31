@@ -19,6 +19,7 @@ public class Map2Pane extends Pane {
     public static int mapID = 1;
     // ==== MAP = LEFT HALLWAY
     public static Player player;
+    public static HUDPane hud;
 
     public Map2Pane(){
         System.out.println("Map 2 Loaded");
@@ -34,7 +35,7 @@ public class Map2Pane extends Pane {
         player.getImageView().setLayoutX(player.getXPosition());
 
         // Create HUD
-        HUDPane hud = new HUDPane();
+        hud = new HUDPane();
 
         // Load the map image and the shadow overlay for the current map ID
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));

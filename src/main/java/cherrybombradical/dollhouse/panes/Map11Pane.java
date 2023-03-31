@@ -19,6 +19,7 @@ public class Map11Pane extends Pane {
     public static int mapID = 10;
     // ==== MAP = BOILER ROOM
     public static Player player;
+    public static HUDPane hud;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     private final AudioPlayer musicBoxOpenSFX = new AudioPlayer("Audio/Sounds/SFX_MusicBoxOpen.mp3", false);
     private final AudioPlayer Dumbwaiter = new AudioPlayer("Audio/Sounds/SFX_Dumbwaiter.mp3", false);
@@ -50,7 +51,7 @@ public class Map11Pane extends Pane {
         player.getImageView().setLayoutX(player.getXPosition());
 
         // Create HUD
-        HUDPane hud = new HUDPane();
+        hud = new HUDPane();
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
@@ -90,22 +91,28 @@ public class Map11Pane extends Pane {
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
         map.setX(0);
         map.setY(0);
+        ImageView door = new ImageView(new Image("sprites/Misc/Door.png"));
+        door.relocate(1004,213);
         ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
         lighting.setX(0);
         lighting.setY(0);
 
-        //Set Left Boundary
+        //Set right Boundary
         Rectangle rightBound = new Rectangle(1500, 260, 50, 250);
-        rightBound.setVisible(false);
+        rightBound.setVisible(true);
 
         //Set Left Boundary
         Rectangle leftBound = new Rectangle(0, 260, 50, 250);
         leftBound.setVisible(false);
 
+        //Set Left Boundary
+        Rectangle leftBoundGate = new Rectangle(1000, 260, 50, 250);
+        leftBound.setVisible(true);
+
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowM, rightBound, leftBound);
+                door, player.getImageView(), lighting, arrowL, arrowR, arrowM, rightBound, leftBound, leftBoundGate);
 
 
 
@@ -228,6 +235,16 @@ public class Map11Pane extends Pane {
         //Left Boundary
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveLeft = false;
+
+            } else {
+                player.canMoveLeft = true;
+            }
+        });
+
+        //Left Gate Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(leftBoundGate.getBoundsInParent())) {
                 player.canMoveLeft = false;
 
             } else {

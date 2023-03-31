@@ -18,7 +18,6 @@ public class Animations {
 
 
     public static Timeline spriteWalk (Player player, ImageView imageView, Image[] sprites) {
-
         String[] footstepPaths = {
                 "Audio/Sounds/SFX_footstep1.mp3",
                 "Audio/Sounds/SFX_footstep2.mp3",
@@ -26,10 +25,9 @@ public class Animations {
                 "Audio/Sounds/SFX_footstep4.mp3",
                 "Audio/Sounds/SFX_footstep5.mp3"
         };
-
         Random randomFootstep = new Random();
         Random randomVolume = new Random();
-
+        AudioPlayer footstepSounds = new AudioPlayer(footstepPaths[randomFootstep.nextInt(5)], false);
         KeyFrame frame1 = new KeyFrame(
                 Duration.millis(0),
                 e -> {
@@ -40,7 +38,6 @@ public class Animations {
                 Duration.millis(200),
                 e -> {
                     imageView.setImage(sprites[1]);
-                    AudioPlayer footstepSounds = new AudioPlayer(footstepPaths[randomFootstep.nextInt(5)], false);
                     footstepSounds.setVolume(0.2 + randomVolume.nextDouble(0.3));
                     footstepSounds.play();
                 }
@@ -55,7 +52,6 @@ public class Animations {
                 Duration.millis(600),
                 e -> {
                     imageView.setImage(sprites[2]);
-                    AudioPlayer footstepSounds = new AudioPlayer(footstepPaths[randomFootstep.nextInt(5)], false);
                     footstepSounds.setVolume(0.2 + randomVolume.nextDouble(0.3));
                     footstepSounds.play();
                 }
@@ -66,7 +62,6 @@ public class Animations {
                     imageView.setImage(sprites[0]);
                 }
         );
-
         Timeline walking = new Timeline(
                 frame1,
                 frame2,
@@ -74,9 +69,7 @@ public class Animations {
                 frame4,
                 frame5
         );
-
         walking.setCycleCount(Animation.INDEFINITE);
-
         return walking;
     }
 

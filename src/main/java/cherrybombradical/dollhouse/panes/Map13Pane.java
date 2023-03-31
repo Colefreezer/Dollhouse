@@ -17,6 +17,7 @@ public class Map13Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 12;
+    public static HUDPane hud;
     // ==== MAP = OUTSIDE FRONT
     public static Player player;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
@@ -52,7 +53,7 @@ public class Map13Pane extends Pane {
         player.getImageView().setLayoutX(player.getXPosition());
 
         // Create HUD
-        HUDPane hud = new HUDPane();
+        hud = new HUDPane();
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));

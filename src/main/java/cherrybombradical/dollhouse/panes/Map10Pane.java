@@ -19,6 +19,7 @@ public class Map10Pane extends Pane {
     public static int mapID = 9;
     // ==== MAP = First Room Attic
     public static Player player;
+    public static HUDPane hud;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     public Map10Pane(){
         GameManager.startTimer();
@@ -32,7 +33,7 @@ public class Map10Pane extends Pane {
         player.getImageView().setLayoutX(player.getXPosition());
 
         // Create HUD
-        HUDPane hud = new HUDPane();
+        hud = new HUDPane();
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));

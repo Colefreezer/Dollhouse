@@ -5,6 +5,7 @@ import cherrybombradical.dollhouse.Game;
 import cherrybombradical.dollhouse.GameManager;
 import cherrybombradical.dollhouse.scenes.IntroCutscene;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -137,8 +138,6 @@ public class HUDPane extends Pane {
                 }
             }
         });
-
-
     }
     /**
      * This method adds an item to the inventory.
@@ -155,6 +154,21 @@ public class HUDPane extends Pane {
             default:
                 System.out.println("Item not found");
                 break;
+        }
+    }
+
+    public void setMariaImage(String name){
+        switch (name){
+            case "Map":
+                if (GameManager.mapToggle){
+                    mariaPOV.setImage(mariaMap);
+                }
+                else {
+                    mariaPOV.setImage(mariaBase);
+                }
+                break;
+            default:
+                mariaPOV.setImage(mariaBase);
         }
     }
 

@@ -17,6 +17,7 @@ public class Map8Pane extends Pane {
     // ==== MAP = BASEMENT
 
     public static Player player;
+    public static HUDPane hud;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     public Map8Pane(){
         System.out.println("Map 8 Loaded");
@@ -34,7 +35,7 @@ public class Map8Pane extends Pane {
         player.getImageView().setLayoutX(player.getXPosition());
 
         // Create HUD
-        HUDPane hud = new HUDPane();
+        hud = new HUDPane();
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));

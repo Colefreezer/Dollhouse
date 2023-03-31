@@ -20,6 +20,7 @@ public class Map1Pane extends Pane {
     // ==== MAP = MAIN ROOM
 
     public static Player player;
+    public static HUDPane hud;
 
     public Map1Pane(){
         System.out.println("Map 1 Loaded");
@@ -38,7 +39,7 @@ public class Map1Pane extends Pane {
         player.getImageView().setLayoutX(player.getXPosition());
 
         // Create HUD
-        HUDPane hud = new HUDPane();
+        hud = new HUDPane();
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
