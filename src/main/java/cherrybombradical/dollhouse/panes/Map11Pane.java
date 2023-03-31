@@ -2,7 +2,7 @@ package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
 import cherrybombradical.dollhouse.scenes.*;
-import javafx.animation.FadeTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -26,20 +26,33 @@ public class Map11Pane extends Pane {
 
     private final AudioPlayer uIShow = new AudioPlayer("Audio/Sounds/SFX_UIShow.mp3", false);
     private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
+    private final AudioPlayer keySFX = new AudioPlayer("Audio/Sounds/SFX_KeyUnlock.mp3", false);
     public boolean inEvent = false;
     public Map11Pane(){
         System.out.println("Map 11 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         // EVENT STUFF
         Button MusicButton = new Button();
-        Button keyButtonSilver = new Button();
+        Button keyUnlock = new Button();
         Button backButton = new Button();
 
         ImageView KeyLock = new ImageView(new Image("sprites/UI/ui_keyhole_Gold.png"));
         ImageView keySilver = new ImageView(new Image("sprites/UI/ui_musicBox3.png"));
 
+        keyUnlock.setLayoutX(226);
+        keyUnlock.setLayoutY(260);
+        keyUnlock.setOpacity(0);
+        keyUnlock.setScaleX(16);
+        keyUnlock.setScaleY(7);
+
+
         keySilver.setOpacity(0);
         KeyLock.setLayoutX(-600);
+
+        ImageView KeyIn = new ImageView(new Image("sprites/UI/ui_key_Gold.png"));
+        KeyIn.setLayoutX(110);
+        KeyIn.setLayoutY(157);
+        KeyIn.setOpacity(0);
 
 
 
@@ -170,7 +183,6 @@ public class Map11Pane extends Pane {
                 arrowR.setVisible(false);
             }
         });
-
         // ============ GATE ============
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
@@ -179,46 +191,61 @@ public class Map11Pane extends Pane {
                 arrowM.setVisible(true);
                 this.setOnMouseClicked(event -> {
                     if (inEvent == false ){
-                        arrowM.setVisible(false);
+                        arrowL.setVisible(false);
                         uIShow.play();
                         KeyLock.setLayoutX(0);
+                        KeyIn.setRotate(90);
 
 
                         // Back Button
-                        backButton.setLayoutX(566);
+                        backButton.setLayoutX(536);
                         backButton.setLayoutY(90);
                         backButton.setOpacity(0);
                         backButton.setScaleX(4);
                         backButton.setScaleY(3);
 
-                        this.getChildren().addAll(KeyLock, backButton);
+                        this.getChildren().addAll(KeyLock, backButton, KeyIn, keyUnlock);
                         Animations.UIShow(KeyLock).play();
-                        System.out.println("KeyHole showing");
+                        System.out.println("KeyHole Silver showing");
                         inEvent = true;
-                        GameManager.inventorySelect = true;
+
+                        keyUnlock.setOnAction((e) -> {
+                            keySFX.play();
+                            System.out.println("Key In");
+                            KeyIn.setOpacity(255);
+                            RotateTransition keyRotate = new RotateTransition(Duration.millis(200), KeyIn);
+                            keyRotate.setByAngle(90);
+                            ScaleTransition goIn = new ScaleTransition(Duration.millis(200), KeyIn);
+                            goIn.setFromX(2.0);
+                            goIn.setFromY(2.0);
+                            goIn.setToX(1.0);
+                            goIn.setToY(1.0);
+                            PauseTransition delay1 = new PauseTransition(Duration.millis(400));
+                            SequentialTransition sequenceKey = new SequentialTransition(goIn, delay1, keyRotate);
+                            sequenceKey.play();
+                        });
                     }
-
-                    keyButtonSilver.setOnAction((e) -> {
-                        keySilver.setOpacity(0);
-
-                        HUDPane.AddInventory("SilverKey");
-                        Image itemKey2 = new Image("sprites/UI/Icons/icn_key2.png");
-                        ImageView itemKey2view = new ImageView(itemKey2);
-                        itemKey2view.setX(600);
-                        itemKey2view.setY(615);
-                        this.getChildren().add(itemKey2view);
-                        GameManager.hasKey1 = true;
-                    });
                     backButton.setOnAction((e) -> {
+                        TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
+                        uiMoveAni.setFromX(0);
+                        uiMoveAni.setToX(-900);
+                        uiMoveAni.setInterpolator(Interpolator.EASE_IN);
+                        uiMoveAni.play();
+                        GameManager.itemNeeded = 0;
+                        GameManager.inventorySelect = false;
                         uIMove.play();
-                        Animations.UIMove(KeyLock).play();
                         inEvent = false;
+                        uiMoveAni.setOnFinished(event1 -> {
+                            this.getChildren().removeAll(KeyLock, backButton);
+                        });
                     });
                 });
+
 
             } else {
                 // player is not colliding with door
                 arrowM.setVisible(false);
+
             }
         });
 

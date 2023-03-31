@@ -288,12 +288,31 @@ public class Animations {
         ScaleTransition scaleTransition = new ScaleTransition(duration, node);
         scaleTransition.setFromX(1.0);
         scaleTransition.setFromY(1.0);
-        scaleTransition.setToX(1.07);
-        scaleTransition.setToY(1.07);
+        scaleTransition.setToX(1.10);
+        scaleTransition.setToY(1.107);
         scaleTransition.setInterpolator(Interpolator.EASE_BOTH);
         scaleTransition.setAutoReverse(true);
         scaleTransition.setCycleCount(Animation.INDEFINITE);
         return scaleTransition;
     }
 
+    public static ParallelTransition fire(Duration duration, Duration fade, Node node) {
+
+        ScaleTransition scaleTransition = new ScaleTransition(duration, node);
+        scaleTransition.setFromX(1.0);
+        scaleTransition.setFromY(1.0);
+        scaleTransition.setToX(1.20);
+        scaleTransition.setToY(1.20);
+        scaleTransition.setInterpolator(Interpolator.EASE_BOTH);
+        scaleTransition.setAutoReverse(true);
+        scaleTransition.setCycleCount(Animation.INDEFINITE);
+        FadeTransition fadeFire = new FadeTransition(fade, node);
+        fadeFire.setFromValue(1.0);
+        fadeFire.setToValue(0.98);
+        fadeFire.setAutoReverse(true);
+        fadeFire.setInterpolator(Interpolator.EASE_BOTH);
+        fadeFire.setCycleCount(Animation.INDEFINITE);
+        ParallelTransition parallelTransition = new ParallelTransition(scaleTransition, fadeFire );
+        return parallelTransition;
+    }
 }

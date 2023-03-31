@@ -20,6 +20,7 @@ public class HUDPane extends Pane {
     private Image mariaBase = new Image("sprites/ui/ui_maria1.png");
     private Image mariaMap = new Image("sprites/ui/ui_maria2.png");
     private final AudioPlayer UIDeny = new AudioPlayer("Audio/Sounds/SFX_Denied.mp3", false);
+    public static boolean gateToggle = false;
     // ImageViews for the images
     private ImageView hud = new ImageView(HUD);
     private ImageView mariaPOV = new ImageView(mariaBase);
@@ -95,7 +96,8 @@ public class HUDPane extends Pane {
                 switch (GameManager.itemNeeded) {
                     case 1:
                         if (GameManager.hasKey1 == true) {
-                            System.out.println("Works");
+                            gateToggle = true;
+                            System.out.println("key triggered");
                         } else {
                             UIDeny.play();
                         }

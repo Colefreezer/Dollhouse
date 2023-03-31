@@ -102,6 +102,7 @@ public class Map7Pane extends Pane {
         ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
         lighting.setX(0);
         lighting.setY(0);
+        Animations.fire(Duration.millis(1000), Duration.millis(100), lighting).play();
 
         // Load the Fire Sprite
         ImageView fire = new ImageView(new Image("sprites/Misc/sprite_fire.gif"));
