@@ -20,18 +20,13 @@ public class Map7Pane extends Pane {
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     private final AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
     public Map7Pane(){
-        System.out.println("Map 7 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         if (GameManager.backgroundMusicIndoors.isPlaying()){
             GameManager.backgroundMusicIndoors.stop();
             GameManager.backgroundMusicFirePlace.play();
         }
-        else if (GameManager.backgroundMusicBasement.isPlaying()){
+        if (GameManager.backgroundMusicBasement.isPlaying()){
             GameManager.backgroundMusicBasement.stop();
-            GameManager.backgroundMusicFirePlace.play();
-        }
-        else if (GameManager.backgroundMusicOutside.isPlaying()){
-            GameManager.backgroundMusicOutside.stop();
             GameManager.backgroundMusicFirePlace.play();
         }
 
@@ -85,7 +80,7 @@ public class Map7Pane extends Pane {
                 "1 won't. Beware the doll's\n" +
                 "whispers in the night,\n" +
                 "for its secrets hold the\n" +
-                "key to your fright.", 32);
+                "key to your fright.", 27);
         notePane.setVisible(false);
         ImageView noteInteract = new ImageView(new Image("sprites/UI/Read.png"));
         noteInteract.setX(700);
@@ -106,25 +101,22 @@ public class Map7Pane extends Pane {
         ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
         lighting.setX(0);
         lighting.setY(0);
-        Animations.breathing(Duration.millis(500), lighting).play();
 
         // Load the Fire Sprite
         ImageView fire = new ImageView(new Image("sprites/Misc/sprite_fire.gif"));
         fire.setX(586);
         fire.setY(390);
 
-        //Set Left Boundary
-        Rectangle rightBound = new Rectangle(1300, 260, 50, 250);
-        rightBound.setVisible(false);
 
-        //Set Left Boundary
-        Rectangle leftBound = new Rectangle(100, 260, 50, 250);
-        leftBound.setVisible(false);
+        //Layers
+        ImageView layer1 = new ImageView(new Image("sprites/Misc/Map12Layer1.png"));
+        layer1.setX(0);
+        layer1.setY(0);
 
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, fire,
-                player.getImageView(), lighting, arrowL, arrowR, arrowM, noteInteract, notePane, hud, rightBound, leftBound);
+                player.getImageView(), lighting, layer1, arrowL, arrowR, arrowM, noteInteract, notePane,  hud);
 
 
 
@@ -170,7 +162,7 @@ public class Map7Pane extends Pane {
                     //Door Sound
                     doorSFX.play();
                     //Location for next scene
-                    GameManager.setNewLocation(70);
+                    GameManager.setNewLocation(45);
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map13Scene());
@@ -235,26 +227,6 @@ public class Map7Pane extends Pane {
                 // player is not colliding with note
                 notePane.setVisible(false);
                 noteInteract.setVisible(false);
-            }
-        });
-
-        //Right Boundary
-        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(rightBound.getBoundsInParent())) {
-                player.canMoveRight = false;
-
-            } else {
-                player.canMoveRight = true;
-            }
-        });
-
-        //Left Boundary
-        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(leftBound.getBoundsInParent())) {
-                player.canMoveLeft = false;
-
-            } else {
-                player.canMoveLeft = true;
             }
         });
 
