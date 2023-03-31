@@ -187,59 +187,101 @@ public class Map11Pane extends Pane {
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(midArrowHitBox.getBoundsInParent())) {
-                // player is colliding with door
-                arrowM.setVisible(true);
-                this.setOnMouseClicked(event -> {
-                    if (inEvent == false ){
-                        arrowL.setVisible(false);
-                        uIShow.play();
-                        KeyLock.setLayoutX(0);
-                        KeyIn.setRotate(90);
+                if (GameManager.key1Used == true) {
+
+                } else if (GameManager.key1Used == false){
+                    // player is colliding with door
+                    arrowM.setVisible(true);
+                    this.setOnMouseClicked(event -> {
+                        arrowM.setVisible(false);
+                        if (inEvent == false ){
+                            arrowL.setVisible(false);
+                            uIShow.play();
+                            KeyLock.setLayoutX(0);
+                            KeyIn.setRotate(90);
+
+                            // Back Button
+                            backButton.setLayoutX(536);
+                            backButton.setLayoutY(90);
+                            backButton.setOpacity(0);
+                            backButton.setScaleX(4);
+                            backButton.setScaleY(3);
+
+                            this.getChildren().addAll(KeyLock, backButton, KeyIn, keyUnlock);
+                            Animations.UIShow(KeyLock).play();
+                            System.out.println("KeyHole Silver showing");
+                            inEvent = true;
+
+                            keyUnlock.setOnAction((e) -> {
+                                // ======= Insert Key =======
+                                if (GameManager.hasKey1 = true) {
+                                    keySFX.play();
+                                    System.out.println("Key In");
+                                    KeyIn.setOpacity(255);
+                                    RotateTransition keyRotate = new RotateTransition(Duration.millis(200), KeyIn);
+                                    keyRotate.setByAngle(90);
+                                    ScaleTransition goIn = new ScaleTransition(Duration.millis(200), KeyIn);
+                                    goIn.setFromX(2.0);
+                                    goIn.setFromY(2.0);
+                                    goIn.setToX(1.0);
+                                    goIn.setToY(1.0);
+                                    PauseTransition delay1 = new PauseTransition(Duration.millis(400));
+                                    SequentialTransition sequenceKey = new SequentialTransition(goIn, delay1, keyRotate);
+                                    sequenceKey.play();
 
 
-                        // Back Button
-                        backButton.setLayoutX(536);
-                        backButton.setLayoutY(90);
-                        backButton.setOpacity(0);
-                        backButton.setScaleX(4);
-                        backButton.setScaleY(3);
+                                    sequenceKey.setOnFinished(event1 -> {
+                                        hud.removeItems(1);
+                                        GameManager.key1Used = true;
 
-                        this.getChildren().addAll(KeyLock, backButton, KeyIn, keyUnlock);
-                        Animations.UIShow(KeyLock).play();
-                        System.out.println("KeyHole Silver showing");
-                        inEvent = true;
+                                        TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
+                                        uiMoveAni.setFromX(0);
+                                        uiMoveAni.setToX(-900);
+                                        uiMoveAni.setInterpolator(Interpolator.EASE_IN);
 
-                        keyUnlock.setOnAction((e) -> {
-                            keySFX.play();
-                            System.out.println("Key In");
-                            KeyIn.setOpacity(255);
-                            RotateTransition keyRotate = new RotateTransition(Duration.millis(200), KeyIn);
-                            keyRotate.setByAngle(90);
-                            ScaleTransition goIn = new ScaleTransition(Duration.millis(200), KeyIn);
-                            goIn.setFromX(2.0);
-                            goIn.setFromY(2.0);
-                            goIn.setToX(1.0);
-                            goIn.setToY(1.0);
-                            PauseTransition delay1 = new PauseTransition(Duration.millis(400));
-                            SequentialTransition sequenceKey = new SequentialTransition(goIn, delay1, keyRotate);
-                            sequenceKey.play();
-                        });
-                    }
-                    backButton.setOnAction((e) -> {
-                        TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
-                        uiMoveAni.setFromX(0);
-                        uiMoveAni.setToX(-900);
-                        uiMoveAni.setInterpolator(Interpolator.EASE_IN);
-                        uiMoveAni.play();
-                        GameManager.itemNeeded = 0;
-                        GameManager.inventorySelect = false;
-                        uIMove.play();
-                        inEvent = false;
-                        uiMoveAni.setOnFinished(event1 -> {
-                            this.getChildren().removeAll(KeyLock, backButton);
+                                        TranslateTransition keyMove = new TranslateTransition(Duration.millis(200), KeyIn);
+                                        keyMove.setFromX(0);
+                                        keyMove.setToX(-900);
+                                        keyMove.setInterpolator(Interpolator.EASE_IN);
+
+
+                                        ParallelTransition parGoOff = new ParallelTransition(uiMoveAni, keyMove);
+                                        parGoOff.play();
+                                        parGoOff.setOnFinished(e2 -> {
+                                            this.getChildren().removeAll(door, leftBoundGate);
+                                            inEvent = false;
+                                            player.canMoveLeft = true;
+                                            player.canMoveRight = true;
+                                        });
+                                        uIMove.play();
+                                        inEvent = false;
+                                        uiMoveAni.setOnFinished(e1 -> {
+                                            this.getChildren().removeAll(KeyLock, backButton);
+                                        });
+                                    });
+                                } else {
+                                    System.out.println("no");
+                                }
+
+                            });
+                        }
+                        backButton.setOnAction((e) -> {
+                            TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
+                            uiMoveAni.setFromX(0);
+                            uiMoveAni.setToX(-900);
+                            uiMoveAni.setInterpolator(Interpolator.EASE_IN);
+                            uiMoveAni.play();
+                            GameManager.itemNeeded = 0;
+                            GameManager.inventorySelect = false;
+                            uIMove.play();
+                            inEvent = false;
+                            uiMoveAni.setOnFinished(event1 -> {
+                                this.getChildren().removeAll(KeyLock, backButton);
+                            });
                         });
                     });
-                });
+                }
+
 
 
             } else {
@@ -270,14 +312,20 @@ public class Map11Pane extends Pane {
         });
 
         //Left Gate Boundary
-        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(leftBoundGate.getBoundsInParent())) {
-                player.canMoveLeft = false;
+        if (GameManager.key1Used == false) {
+            player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+                if (newBounds.intersects(leftBoundGate.getBoundsInParent())) {
+                    player.canMoveLeft = false;
 
-            } else {
-                player.canMoveLeft = true;
-            }
-        });
+                } else {
+                    player.canMoveLeft = true;
+                }
+            });
+        } else if (GameManager.key1Used == true) {
+            this.getChildren().remove(leftBoundGate);
+        }
+
+
 
     }
 

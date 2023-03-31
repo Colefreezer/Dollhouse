@@ -19,12 +19,14 @@ public class HUDPane extends Pane {
     private Image HUD = new Image("sprites/ui/ui_hud1.png");
     private Image mariaBase = new Image("sprites/ui/ui_maria1.png");
     private Image mariaMap = new Image("sprites/ui/ui_maria2.png");
+    public Image itemKey1 = new Image("sprites/UI/Icons/icn_key1.png");
+    public ImageView itemKey1view = new ImageView(itemKey1);
     private final AudioPlayer UIDeny = new AudioPlayer("Audio/Sounds/SFX_Denied.mp3", false);
     public static boolean gateToggle = false;
     // ImageViews for the images
     private ImageView hud = new ImageView(HUD);
     private ImageView mariaPOV = new ImageView(mariaBase);
-    public HUDPane(){
+    public HUDPane() {
         // Set the positions of the images
         hud.setX(0);
         hud.setY(564);
@@ -34,18 +36,10 @@ public class HUDPane extends Pane {
 
         // Create the images and image views for the keys
         // ====================== KEY 1 ======================
-        Image itemKey1 = new Image("sprites/UI/Icons/icn_key1.png");
-        Button itemKey1Button = new Button();
-        ImageView itemKey1view = new ImageView(itemKey1);
+
         itemKey1view.setVisible(false);
         itemKey1view.setX(300);
         itemKey1view.setY(615);
-        // key button layout
-        itemKey1Button.setLayoutX(350);
-        itemKey1Button.setLayoutY(665);
-        itemKey1Button.setScaleX(13);
-        itemKey1Button.setScaleY(7);
-        itemKey1Button.setOpacity(0);
 
         // ====================== KEY 2 ======================
         Image itemKey2 = new Image("sprites/UI/Icons/icn_key2.png");
@@ -76,76 +70,26 @@ public class HUDPane extends Pane {
         itemKey3Button.setOpacity(0);
 
 
-
         // Add all the images to the pane
-        this.getChildren().addAll(hud, mariaPOV, itemKey1view, itemKey1Button, itemKey2view, itemKey2Button, itemKey3view, itemKey3Button);
+        this.getChildren().addAll(hud, mariaPOV, itemKey1view, itemKey2view, itemKey3view);
         // Check if the player has the keys and set them to visible if they do
-        if (GameManager.hasKey1){
+        if (GameManager.hasKey1) {
             itemKey1view.setVisible(true);
         }
-        if (GameManager.hasKey2){
+        if (GameManager.hasKey2) {
             itemKey2view.setVisible(true);
         }
-        if (GameManager.hasKey3){
+        if (GameManager.hasKey3) {
             itemKey3view.setVisible(true);
         }
-
-        //=== Item select ===
-        itemKey1Button.setOnAction(event -> {
-            if (GameManager.inventorySelect == true) {
-                switch (GameManager.itemNeeded) {
-                    case 1:
-                        if (GameManager.hasKey1 == true) {
-                            gateToggle = true;
-                            System.out.println("key triggered");
-                        } else {
-                            UIDeny.play();
-                        }
-                        break;
-                    default:
-                        UIDeny.play();
-                        break;
-                }
-            }
-        });
-        itemKey2Button.setOnAction(event -> {
-            if (GameManager.inventorySelect == true) {
-                switch (GameManager.itemNeeded) {
-                    case 2:
-                        if (GameManager.hasKey2 == true) {
-                            System.out.println("Works");
-                        } else {
-                            UIDeny.play();
-                        }
-                        break;
-                    default:
-                        UIDeny.play();
-                        break;
-                }
-            }
-        });
-        itemKey3Button.setOnAction(event -> {
-            if (GameManager.inventorySelect == true) {
-                switch (GameManager.itemNeeded) {
-                    case 3:
-                        if (GameManager.hasKey3 == true) {
-                            System.out.println("Works");
-                        } else {
-                            UIDeny.play();
-                        }
-                        break;
-                    default:
-                        UIDeny.play();
-                        break;
-                }
-            }
-        });
     }
+
+
     /**
      * This method adds an item to the inventory.
      * @param itemName The name of the item to be added.
      */
-    public static void AddInventory(String itemName){
+    public static void AddInventory(String itemName) {
         switch (itemName) {
             case "GoldKey":
                 System.out.println("You found the Gold Key");
@@ -171,6 +115,18 @@ public class HUDPane extends Pane {
                 break;
             default:
                 mariaPOV.setImage(mariaBase);
+        }
+    }
+
+    public void removeItems(int itemID) {
+        switch (itemID){
+            case 1:
+                this.getChildren().remove(itemKey1view);
+
+                break;
+            case 2:
+
+                break;
         }
     }
 
