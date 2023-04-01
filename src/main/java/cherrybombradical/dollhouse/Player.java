@@ -54,7 +54,7 @@ public class Player extends Pane {
             if (canMoveLeft){
                 transition.setByX(-moveSpeed);
                 transition.play();
-                System.out.println("Moving");
+                //System.out.println("Moving");
                 if (!isMoving) {
                     isMoving = true;
                     walkingAnimation = Animations.spriteWalk(this, imageView, sprites);
@@ -77,7 +77,7 @@ public class Player extends Pane {
             if (canMoveRight){
                 transition.setByX(moveSpeed);
                 transition.play();
-                System.out.println("Moving");
+                //System.out.println("Moving");
                 if (!isMoving) {
                     isMoving = true;
                     walkingAnimation = Animations.spriteWalk(this, imageView, sprites);

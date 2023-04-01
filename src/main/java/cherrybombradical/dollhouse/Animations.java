@@ -315,4 +315,21 @@ public class Animations {
         ParallelTransition parallelTransition = new ParallelTransition(scaleTransition, fadeFire );
         return parallelTransition;
     }
+
+    public static SequentialTransition chairMoveFade(Duration duration, Node pane, Node chairImage){
+        FadeTransition fadeOut = new FadeTransition(duration, pane);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+        fadeOut.setCycleCount(1);
+        PauseTransition pauseTransition = new PauseTransition(Duration.millis(300));
+        pauseTransition.setOnFinished(event -> {
+            chairImage.setVisible(false);
+        });
+        FadeTransition fadeIn = new FadeTransition(duration, pane);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.setCycleCount(1);
+        SequentialTransition sequentialTransition = new SequentialTransition(fadeOut, pauseTransition,fadeIn);
+        return sequentialTransition;
+    }
 }

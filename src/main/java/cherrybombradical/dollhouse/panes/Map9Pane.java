@@ -4,6 +4,7 @@ import cherrybombradical.dollhouse.*;
 import cherrybombradical.dollhouse.panes.eventpanes.NotePane;
 import cherrybombradical.dollhouse.scenes.*;
 import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,6 +45,7 @@ public class Map9Pane extends Pane {
         ImageView ChairDoor = new ImageView(new Image("sprites/Misc/Chair.png"));
         ChairDoor.setLayoutX(1103);
         ChairDoor.setLayoutY(367);
+
 
 
 
@@ -93,39 +95,14 @@ public class Map9Pane extends Pane {
 
         //Load the Arrow for Chair
         ImageView arrowChair = new ImageView(new Image("sprites/UI/interact.png"));
-        arrowChair.setX(1180);
+        arrowChair.setX(1150);
         arrowChair.setY(200);
         arrowChair.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowChair).play();
 
-        //Set Right Arrow HitBox
-        Rectangle ChairArrowHitBox = new Rectangle(1100, 260, 50, 250);
-        ChairArrowHitBox.setVisible(false);
-
-        NotePane notePane = new NotePane("LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n" +
-                "LOOK UP AT THE MOON\n", 16);
-        notePane.setVisible(false);
-
-        ImageView noteInteract = new ImageView(new Image("sprites/UI/Read.png"));
-        noteInteract.setX(500);
-        noteInteract.setY(200);
-        noteInteract.setVisible(false);
-        Animations.hover(Duration.millis(1000), noteInteract).play();
-
-        Rectangle noteHitBox = new Rectangle(500, 260, 50, 250);
-        noteHitBox.setVisible(true);
+        //Set Chair Arrow HitBox
+        Rectangle chairArrowHitBox = new Rectangle(1100, 260, 50, 250);
+        chairArrowHitBox.setVisible(false);
 
         // Load the map image and the shadow overlay for the current map ID
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
@@ -136,7 +113,7 @@ public class Map9Pane extends Pane {
         lighting.setY(0);
 
         //Set Right Boundary
-        Rectangle rightBound = new Rectangle(1350, 260, 50, 250);
+        Rectangle rightBound = new Rectangle(1100, 260, 50, 250);
         rightBound.setVisible(false);
 
         //Set Left Boundary
@@ -145,11 +122,14 @@ public class Map9Pane extends Pane {
 
         // Add all the nodes to the group
 
-        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, ChairDoor,
-                player.getImageView(),lighting, arrowL, noteInteract, notePane, hud, arrowR, arrowM, leftBound, rightBound);
+        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, ChairDoor, chairArrowHitBox, arrowChair,
+                player.getImageView(),lighting, arrowL, hud, arrowR, arrowM, leftBound, rightBound);
 
-
-
+        if (GameManager.chairMoved){
+            this.getChildren().removeAll(ChairDoor, arrowChair);
+            chairArrowHitBox.setX(1500);
+            rightBound.setX(1300);
+        }
         // ============ DOOR RIGHT ============
         //Detect if player (image) is colliding with the Right HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
@@ -180,22 +160,22 @@ public class Map9Pane extends Pane {
         // ============ MOVE CHAIR ============
         //Detect if player (image) is colliding with the Right HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(ChairArrowHitBox.getBoundsInParent())) {
+            if (newBounds.intersects(chairArrowHitBox.getBoundsInParent())) {
+                System.out.println("Chair");
                 // player is colliding with door
                 arrowChair.setVisible(true);
                 this.setOnMouseClicked(event -> {
                     //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.5), this);
                     fadeTransition.play();
                     //Door Sound
                     chairMove.play();
                     //Location for next scene
                     fadeTransition.setOnFinished(event1 -> {
-                        ChairDoor.setOpacity(0);
-                        FadeTransition fadebackIn = Animations.fadeIn(Duration.seconds(0.6), this);
-                        fadebackIn.play();
-
-
+                        GameManager.chairMoved = true;
+                        GameManager.UpstairsDoorBlocked = false;
+                        GameManager.setNewLocation(490);
+                        Game.mainStage.setScene(new Map9Scene());
                     });
                 });
 
@@ -211,92 +191,71 @@ public class Map9Pane extends Pane {
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(midArrowHitBox.getBoundsInParent())) {
                 // player is colliding with door
-                arrowM.setVisible(true);
-                this.setOnMouseClicked(event -> {
-                    if (inEvent == false ){
-                        arrowM.setVisible(false);
-                        uIShow.play();
-                        MusicBox.setLayoutX(0);
+                if (!GameManager.hasKey2){
+                    arrowM.setVisible(true);
+                    this.setOnMouseClicked(event -> {
+                        if (inEvent == false ){
+                            arrowM.setVisible(false);
+                            uIShow.play();
+                            MusicBox.setLayoutX(0);
 
-                        // Music Box Button
-                        MusicButton.setLayoutX(236);
-                        MusicButton.setLayoutY(356);
-                        MusicButton.setOpacity(0);
-                        MusicButton.setScaleX(4);
-                        MusicButton.setScaleY(3);
+                            // Music Box Button
+                            MusicButton.setLayoutX(236);
+                            MusicButton.setLayoutY(356);
+                            MusicButton.setOpacity(0);
+                            MusicButton.setScaleX(4);
+                            MusicButton.setScaleY(3);
 
 
-                        // Back Button
-                        backButton.setLayoutX(566);
-                        backButton.setLayoutY(90);
-                        backButton.setOpacity(0);
-                        backButton.setScaleX(4);
-                        backButton.setScaleY(3);
+                            // Back Button
+                            backButton.setLayoutX(566);
+                            backButton.setLayoutY(90);
+                            backButton.setOpacity(0);
+                            backButton.setScaleX(4);
+                            backButton.setScaleY(3);
 
-                        this.getChildren().addAll(MusicBox, MusicButton, backButton);
-                        Animations.UIShow(MusicBox).play();
-                        System.out.println("Music Box showing");
-                        inEvent = true;
-                    }
-                    MusicButton.setOnAction((e) -> {
-                        musicBoxOpenSFX.play();
-                        GameManager.musicBoxBackgroundMusic.play();
-                        MusicBox.setImage(new Image("sprites/UI/ui_musicBox2.png"));
-                        keySilver.setOpacity(255);
-                        this.getChildren().addAll(keySilver, keyButtonSilver);
-                        keyButtonSilver.setLayoutX(226);
-                        keyButtonSilver.setLayoutY(200);
-                        keyButtonSilver.setOpacity(0);
-                        keyButtonSilver.setScaleX(16);
-                        keyButtonSilver.setScaleY(4);
+                            this.getChildren().addAll(MusicBox, MusicButton, backButton);
+                            Animations.UIShow(MusicBox).play();
+                            System.out.println("Music Box showing");
+                            inEvent = true;
+                        }
+                        MusicButton.setOnAction((e) -> {
+                            musicBoxOpenSFX.play();
+                            GameManager.musicBoxBackgroundMusic.play();
+                            MusicBox.setImage(new Image("sprites/UI/ui_musicBox2.png"));
+                            keySilver.setOpacity(255);
+                            this.getChildren().addAll(keySilver, keyButtonSilver);
+                            keyButtonSilver.setLayoutX(226);
+                            keyButtonSilver.setLayoutY(200);
+                            keyButtonSilver.setOpacity(0);
+                            keyButtonSilver.setScaleX(16);
+                            keyButtonSilver.setScaleY(4);
+                        });
+                        keyButtonSilver.setOnAction((e) -> {
+                            keySilver.setOpacity(0);
+                            keyGrab.play();
+                            HUDPane.AddInventory("SilverKey");
+                            Image itemKey2 = new Image("sprites/UI/Icons/icn_key2.png");
+                            ImageView itemKey2view = new ImageView(itemKey2);
+                            itemKey2view.setX(600);
+                            itemKey2view.setY(615);
+                            this.getChildren().add(itemKey2view);
+                            this.getChildren().removeAll(arrowM, midArrowHitBox);
+                            GameManager.hasKey2 = true;
+                        });
+                        backButton.setOnAction((e) -> {
+                            uIMove.play();
+                            Animations.UIMove(MusicBox).play();
+                            inEvent = false;
+                        });
                     });
-                    keyButtonSilver.setOnAction((e) -> {
-                        keySilver.setOpacity(0);
-                        keyGrab.play();
-                        HUDPane.AddInventory("SilverKey");
-                        Image itemKey2 = new Image("sprites/UI/Icons/icn_key2.png");
-                        ImageView itemKey2view = new ImageView(itemKey2);
-                        itemKey2view.setX(600);
-                        itemKey2view.setY(615);
-                        this.getChildren().add(itemKey2view);
-                        GameManager.hasKey1 = true;
-                    });
-                    backButton.setOnAction((e) -> {
-                        uIMove.play();
-                        Animations.UIMove(MusicBox).play();
-                        inEvent = false;
-                    });
-                });
+                }
+
 
 
             } else {
                 // player is not colliding with door
                 arrowM.setVisible(false);
-            }
-        });
-
-        // ============ NOTE ============
-        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(noteHitBox.getBoundsInParent())) {
-                // player is colliding with note
-                noteInteract.setVisible(true);
-                this.setOnMouseClicked(event -> {
-                    if (!notePane.isVisible()){
-                        GameManager.noteSFX.play();
-                        notePane.setVisible(true);
-                        Animations.noteMoveIn(notePane).play();
-                    }else {
-                        GameManager.noteCloseSFX.play();
-                        notePane.setVisible(false);
-
-                    }
-
-                });
-
-            } else {
-                // player is not colliding with note
-                notePane.setVisible(false);
-                noteInteract.setVisible(false);
             }
         });
 

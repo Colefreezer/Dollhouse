@@ -121,10 +121,10 @@ public class Map6Pane extends Pane {
                         //Door Sound
                         doorSFX.play();
                         //Location for next scene
-                        GameManager.setNewLocation(200);
+                        GameManager.setNewLocation(510);
                         fadeTransition.setOnFinished(event1 -> {
                             //Load Scene
-                            Game.mainStage.setScene(new Map10Scene());
+                            Game.mainStage.setScene(new Map9Scene());
 
                         });
                     }

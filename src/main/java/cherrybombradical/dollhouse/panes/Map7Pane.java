@@ -115,8 +115,15 @@ public class Map7Pane extends Pane {
         layer1.setX(0);
         layer1.setY(0);
 
-        // Add all the nodes to the group
+        //Set Left Boundary
+        Rectangle rightBound = new Rectangle(1300, 260, 50, 250);
+        rightBound.setVisible(false);
 
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(50, 260, 50, 250);
+        leftBound.setVisible(false);
+
+        // Add all the nodes to the group
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, fire,
                 player.getImageView(), lighting, layer1, arrowL, arrowR, arrowM, noteInteract, notePane,  hud);
 
@@ -229,6 +236,27 @@ public class Map7Pane extends Pane {
                 // player is not colliding with note
                 notePane.setVisible(false);
                 noteInteract.setVisible(false);
+            }
+        });
+
+
+        //Right Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(rightBound.getBoundsInParent())) {
+                player.canMoveRight = false;
+
+            } else {
+                player.canMoveRight = true;
+            }
+        });
+
+        //Left Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveLeft = false;
+
+            } else {
+                player.canMoveLeft = true;
             }
         });
 

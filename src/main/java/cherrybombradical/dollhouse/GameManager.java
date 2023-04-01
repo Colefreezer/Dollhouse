@@ -29,6 +29,7 @@ public class GameManager {
     public static boolean mapToggle = false;
     public static boolean inventorySelect = false;
     public static boolean UpstairsDoorBlocked = true;
+    public static boolean chairMoved = false;
     public static boolean controlsDismissed = false;
     public static int itemNeeded;
 
@@ -136,15 +137,18 @@ public class GameManager {
 
 
     public static void startTimer() {
-        startTime = System.nanoTime();
-        timer = new AnimationTimer() {
+        // Get the start time
+        long startTime = System.nanoTime();
+        // Create a new AnimationTimer
+        AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                // Calculate the elapsed time
                 long elapsedTime = now - startTime;
                 long seconds = elapsedTime / 1_000_000_000;
                 long minutes = seconds / 60;
                 seconds = seconds % 60;
-
+                // Print the time to the console
                 if (minutes > 0) {
                     System.out.println(playerName + "'s time: " + minutes + " minutes, " + seconds + " seconds.");
                 } else {
@@ -152,8 +156,9 @@ public class GameManager {
                 }
             }
         };
+        // Start the timer
         timer.start();
-        // Create Scores.txt if it doesn't exist
+        // Create a new file for storing scores
         File file = new File("Scores.txt");
         try {
             file.createNewFile();
@@ -162,16 +167,18 @@ public class GameManager {
         }
     }
     public static void stopTimer() {
+        // Stop the timer
         timer.stop();
-
-        // Write final time to Scores.txt
+        // Calculate elapsed time in minutes and seconds
+        long elapsedTime = System.nanoTime() - startTime;
+         // Calculate minutes
+        long minutes = elapsedTime / 1_000_000_000 / 60;
+         // Calculate seconds
+        long seconds = elapsedTime / 1_000_000_000 % 60;
+        // Write the time to the file
         File file = new File("Scores.txt");
         try {
             FileWriter writer = new FileWriter(file, true);
-            long elapsedTime = System.nanoTime() - startTime;
-            long minutes = elapsedTime / 1_000_000_000 / 60;
-            long seconds = elapsedTime / 1_000_000_000 % 60;
-
             if (minutes > 0) {
                 writer.write(playerName + "'s final time: " + minutes + " minutes, " + seconds + " seconds.\n");
             } else {
