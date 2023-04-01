@@ -6,11 +6,15 @@ import cherrybombradical.dollhouse.scenes.Map2Scene;
 import cherrybombradical.dollhouse.scenes.Map5Scene;
 import cherrybombradical.dollhouse.scenes.Map7Scene;
 import javafx.animation.*;
+import javafx.scene.Group;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -19,12 +23,23 @@ public class EndPane extends Pane {
     private static final ImageView black = new ImageView(new Image("Images/Black.png"));
     private static final ImageView endScreen = new ImageView(new Image("Images/EndScreen1.png"));
     private static final ImageView endScreenWords = new ImageView(new Image("Images/EndScreenWords.png"));
+
     private static final ImageView frame1 = new ImageView(new Image("sprites/UI/CS/Frame1.png"));
     private static final ImageView frame2 = new ImageView(new Image("sprites/UI/CS/Frame2.png"));
     private static final ImageView frame3 = new ImageView(new Image("sprites/UI/CS/Frame3.png"));
+    public Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/Pixel.ttf"), 48);
+
+    public static String finalTime = GameManager.finalTime;
+    public static TextField timeTextField = new TextField(finalTime);
     private final AudioPlayer end1SFX = new AudioPlayer("Audio/Sounds/SFX_End1.mp3", false);
 
     public EndPane(){
+
+        //Text finalTimeText = new Text("finalTime");
+        timeTextField.setFont(pixelFont);
+        timeTextField.setEditable(false);
+        timeTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: #FFFFFF;");
+        timeTextField.relocate(80,250);
         System.out.println("Finished Game");
         frame1.setX(-500);
         frame2.setY(-500);
@@ -33,7 +48,7 @@ public class EndPane extends Pane {
    
 
         // Add all the nodes to the group
-        this.getChildren().addAll(endScreen, black, frame1, frame2, frame3);
+        this.getChildren().addAll(endScreen,black,frame1, frame2, frame3 );
 
         TranslateTransition frame1In = new TranslateTransition(Duration.millis(400), frame1);
         frame1In.setInterpolator(Interpolator.EASE_OUT);
@@ -94,7 +109,7 @@ public class EndPane extends Pane {
         SequentialTransition endScreenSequence = new SequentialTransition(frame1In, frame1Pause, frame2In, frame2Pause, frame3In, frame3Pause, goToResults);
 
         endScreenSequence.setOnFinished(event -> {
-            this.getChildren().add(endScreenWords);
+            this.getChildren().addAll(endScreenWords, timeTextField);
             endScreenWords.setOpacity(0);
             PauseTransition delay1 = new PauseTransition(Duration.millis(600));
             FadeTransition fadeInWords = new FadeTransition(Duration.millis(1200), endScreenWords);

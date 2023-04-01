@@ -6,3 +6,10 @@ null's final time: 30 seconds.
 s's final time: 1 minutes, 55 seconds.
 s's final time: 39 seconds.
 d's final time: 35 seconds.
+4r's final time: 645 minutes, 3 seconds.
+fuck's final time: 646 minutes, 36 seconds.
+2's final time: 649 minutes, 2 seconds.
+3's final time: 651 minutes, 40 seconds.
+56345's final time: 652 minutes, 50 seconds.
+e's final time: 48 minutes, 4 seconds.
+1's final time: 80 minutes, 30 seconds.

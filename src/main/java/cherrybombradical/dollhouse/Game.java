@@ -38,7 +38,7 @@ public class Game extends Application {
         Timeline splashScreenTimer = new Timeline(
                 new KeyFrame(Duration.millis(SPLASH_SCREEN_DURATION), event -> {
                     splashScreenStage.close();
-                    mainStage.setScene(new Map13Scene());
+                    mainStage.setScene(new MainMenuScene());
                     mainStage.show();
                 })
         );

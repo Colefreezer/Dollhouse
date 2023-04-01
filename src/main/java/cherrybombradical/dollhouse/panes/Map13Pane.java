@@ -138,6 +138,8 @@ public class Map13Pane extends Pane {
                 arrowM.setVisible(true);
                     this.setOnMouseClicked(event -> {
                         if (GameManager.hasKey3 == true) {
+                            GameManager.backgroundMusicOutside.stop();
+                            GameManager.stopTimer();
                             Game.mainStage.setScene(new EndScene());
 
 

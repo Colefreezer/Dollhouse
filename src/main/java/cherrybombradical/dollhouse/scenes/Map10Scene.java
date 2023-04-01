@@ -13,8 +13,9 @@ import java.util.Map;
 
 public class Map10Scene extends Scene {
     public Map10Scene(){
-        super(new Map10Pane(), GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT, Color.BLACK);
 
+        super(new Map10Pane(), GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT, Color.BLACK);
+        GameManager.startTimer();
         this.getRoot().requestFocus();
         GameManager.mapX = 910;
         GameManager.mapY = 25;

@@ -22,7 +22,7 @@ public class Map10Pane extends Pane {
     public static HUDPane hud;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     public Map10Pane(){
-        GameManager.startTimer();
+
         System.out.println("Map 10 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
 

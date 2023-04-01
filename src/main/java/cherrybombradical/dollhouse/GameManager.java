@@ -21,7 +21,7 @@ public class GameManager {
     // Variables
     public static String playerName;
     public static int NEW_LOCATION = 425;
-    public static boolean hasKey1 = true;
+    public static boolean hasKey1 = false;
     public static boolean hasKey2 = false;
     public static boolean hasKey3 = true;
     public static boolean key1Used = false;
@@ -52,6 +52,7 @@ public class GameManager {
     public static AudioPlayer musicBoxBackgroundMusic = new AudioPlayer("Audio/Music/MusicBox.mp3", true);
     private static long startTime;
     private static AnimationTimer timer;
+    public static String finalTime = "0:00";
 
 
     /**
@@ -140,7 +141,7 @@ public class GameManager {
         // Get the start time
         long startTime = System.nanoTime();
         // Create a new AnimationTimer
-        AnimationTimer timer = new AnimationTimer() {
+        timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 // Calculate the elapsed time
@@ -167,27 +168,33 @@ public class GameManager {
         }
     }
     public static void stopTimer() {
-        // Stop the timer
-        timer.stop();
-        // Calculate elapsed time in minutes and seconds
-        long elapsedTime = System.nanoTime() - startTime;
-         // Calculate minutes
-        long minutes = elapsedTime / 1_000_000_000 / 60;
-         // Calculate seconds
-        long seconds = elapsedTime / 1_000_000_000 % 60;
-        // Write the time to the file
-        File file = new File("Scores.txt");
-        try {
-            FileWriter writer = new FileWriter(file, true);
-            if (minutes > 0) {
-                writer.write(playerName + "'s final time: " + minutes + " minutes, " + seconds + " seconds.\n");
-            } else {
-                writer.write(playerName + "'s final time: " + seconds + " seconds.\n");
+
+        if (timer != null){ // check if timer is not null before calling stop() method
+            // Stop the timer
+            timer.stop();
+            // Calculate elapsed time in minutes and seconds
+            long elapsedTime = System.nanoTime() - startTime;
+            // Calculate minutes
+            long minutes = elapsedTime / 1_000_000_000 / 60;
+            // Calculate seconds
+            long seconds = elapsedTime / 1_000_000_000 % 60;
+            finalTime = minutes + ":" + seconds;
+
+            // Write the time to the file
+            File file = new File("Scores.txt");
+            try {
+                FileWriter writer = new FileWriter(file, true);
+                if (minutes > 0) {
+                    writer.write(playerName + "'s final time: " + minutes + " minutes, " + seconds + " seconds.\n");
+                } else {
+                    writer.write(playerName + "'s final time: " + seconds + " seconds.\n");
+                }
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 
 }
