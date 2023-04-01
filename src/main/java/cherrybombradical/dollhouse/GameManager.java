@@ -23,7 +23,7 @@ public class GameManager {
     public static int NEW_LOCATION = 425;
     public static boolean hasKey1 = true;
     public static boolean hasKey2 = false;
-    public static boolean hasKey3 = false;
+    public static boolean hasKey3 = true;
     public static boolean key1Used = false;
     public static boolean key2Used = false;
     public static boolean mapToggle = false;

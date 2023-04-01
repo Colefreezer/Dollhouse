@@ -2,7 +2,7 @@ package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
 import cherrybombradical.dollhouse.scenes.*;
-import javafx.animation.FadeTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -23,9 +23,10 @@ public class Map13Pane extends Pane {
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     private final AudioPlayer uIShow = new AudioPlayer("Audio/Sounds/SFX_UIShow.mp3", false);
     private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
+    private final AudioPlayer keySFX = new AudioPlayer("Audio/Sounds/SFX_KeyUnlock.mp3", false);
     public boolean inEvent = false;
     public Map13Pane(){
-        GameManager.stopTimer();
+
         System.out.println("Map 13 Loaded");
         if (GameManager.backgroundMusicFirePlace.isPlaying()){
             GameManager.backgroundMusicFirePlace.stop();
@@ -33,15 +34,18 @@ public class Map13Pane extends Pane {
         }
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         // EVENT STUFF
-        Button MusicButton = new Button();
-        Button keyButtonSilver = new Button();
         Button backButton = new Button();
 
-        ImageView KeyLock = new ImageView(new Image("sprites/UI/ui_keyhole_Gold.png"));
+        ImageView KeyLock = new ImageView(new Image("sprites/UI/ui_keyhole_Ruby.png"));
         ImageView keySilver = new ImageView(new Image("sprites/UI/ui_musicBox3.png"));
 
         keySilver.setOpacity(0);
         KeyLock.setLayoutX(-600);
+
+        ImageView KeyIn = new ImageView(new Image("sprites/UI/ui_key_Ruby.png"));
+        KeyIn.setLayoutX(110);
+        KeyIn.setLayoutY(157);
+        KeyIn.setOpacity(0);
 
 
 
@@ -127,50 +131,55 @@ public class Map13Pane extends Pane {
             }
         });
 
-        // ============ GATE ============
+        // ============ EXIT GATE ============
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(midArrowHitBox.getBoundsInParent())) {
-                // player is colliding with door
                 arrowM.setVisible(true);
-                this.setOnMouseClicked(event -> {
-                    if (inEvent == false ){
+                    this.setOnMouseClicked(event -> {
+                        if (GameManager.hasKey3 == true) {
+                            Game.mainStage.setScene(new EndScene());
+
+
+                        } else {
                         arrowM.setVisible(false);
-                        uIShow.play();
-                        KeyLock.setLayoutX(0);
+                        if (inEvent == false ){
+                            arrowL.setVisible(false);
+                            uIShow.play();
+                            KeyLock.setLayoutX(0);
+                            KeyIn.setRotate(90);
 
+                            // Back Button
+                            backButton.setLayoutX(536);
+                            backButton.setLayoutY(90);
+                            backButton.setOpacity(0);
+                            backButton.setScaleX(4);
+                            backButton.setScaleY(3);
 
-                        // Back Button
-                        backButton.setLayoutX(566);
-                        backButton.setLayoutY(90);
-                        backButton.setOpacity(0);
-                        backButton.setScaleX(4);
-                        backButton.setScaleY(3);
-
-                        this.getChildren().addAll(KeyLock, backButton);
-                        Animations.UIShow(KeyLock).play();
-                        System.out.println("KeyHole showing");
-                        inEvent = true;
-                        GameManager.inventorySelect = true;
-                    }
-
-                    keyButtonSilver.setOnAction((e) -> {
-                        keySilver.setOpacity(0);
-
-                        HUDPane.AddInventory("SilverKey");
-                        Image itemKey2 = new Image("sprites/UI/Icons/icn_key2.png");
-                        ImageView itemKey2view = new ImageView(itemKey2);
-                        itemKey2view.setX(600);
-                        itemKey2view.setY(615);
-                        this.getChildren().add(itemKey2view);
-                        GameManager.hasKey1 = true;
+                            this.getChildren().addAll(KeyLock, backButton);
+                            Animations.UIShow(KeyLock).play();
+                            System.out.println("KeyHole Ruby showing");
+                            inEvent = true;
+                        }
+                        }
+                        backButton.setOnAction((e) -> {
+                            TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
+                            uiMoveAni.setFromX(0);
+                            uiMoveAni.setToX(-900);
+                            uiMoveAni.setInterpolator(Interpolator.EASE_IN);
+                            uiMoveAni.play();
+                            GameManager.itemNeeded = 0;
+                            GameManager.inventorySelect = false;
+                            uIMove.play();
+                            uiMoveAni.setOnFinished(event1 -> {
+                                this.getChildren().removeAll(KeyLock, backButton);
+                                inEvent = false;
+                                requestFocus();
+                            });
+                        });
                     });
-                    backButton.setOnAction((e) -> {
-                        uIMove.play();
-                        Animations.UIMove(KeyLock).play();
-                        inEvent = false;
-                    });
-                });
+
+
 
             } else {
                 // player is not colliding with door
@@ -182,7 +191,6 @@ public class Map13Pane extends Pane {
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(rightBound.getBoundsInParent())) {
                 player.canMoveRight = false;
-
             } else {
                 player.canMoveRight = true;
             }
@@ -192,7 +200,6 @@ public class Map13Pane extends Pane {
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(leftBound.getBoundsInParent())) {
                 player.canMoveLeft = false;
-
             } else {
                 player.canMoveLeft = true;
             }

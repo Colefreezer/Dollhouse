@@ -68,13 +68,13 @@ public class Map11Pane extends Pane {
 
         //Load the Arrow Image for when near the left door
         ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowL.setX(450);
+        arrowL.setX(190);
         arrowL.setY(200);
         arrowL.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowL).play();
 
         //Set Left Arrow HitBox
-        Rectangle leftArrowHitBox = new Rectangle(450, 260, 50, 250);
+        Rectangle leftArrowHitBox = new Rectangle(150, 260, 50, 250);
         leftArrowHitBox.setVisible(false);
 
         //Load the Arrow Image for when near the right door
@@ -106,12 +106,6 @@ public class Map11Pane extends Pane {
         map.setY(0);
         ImageView door = new ImageView(new Image("sprites/Misc/Door.png"));
         door.relocate(1004,213);
-        if(GameManager.key1Used){
-            door.setVisible(false);
-        }else{
-            door.setVisible(true);
-        }
-
         ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
         lighting.setX(0);
         lighting.setY(0);
@@ -120,21 +114,18 @@ public class Map11Pane extends Pane {
         Rectangle rightBound = new Rectangle(1500, 260, 50, 250);
         rightBound.setVisible(true);
 
-        int leftBoundPos;
-        if (GameManager.key1Used){
-            leftBoundPos = 0;
-        }else {
-            leftBoundPos = 1000;
-        }
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(0, 260, 50, 250);
+        leftBound.setVisible(false);
 
         //Set Left Boundary
-        Rectangle leftBound = new Rectangle(leftBoundPos, 260, 50, 250);
-        leftBound.setVisible(false);
+        Rectangle leftBoundGate = new Rectangle(1000, 260, 50, 250);
+        leftBound.setVisible(true);
 
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                door, player.getImageView(), lighting, arrowL, arrowR, arrowM, rightBound, leftBound);
+                door, player.getImageView(), lighting, arrowL, arrowR, arrowM, rightBound, leftBound, leftBoundGate);
 
 
 
@@ -195,134 +186,111 @@ public class Map11Pane extends Pane {
         // ============ GATE ============
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            // Check if the player's bounds intersects with the mid arrow hitbox
             if (newBounds.intersects(midArrowHitBox.getBoundsInParent())) {
-                // If the key has not been used yet
-                if (GameManager.key1Used == false) {
-                    // Make the mid arrow visible
+                if (GameManager.key1Used == true) {
+
+                } else if (GameManager.key1Used == false){
+                    // player is colliding with door
                     arrowM.setVisible(true);
-                    // Set an event listener for when the mouse is clicked
                     this.setOnMouseClicked(event -> {
-                        // Make the mid arrow invisible
                         arrowM.setVisible(false);
-                        // If the event is not already happening
                         if (inEvent == false ){
-                            // Make the left arrow invisible
                             arrowL.setVisible(false);
-                            // Play the UI show animation
                             uIShow.play();
-                            // Set the initial layout of the key lock
                             KeyLock.setLayoutX(0);
                             KeyIn.setRotate(90);
+
+                            // Back Button
                             backButton.setLayoutX(536);
                             backButton.setLayoutY(90);
                             backButton.setOpacity(0);
                             backButton.setScaleX(4);
                             backButton.setScaleY(3);
-                            // Add the key lock, back button, key in, and key unlock to the scene
+
                             this.getChildren().addAll(KeyLock, backButton, KeyIn, keyUnlock);
-                            // Play the UI show animation for the key lock
                             Animations.UIShow(KeyLock).play();
                             System.out.println("KeyHole Silver showing");
-                            // Set the inEvent boolean to true
                             inEvent = true;
-                            // Set an event listener for when the key unlock button is pressed
+
                             keyUnlock.setOnAction((e) -> {
-                                // If the player has the key
+                                // ======= Insert Key =======
                                 if (GameManager.hasKey1 = true) {
-                                    // Play the key SFX
                                     keySFX.play();
                                     System.out.println("Key In");
-                                    // Make the key in visible
                                     KeyIn.setOpacity(255);
-                                    // Create a rotate transition for the key in
                                     RotateTransition keyRotate = new RotateTransition(Duration.millis(200), KeyIn);
                                     keyRotate.setByAngle(90);
-                                    // Create a scale transition for the key in
                                     ScaleTransition goIn = new ScaleTransition(Duration.millis(200), KeyIn);
                                     goIn.setFromX(2.0);
                                     goIn.setFromY(2.0);
                                     goIn.setToX(1.0);
                                     goIn.setToY(1.0);
-                                    // Create a pause transition
                                     PauseTransition delay1 = new PauseTransition(Duration.millis(400));
-                                    // Create a sequential transition for the key in
                                     SequentialTransition sequenceKey = new SequentialTransition(goIn, delay1, keyRotate);
                                     sequenceKey.play();
-                                    // Set an event listener for when the sequential transition is finished
+
+
                                     sequenceKey.setOnFinished(event1 -> {
-                                        // Remove the key from the hud
                                         hud.removeItems(1);
-                                        // Set the key1Used boolean to true
                                         GameManager.key1Used = true;
-                                        // Create a translate transition for the key lock
+
                                         TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
                                         uiMoveAni.setFromX(0);
                                         uiMoveAni.setToX(-900);
                                         uiMoveAni.setInterpolator(Interpolator.EASE_IN);
-                                        // Create a translate transition for the key in
+
                                         TranslateTransition keyMove = new TranslateTransition(Duration.millis(200), KeyIn);
                                         keyMove.setFromX(0);
                                         keyMove.setToX(-900);
                                         keyMove.setInterpolator(Interpolator.EASE_IN);
-                                        // Create a parallel transition for the key lock and key in
+
+
                                         ParallelTransition parGoOff = new ParallelTransition(uiMoveAni, keyMove);
                                         parGoOff.play();
-                                        // Set an event listener for when the parallel transition is finished
                                         parGoOff.setOnFinished(e2 -> {
-                                            // Remove the door and left bound gate from the scene
-                                            this.getChildren().removeAll(door);
-                                            GameManager.hasKey1 = false;
-                                            leftBound.setX(0);
-                                            // Set the inEvent boolean to false
+                                            this.getChildren().removeAll(door, leftBoundGate);
                                             inEvent = false;
-                                            // Set the player's movement booleans to true
                                             player.canMoveLeft = true;
                                             player.canMoveRight = true;
                                         });
-                                        // Play the UI move animation
                                         uIMove.play();
-                                        // Set the inEvent boolean to false
                                         inEvent = false;
-                                        // Set an event listener for when the UI move animation is finished
                                         uiMoveAni.setOnFinished(e1 -> {
-                                            // Remove the key lock and back button from the scene
                                             this.getChildren().removeAll(KeyLock, backButton);
                                         });
                                     });
                                 } else {
                                     System.out.println("no");
                                 }
+
                             });
                         }
-                        // Set an event listener for when the back button is pressed
                         backButton.setOnAction((e) -> {
-                            // Create a translate transition for the key lock
                             TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
                             uiMoveAni.setFromX(0);
                             uiMoveAni.setToX(-900);
                             uiMoveAni.setInterpolator(Interpolator.EASE_IN);
                             uiMoveAni.play();
-                            // Set the item needed and inventory select booleans to false
                             GameManager.itemNeeded = 0;
                             GameManager.inventorySelect = false;
-                            // Play the UI move animation
                             uIMove.play();
-                            // Set the inEvent boolean to false
                             inEvent = false;
-                            // Set an event listener for when the UI move animation is finished
                             uiMoveAni.setOnFinished(event1 -> {
-                                // Remove the key lock and back button from the scene
                                 this.getChildren().removeAll(KeyLock, backButton);
                             });
                         });
                     });
-                } else {
-                    // Make the mid arrow invisible
-                    arrowM.setVisible(false);
                 }
+
+
+
+            } else {
+                // player is not colliding with door
+                arrowM.setVisible(false);
+
             }
         });
+
         //Right Boundary
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(rightBound.getBoundsInParent())) {
@@ -342,6 +310,20 @@ public class Map11Pane extends Pane {
                 player.canMoveLeft = true;
             }
         });
+
+        //Left Gate Boundary
+        if (GameManager.key1Used == false) {
+            player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+                if (newBounds.intersects(leftBoundGate.getBoundsInParent())) {
+                    player.canMoveLeft = false;
+
+                } else {
+                    player.canMoveLeft = true;
+                }
+            });
+        } else if (GameManager.key1Used == true) {
+            this.getChildren().remove(leftBoundGate);
+        }
 
 
 
