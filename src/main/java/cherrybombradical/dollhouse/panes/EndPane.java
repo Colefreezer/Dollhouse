@@ -1,12 +1,10 @@
 package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
-import cherrybombradical.dollhouse.scenes.MainMenuScene;
-import cherrybombradical.dollhouse.scenes.Map2Scene;
-import cherrybombradical.dollhouse.scenes.Map5Scene;
-import cherrybombradical.dollhouse.scenes.Map7Scene;
+import cherrybombradical.dollhouse.scenes.*;
 import javafx.animation.*;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +16,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class EndPane extends Pane {
     //End my pane
     private static final ImageView black = new ImageView(new Image("Images/Black.png"));
@@ -27,6 +29,8 @@ public class EndPane extends Pane {
     private static final ImageView frame1 = new ImageView(new Image("sprites/UI/CS/Frame1.png"));
     private static final ImageView frame2 = new ImageView(new Image("sprites/UI/CS/Frame2.png"));
     private static final ImageView frame3 = new ImageView(new Image("sprites/UI/CS/Frame3.png"));
+
+    public static final Button continueButton = new Button("Continue");
     public Font pixelFont = Font.loadFont(getClass().getResourceAsStream("/Pixel.ttf"), 48);
 
     public static String finalTime = GameManager.finalTime;
@@ -35,11 +39,26 @@ public class EndPane extends Pane {
 
     public EndPane(){
 
-        //Text finalTimeText = new Text("finalTime");
+
         timeTextField.setFont(pixelFont);
         timeTextField.setEditable(false);
         timeTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: #FFFFFF;");
-        timeTextField.relocate(80,250);
+        timeTextField.relocate(135,275);
+
+        continueButton.setPrefSize(500,50);
+        continueButton.setFont(pixelFont);
+        continueButton.setStyle("-fx-background-color: #000000; -fx-text-fill: red;");
+        continueButton.relocate(125, 400);
+        continueButton.setOnAction(event -> {
+            Animation fadeOut = Animations.fadeOut(Duration.seconds(2), this);
+            fadeOut.play();
+            fadeOut.setOnFinished(event1 -> {
+                end1SFX.stop();
+                Game.mainStage.setScene(new CreditsScene());
+            });
+
+        });
+
         System.out.println("Finished Game");
         frame1.setX(-500);
         frame2.setY(-500);
@@ -109,20 +128,35 @@ public class EndPane extends Pane {
         SequentialTransition endScreenSequence = new SequentialTransition(frame1In, frame1Pause, frame2In, frame2Pause, frame3In, frame3Pause, goToResults);
 
         endScreenSequence.setOnFinished(event -> {
-            this.getChildren().addAll(endScreenWords, timeTextField);
+            this.getChildren().addAll(endScreenWords, timeTextField, continueButton);
+
             endScreenWords.setOpacity(0);
+            timeTextField.setOpacity(0);
+            continueButton.setOpacity(0);
+
             PauseTransition delay1 = new PauseTransition(Duration.millis(600));
+
             FadeTransition fadeInWords = new FadeTransition(Duration.millis(1200), endScreenWords);
             fadeInWords.setToValue(255);
             fadeInWords.setFromValue(0);
+
             ScaleTransition zoomWords = new ScaleTransition(Duration.millis(1200), endScreenWords);
             zoomWords.setFromX(2.0);
             zoomWords.setFromY(2.0);
             zoomWords.setToY(1.0);
             zoomWords.setToX(1.0);
+
             ParallelTransition wordsAni = new ParallelTransition(fadeInWords, zoomWords);
 
-            SequentialTransition sequencePart2 = new SequentialTransition(delay1, wordsAni);
+            FadeTransition timeFade = new FadeTransition(Duration.millis(800), timeTextField);
+            timeFade.setFromValue(0);
+            timeFade.setToValue(255);
+
+            FadeTransition buttonFade = new FadeTransition(Duration.millis(800), continueButton);
+            buttonFade.setFromValue(0);
+            buttonFade.setToValue(255);
+
+            SequentialTransition sequencePart2 = new SequentialTransition(delay1, wordsAni, timeFade, buttonFade);
             sequencePart2.play();
         });
 

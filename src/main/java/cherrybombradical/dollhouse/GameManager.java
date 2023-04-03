@@ -52,7 +52,7 @@ public class GameManager {
     public static AudioPlayer musicBoxBackgroundMusic = new AudioPlayer("Audio/Music/MusicBox.mp3", true);
     private static long startTime;
     private static AnimationTimer timer;
-    public static String finalTime = "0:00";
+    public static String finalTime = "John's Time: 2:30";
 
 
     /**
@@ -139,7 +139,7 @@ public class GameManager {
 
     public static void startTimer() {
         // Get the start time
-        long startTime = System.nanoTime();
+        startTime = System.nanoTime();
         // Create a new AnimationTimer
         timer = new AnimationTimer() {
             @Override
@@ -167,18 +167,18 @@ public class GameManager {
             e.printStackTrace();
         }
     }
-    public static void stopTimer() {
 
+    public static void stopTimer() {
         if (timer != null){ // check if timer is not null before calling stop() method
             // Stop the timer
             timer.stop();
             // Calculate elapsed time in minutes and seconds
             long elapsedTime = System.nanoTime() - startTime;
             // Calculate minutes
-            long minutes = elapsedTime / 1_000_000_000 / 60;
+            long minutes = (elapsedTime / 1_000_000_000) / 60;
             // Calculate seconds
-            long seconds = elapsedTime / 1_000_000_000 % 60;
-            finalTime = minutes + ":" + seconds;
+            long seconds = (elapsedTime / 1_000_000_000) % 60;
+            finalTime = playerName + "'s Time: " + minutes + ":" + seconds;
 
             // Write the time to the file
             File file = new File("Scores.txt");
@@ -194,7 +194,6 @@ public class GameManager {
                 e.printStackTrace();
             }
         }
-
     }
 
 }
