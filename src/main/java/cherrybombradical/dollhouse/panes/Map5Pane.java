@@ -2,9 +2,7 @@ package cherrybombradical.dollhouse.panes;
 
 import cherrybombradical.dollhouse.*;
 import cherrybombradical.dollhouse.scenes.*;
-import javafx.animation.FadeTransition;
-import javafx.animation.Interpolator;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,6 +23,7 @@ public class Map5Pane extends Pane {
     private final AudioPlayer doorLockedSFX = new AudioPlayer("Audio/Sounds/SFX_DoorLocked.mp3", false);
     private final AudioPlayer uIShow = new AudioPlayer("Audio/Sounds/SFX_UIShow.mp3", false);
     private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
+    private final AudioPlayer keySFX = new AudioPlayer("Audio/Sounds/SFX_KeyUnlock.mp3", false);
     public boolean inEvent = false;
 
 
@@ -38,15 +37,23 @@ public class Map5Pane extends Pane {
         }
 
         // EVENT STUFF
+        Button keyUnlock = new Button();
         Button backButton = new Button();
+
         ImageView KeyLock = new ImageView(new Image("sprites/UI/ui_keyhole_Silver.png"));
-        ImageView keySilver = new ImageView(new Image("sprites/UI/ui_musicBox3.png"));
-        keySilver.setOpacity(0);
+
+        keyUnlock.setLayoutX(226);
+        keyUnlock.setLayoutY(260);
+        keyUnlock.setOpacity(0);
+        keyUnlock.setScaleX(16);
+        keyUnlock.setScaleY(7);
+
         KeyLock.setLayoutX(-600);
 
         ImageView KeyIn = new ImageView(new Image("sprites/UI/ui_key_Silver.png"));
-        KeyIn.setLayoutY(247);
         KeyIn.setLayoutX(110);
+        KeyIn.setLayoutY(157);
+        KeyIn.setOpacity(0);
 
 
 
@@ -119,54 +126,145 @@ public class Map5Pane extends Pane {
         // ============ DOOR LEFT ============
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            // Check if the player's bounds intersects with the mid arrow hitbox
             if (newBounds.intersects(leftArrowHitBox.getBoundsInParent())) {
-                // player is colliding with door
-                arrowL.setVisible(true);
-                this.setOnMouseClicked(event -> {
-                    if (inEvent == false ){
+                // If the key has not been used yet
+                if (GameManager.key2Used == false) {
+                    // Make the mid arrow visible
+                    arrowL.setVisible(true);
+                    // Set an event listener for when the mouse is clicked
+                    this.setOnMouseClicked(event -> {
+                        // Make the mid arrow invisible
                         arrowL.setVisible(false);
-                        uIShow.play();
-                        KeyLock.setLayoutX(0);
+                        // If the event is not already happening
+                        if (inEvent == false ){
+                            // Make the left arrow invisible
+                            arrowL.setVisible(false);
+                            // Play the UI show animation
+                            uIShow.play();
+                            // Set the initial layout of the key lock
+                            KeyLock.setLayoutX(0);
+                            KeyIn.setRotate(90);
+                            backButton.setLayoutX(536);
+                            backButton.setLayoutY(90);
+                            backButton.setOpacity(0);
+                            backButton.setScaleX(4);
+                            backButton.setScaleY(3);
+                            // Add the key lock, back button, key in, and key unlock to the scene
+                            this.getChildren().addAll(KeyLock, backButton, KeyIn, keyUnlock);
+                            // Play the UI show animation for the key lock
+                            Animations.UIShow(KeyLock).play();
+                            System.out.println("KeyHole Silver showing");
+                            // Set the inEvent boolean to true
+                            inEvent = true;
+                            // Set an event listener for when the key unlock button is pressed
+                            keyUnlock.setOnAction((e) -> {
+                                // If the player has the key
+                                if (GameManager.hasKey2 = true) {
+                                    // Play the key SFX
+                                    keySFX.play();
+                                    System.out.println("Key In");
+                                    // Make the key in visible
+                                    KeyIn.setOpacity(255);
+                                    // Create a rotate transition for the key in
+                                    RotateTransition keyRotate = new RotateTransition(Duration.millis(200), KeyIn);
+                                    keyRotate.setByAngle(90);
+                                    // Create a scale transition for the key in
+                                    ScaleTransition goIn = new ScaleTransition(Duration.millis(200), KeyIn);
+                                    goIn.setFromX(2.0);
+                                    goIn.setFromY(2.0);
+                                    goIn.setToX(1.0);
+                                    goIn.setToY(1.0);
+                                    // Create a pause transition
+                                    PauseTransition delay1 = new PauseTransition(Duration.millis(400));
+                                    // Create a sequential transition for the key in
+                                    SequentialTransition sequenceKey = new SequentialTransition(goIn, delay1, keyRotate);
+                                    sequenceKey.play();
+                                    // Set an event listener for when the sequential transition is finished
+                                    sequenceKey.setOnFinished(event1 -> {
+                                        // Remove the key from the hud
+                                        hud.removeItems(1);
+                                        // Set the key1Used boolean to true
+                                        GameManager.key2Used = true;
+                                        // Create a translate transition for the key lock
+                                        TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
+                                        uiMoveAni.setFromX(0);
+                                        uiMoveAni.setToX(-900);
+                                        uiMoveAni.setInterpolator(Interpolator.EASE_IN);
+                                        // Create a translate transition for the key in
+                                        TranslateTransition keyMove = new TranslateTransition(Duration.millis(200), KeyIn);
+                                        keyMove.setFromX(0);
+                                        keyMove.setToX(-900);
+                                        keyMove.setInterpolator(Interpolator.EASE_IN);
+                                        // Create a parallel transition for the key lock and key in
+                                        ParallelTransition parGoOff = new ParallelTransition(uiMoveAni, keyMove);
+                                        parGoOff.play();
+                                        // Set an event listener for when the parallel transition is finished
+                                        parGoOff.setOnFinished(e2 -> {
+                                            FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                                            fadeTransition.play();
+                                            //Door Sound
+                                            doorSFX.play();
+                                            //Location for next scene
+                                            GameManager.setNewLocation(320);
+                                            fadeTransition.setOnFinished(event2 -> {
+                                                //Load Scene
+                                                Game.mainStage.setScene(new Map12Scene());
+                                            });
 
 
-                        // Back Button
-                        backButton.setLayoutX(536);
-                        backButton.setLayoutY(90);
-                        backButton.setOpacity(0);
-                        backButton.setScaleX(4);
-                        backButton.setScaleY(3);
 
-                        this.getChildren().addAll(KeyLock, backButton, KeyIn);
-                        Animations.UIShow(KeyLock).play();
-                        System.out.println("KeyHole Silver showing");
-                        inEvent = true;
-                        GameManager.inventorySelect = true;
-                        GameManager.itemNeeded = 2;
-                    }
-                    backButton.setOnAction((e) -> {
-                        TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
-                        uiMoveAni.setFromX(0);
-                        uiMoveAni.setToX(-900);
-                        uiMoveAni.setInterpolator(Interpolator.EASE_IN);
-                        uiMoveAni.play();
-                        GameManager.itemNeeded = 0;
-                        GameManager.inventorySelect = false;
-                        uIMove.play();
-                        inEvent = false;
-                        uiMoveAni.setOnFinished(event1 -> {
-                            this.getChildren().removeAll(KeyLock, backButton);
+
+                                            // Set the inEvent boolean to false
+                                            inEvent = false;
+                                            // Set the player's movement booleans to true
+                                            player.canMoveLeft = true;
+                                            player.canMoveRight = true;
+                                        });
+                                        // Play the UI move animation
+                                        uIMove.play();
+                                        // Set the inEvent boolean to false
+                                        inEvent = false;
+                                        // Set an event listener for when the UI move animation is finished
+                                        uiMoveAni.setOnFinished(e1 -> {
+                                            // Remove the key lock and back button from the scene
+                                            this.getChildren().removeAll(KeyLock, backButton);
+                                        });
+                                    });
+
+                                } else {
+                                    System.out.println("no");
+                                }
+                            });
+                        }
+                        // Set an event listener for when the back button is pressed
+                        backButton.setOnAction((e) -> {
+                            // Create a translate transition for the key lock
+                            TranslateTransition uiMoveAni = new TranslateTransition(Duration.millis(200), KeyLock);
+                            uiMoveAni.setFromX(0);
+                            uiMoveAni.setToX(-900);
+                            uiMoveAni.setInterpolator(Interpolator.EASE_IN);
+                            uiMoveAni.play();
+                            // Set the item needed and inventory select booleans to false
+                            GameManager.itemNeeded = 0;
+                            GameManager.inventorySelect = false;
+                            // Play the UI move animation
+                            uIMove.play();
+                            // Set the inEvent boolean to false
+                            inEvent = false;
+                            // Set an event listener for when the UI move animation is finished
+                            uiMoveAni.setOnFinished(event1 -> {
+                                // Remove the key lock and back button from the scene
+                                this.getChildren().removeAll(KeyLock, backButton);
+                            });
                         });
                     });
-                });
-
                 } else {
-                // player is not colliding with door
-                arrowL.setVisible(false);
-
+                    // Make the mid arrow invisible
+                    arrowL.setVisible(false);
+                }
             }
         });
-
-
 
         // ============ DOOR RIGHT ============
         //Detect if player (image) is colliding with the Right HitBox
@@ -243,5 +341,4 @@ public class Map5Pane extends Pane {
         });
 
     }
-
 }

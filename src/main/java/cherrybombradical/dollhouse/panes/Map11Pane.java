@@ -17,7 +17,7 @@ public class Map11Pane extends Pane {
 
     // Store the current map ID
     public static int mapID = 10;
-    // ==== MAP = BOILER ROOM
+    // ==== MAP = Basement
     public static Player player;
     public static HUDPane hud;
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);

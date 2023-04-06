@@ -30,6 +30,11 @@ public class Map12Pane extends Pane {
     public Map12Pane(){
         System.out.println("Map 12 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
+
+        if (!GameManager.backgroundMusicIndoors.isPlaying()){
+            GameManager.backgroundMusicIndoors.stop();
+            GameManager.backgroundMusicUpstairs.play();
+        }
         // EVENT STUFF
         Button MusicButton = new Button();
         Button keyButtonSilver = new Button();
