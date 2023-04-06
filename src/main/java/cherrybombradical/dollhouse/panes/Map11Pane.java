@@ -229,7 +229,7 @@ public class Map11Pane extends Pane {
                             // Set an event listener for when the key unlock button is pressed
                             keyUnlock.setOnAction((e) -> {
                                 // If the player has the key
-                                if (GameManager.hasKey1 = true) {
+                                if (GameManager.hasKey1) {
                                     // Play the key SFX
                                     keySFX.play();
                                     System.out.println("Key In");

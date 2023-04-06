@@ -5,6 +5,7 @@ import cherrybombradical.dollhouse.Game;
 import cherrybombradical.dollhouse.GameManager;
 import cherrybombradical.dollhouse.scenes.MainMenuScene;
 import javafx.animation.*;
+import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -85,13 +86,17 @@ public class CreditsPane extends Pane {
         //Skip the credits sequence if the mouse is clicked and go to Main Menu
         this.setOnMouseClicked(event -> {
             GameManager.musicBoxBackgroundMusic.stop();
+            Game.mainStage.close();
             Game.mainStage.setScene(new MainMenuScene());
+            Game.mainStage.show();
         });
 
         //Go to main menu once credits is finished
         startCredits.setOnFinished(event -> {
             GameManager.musicBoxBackgroundMusic.stop();
+            Game.mainStage.close();
             Game.mainStage.setScene(new MainMenuScene());
+            Game.mainStage.show();
         });
 
     }
