@@ -58,17 +58,6 @@ public class Map12Pane extends Pane {
         // Create HUD
         hud = new HUDPane();
 
-        //Load the Arrow Image for when near the left door
-        ImageView arrowL = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowL.setX(190);
-        arrowL.setY(200);
-        arrowL.setVisible(false);
-        Animations.hover(Duration.millis(1000), arrowL).play();
-
-        //Set Left Arrow HitBox
-        Rectangle leftArrowHitBox = new Rectangle(150, 260, 50, 250);
-        leftArrowHitBox.setVisible(false);
-
         //Load the Arrow Image for when near the right door
         ImageView arrowR = new ImageView(new Image("sprites/UI/arrow.png"));
         arrowR.setX(1340);
