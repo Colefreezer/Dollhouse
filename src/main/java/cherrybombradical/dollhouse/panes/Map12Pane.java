@@ -91,8 +91,8 @@ public class Map12Pane extends Pane {
 
         // Add all the nodes to the group
 
-        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowM);
+        this.getChildren().addAll(map, rightArrowHitBox, hud,
+                player.getImageView(), lighting, arrowR, arrowM);
 
         // ============ DOOR RIGHT ============
         //Detect if player (image) is colliding with the Right HitBox
