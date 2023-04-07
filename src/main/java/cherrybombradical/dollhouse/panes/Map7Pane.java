@@ -22,14 +22,20 @@ public class Map7Pane extends Pane {
     private final AudioPlayer stairsSFX = new AudioPlayer("Audio/Sounds/SFX_Stairs.mp3", false);
     public Map7Pane(){
         Animations.fadeIn(Duration.seconds(0.5), this).play();
-        if (GameManager.backgroundMusicIndoors.isPlaying()){
-            GameManager.backgroundMusicIndoors.stop();
-            GameManager.backgroundMusicFirePlace.play();
+        if (GameManager.key3Used == true) {
+
+        } else {
+            if (GameManager.backgroundMusicIndoors.isPlaying()){
+                GameManager.backgroundMusicIndoors.stop();
+                GameManager.backgroundMusicFirePlace.play();
+            }
+            if (GameManager.backgroundMusicBasement.isPlaying()){
+                GameManager.backgroundMusicBasement.stop();
+                GameManager.backgroundMusicFirePlace.play();
+            }
+
         }
-        if (GameManager.backgroundMusicBasement.isPlaying()){
-            GameManager.backgroundMusicBasement.stop();
-            GameManager.backgroundMusicFirePlace.play();
-        }
+
 
 
         // Create the player object
@@ -96,25 +102,48 @@ public class Map7Pane extends Pane {
 
 
         // Load the map image and the shadow overlay for the current map ID
-        ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
-        map.setX(0);
-        map.setY(0);
-        ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
-        lighting.setX(0);
-        lighting.setY(0);
-        Animations.fire(Duration.millis(1000), Duration.millis(100), lighting).play();
-
-        // Load the Fire Sprite
-        ImageView fire = new ImageView(new Image("sprites/Misc/sprite_fire.gif"));
-        fire.setX(586);
-        fire.setY(390);
+        if (GameManager.key3Used == true) {
+            ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + "_2.png"));
+            map.setX(0);
+            map.setY(0);
+            ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + "_2.png"));
+            lighting.setX(0);
+            lighting.setY(0);
 
 
-        //Layers
-        ImageView layer1 = new ImageView(new Image("sprites/Misc/Map12Layer1.png"));
-        layer1.setX(0);
-        layer1.setY(0);
+            // Add all the nodes to the group
+            this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox,
+                    player.getImageView(), lighting, arrowL, arrowR, arrowM, noteInteract, notePane,  hud);
 
+
+
+        } else {
+            ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
+            map.setX(0);
+            map.setY(0);
+            ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
+            lighting.setX(0);
+            lighting.setY(0);
+            Animations.fire(Duration.millis(1000), Duration.millis(100), lighting).play();
+
+            // Load the Fire Sprite
+            ImageView fire = new ImageView(new Image("sprites/Misc/sprite_fire.gif"));
+            fire.setX(586);
+            fire.setY(390);
+
+
+            //Layers
+            ImageView layer1 = new ImageView(new Image("sprites/Misc/Map12Layer1.png"));
+            layer1.setX(0);
+            layer1.setY(0);
+
+
+
+            // Add all the nodes to the group
+            this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, fire,
+                    player.getImageView(), lighting, layer1, arrowL, arrowR, arrowM, noteInteract, notePane,  hud);
+
+        }
         //Set Left Boundary
         Rectangle rightBound = new Rectangle(1300, 260, 50, 250);
         rightBound.setVisible(false);
@@ -123,9 +152,8 @@ public class Map7Pane extends Pane {
         Rectangle leftBound = new Rectangle(50, 260, 50, 250);
         leftBound.setVisible(false);
 
-        // Add all the nodes to the group
-        this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, fire,
-                player.getImageView(), lighting, layer1, arrowL, arrowR, arrowM, noteInteract, notePane,  hud);
+
+
 
 
 

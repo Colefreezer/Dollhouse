@@ -31,10 +31,15 @@ public class Map5Pane extends Pane {
         System.out.println("Map 5 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
 
-        if (!GameManager.backgroundMusicUpstairs.isPlaying()){
-            GameManager.backgroundMusicUpstairs.stop();
-            GameManager.backgroundMusicIndoors.play();
+        if (GameManager.key3Used) {
+
+        } else {
+            if (!GameManager.backgroundMusicUpstairs.isPlaying()){
+                GameManager.backgroundMusicUpstairs.stop();
+                GameManager.backgroundMusicIndoors.play();
+            }
         }
+
 
         // EVENT STUFF
         Button keyUnlock = new Button();
@@ -101,12 +106,17 @@ public class Map5Pane extends Pane {
         stairsArrowHitBox.setVisible(false);
 
         // Load the map image and the shadow overlay for the current map ID
+
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
         map.setX(0);
         map.setY(0);
         ImageView lighting = new ImageView(new Image("sprites/shadows/shadow" + mapID + ".png"));
         lighting.setX(0);
         lighting.setY(0);
+        if (GameManager.key3Used) {
+            map.setImage(new Image("sprites/Maps/Map" + mapID + "_2.png"));
+
+        }
 
         //Set Left Boundary
         Rectangle rightBound = new Rectangle(1400, 260, 50, 250);

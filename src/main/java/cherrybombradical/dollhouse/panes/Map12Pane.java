@@ -26,6 +26,7 @@ public class Map12Pane extends Pane {
     private final AudioPlayer Dumbwaiter = new AudioPlayer("Audio/Sounds/SFX_Dumbwaiter.mp3", false);
     private final AudioPlayer dollMoveHands = new AudioPlayer("Audio/Sounds/SFX_DollMove.mp3", false);
     private final AudioPlayer dollLaugh = new AudioPlayer("Audio/Sounds/SFX_DollLaugh.mp3", false);
+    private final AudioPlayer suspense = new AudioPlayer("Audio/Sounds/SFX_Suspense.mp3", false);
 
     private final AudioPlayer uIShow = new AudioPlayer("Audio/Sounds/SFX_UIShow.mp3", false);
     private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
@@ -185,6 +186,7 @@ public class Map12Pane extends Pane {
                     });
                     //Take Ruby Key
                     keyButtonPick.setOnAction((e) -> {
+                        GameManager.hasKey3 = true;
                         GameManager.heartbeatSFX.stop();
                         keyGrab.play();
                         this.getChildren().removeAll(keyButtonPick, rubyKey, backButton);
@@ -197,7 +199,18 @@ public class Map12Pane extends Pane {
                             dollInteract.setImage(new Image("sprites/UI/ui_doll3.png"));
                             pause2.play();
                             pause2.setOnFinished(event2 -> {
+                                ImageView redFlash = new ImageView(new Image("sprites/misc/RedFlash.png"));
+                                this.getChildren().add(redFlash);
+                                FadeTransition fadeRed = new FadeTransition(Duration.millis(400), redFlash);
+                                fadeRed.setToValue(0);
+                                fadeRed.setFromValue(255);
+                                fadeRed.play();
                                 this.getChildren().remove(dollInteract);
+                                suspense.play();
+                                GameManager.chasedMusic.play();
+                                lighting.setImage(new Image("sprites/shadows/shadow11_2.png"));
+                                map.setImage(new Image("sprites/maps/map11_2.png"));
+                                GameManager.key3Used = true;
 
                             });
 
@@ -206,6 +219,7 @@ public class Map12Pane extends Pane {
 
                     });
                     backButton.setOnAction((e) -> {
+
                         uIMove.play();
                         Animations.UIMove(dollInteract).play();
                         this.getChildren().removeAll(dollInteract, backButton);

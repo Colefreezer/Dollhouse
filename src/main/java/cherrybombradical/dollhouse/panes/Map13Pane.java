@@ -32,6 +32,10 @@ public class Map13Pane extends Pane {
             GameManager.backgroundMusicFirePlace.stop();
             GameManager.backgroundMusicOutside.play();
         }
+        if (GameManager.chasedMusic.isPlaying()){
+            GameManager.chasedMusic.stop();
+
+        }
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         // EVENT STUFF
         Button backButton = new Button();
