@@ -34,12 +34,11 @@ public class Map5Pane extends Pane {
         if (GameManager.key3Used) {
 
         } else {
-            if (!GameManager.backgroundMusicUpstairs.isPlaying()){
+            if (GameManager.backgroundMusicUpstairs.isPlaying()){
                 GameManager.backgroundMusicUpstairs.stop();
                 GameManager.backgroundMusicIndoors.play();
             }
         }
-
 
         // EVENT STUFF
         Button keyUnlock = new Button();
@@ -106,7 +105,6 @@ public class Map5Pane extends Pane {
         stairsArrowHitBox.setVisible(false);
 
         // Load the map image and the shadow overlay for the current map ID
-
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
         map.setX(0);
         map.setY(0);
@@ -115,8 +113,13 @@ public class Map5Pane extends Pane {
         lighting.setY(0);
         if (GameManager.key3Used) {
             map.setImage(new Image("sprites/Maps/Map" + mapID + "_2.png"));
-
         }
+
+        //Load door Locked Text
+        ImageView lockedDoorText = new ImageView(new Image("sprites/UI/Locked.png"));
+        lockedDoorText.setX(64);
+        lockedDoorText.setY(458);
+        lockedDoorText.setVisible(false);
 
         //Set Left Boundary
         Rectangle rightBound = new Rectangle(1400, 260, 50, 250);
@@ -129,7 +132,7 @@ public class Map5Pane extends Pane {
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowS, rightBound, leftBound);
+                player.getImageView(), lighting, lockedDoorText, arrowL, arrowR, arrowS, rightBound, leftBound);
 
 
 
@@ -170,7 +173,7 @@ public class Map5Pane extends Pane {
                             // Set an event listener for when the key unlock button is pressed
                             keyUnlock.setOnAction((e) -> {
                                 // If the player has the key
-                                if (GameManager.hasKey2 = true) {
+                                if (GameManager.hasKey2 == true) {
                                     // Play the key SFX
                                     keySFX.play();
                                     System.out.println("Key In");
@@ -217,8 +220,11 @@ public class Map5Pane extends Pane {
                                             doorSFX.play();
                                             //Location for next scene
                                             GameManager.setNewLocation(570);
+                                            //Stop the players movement animation
+                                            player.stopMoving();
                                             fadeTransition.setOnFinished(event2 -> {
                                                 //Load Scene
+                                                GameManager.hasKey2 = false;
                                                 Game.mainStage.setScene(new Map12Scene());
                                             });
 
@@ -262,14 +268,15 @@ public class Map5Pane extends Pane {
                             // Set an event listener for when the UI move animation is finished
                             uiMoveAni.setOnFinished(event1 -> {
                                 // Remove the key lock and back button from the scene
-                                this.getChildren().removeAll(KeyLock, backButton);
+                                this.getChildren().removeAll(KeyLock, backButton, KeyIn, keyUnlock);
+                                requestFocus();
                             });
                         });
                     });
-                } else {
-                    // Make the mid arrow invisible
-                    arrowL.setVisible(false);
                 }
+            }else {
+                // Make the mid arrow invisible
+                arrowL.setVisible(false);
             }
         });
 
@@ -280,23 +287,32 @@ public class Map5Pane extends Pane {
                 // player is colliding with door
                 arrowR.setVisible(true);
                 this.setOnMouseClicked(event -> {
-                    //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
-                    fadeTransition.play();
-                    //Door Sound
-                    doorSFX.play();
-                    //Location for next scene
-                    GameManager.setNewLocation(320);
-                    fadeTransition.setOnFinished(event1 -> {
-                        //Load Scene
-                        Game.mainStage.setScene(new Map6Scene());
+                    if (!GameManager.key3Used){
+                        //Fade Transition
+                        FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
+                        fadeTransition.play();
+                        //Door Sound
+                        doorSFX.play();
+                        //Location for next scene
+                        GameManager.setNewLocation(320);
+                        //Stop the players movement animation
+                        player.stopMoving();
+                        fadeTransition.setOnFinished(event1 -> {
+                            //Load Scene
+                            Game.mainStage.setScene(new Map6Scene());
 
-                    });
+                        });
+                    }else{
+                        doorLockedSFX.play();
+                        lockedDoorText.setVisible(true);
+                    }
+
                 });
 
             } else {
                 // player is not colliding with door
                 arrowR.setVisible(false);
+                lockedDoorText.setVisible(false);
             }
         });
 
@@ -307,6 +323,7 @@ public class Map5Pane extends Pane {
                 // player is colliding with door
                 arrowS.setVisible(true);
                 this.setOnMouseClicked(event -> {
+
                     //Fade Transition
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
                     fadeTransition.play();
@@ -314,6 +331,8 @@ public class Map5Pane extends Pane {
                     stairsSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(320);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map1Scene());

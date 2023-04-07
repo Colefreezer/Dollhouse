@@ -91,14 +91,13 @@ public class Map12Pane extends Pane {
 
         //Load the Arrow Image for when near the right door
         ImageView arrowR = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowR.setX(1340);
+        arrowR.setX(1250);
         arrowR.setY(200);
         arrowR.setVisible(false);
-        arrowR.setRotate(-90);
         Animations.hover(Duration.millis(1000), arrowR).play();
 
         //Set Right Arrow HitBox
-        Rectangle rightArrowHitBox = new Rectangle(1340, 260, 50, 250);
+        Rectangle rightArrowHitBox = new Rectangle(1200, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
 
         //Load the Interact Image for the doll
@@ -120,6 +119,14 @@ public class Map12Pane extends Pane {
         lighting.setX(0);
         lighting.setY(0);
 
+        //Set Right Boundary
+        Rectangle rightBound = new Rectangle(1300, 260, 50, 250);
+        rightBound.setVisible(false);
+
+        //Set Left Boundary
+        Rectangle leftBound = new Rectangle(150, 260, 50, 250);
+        leftBound.setVisible(false);
+
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, rightArrowHitBox, hud,
@@ -135,9 +142,12 @@ public class Map12Pane extends Pane {
                     //Fade Transition
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
                     fadeTransition.play();
+                    player.stopMoving();
                     //Door Sound
                     //Location for next scene
                     GameManager.setNewLocation(25);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map5Scene());
@@ -190,7 +200,9 @@ public class Map12Pane extends Pane {
                         GameManager.heartbeatSFX.stop();
                         keyGrab.play();
                         this.getChildren().removeAll(keyButtonPick, rubyKey, backButton);
-                        PauseTransition pause = new PauseTransition(Duration.millis(3000));
+                        player.canMoveRight = false;
+                        player.canMoveLeft = false;
+                        PauseTransition pause = new PauseTransition(Duration.millis(2000));
                         PauseTransition pause2 = new PauseTransition(Duration.millis(1200));
                         pause.play();
 
@@ -199,19 +211,20 @@ public class Map12Pane extends Pane {
                             dollInteract.setImage(new Image("sprites/UI/ui_doll3.png"));
                             pause2.play();
                             pause2.setOnFinished(event2 -> {
+                                player.canMoveRight = true;
+                                player.canMoveLeft = true;
                                 ImageView redFlash = new ImageView(new Image("sprites/misc/RedFlash.png"));
                                 this.getChildren().add(redFlash);
                                 FadeTransition fadeRed = new FadeTransition(Duration.millis(400), redFlash);
                                 fadeRed.setToValue(0);
                                 fadeRed.setFromValue(255);
                                 fadeRed.play();
-                                this.getChildren().remove(dollInteract);
+                                this.getChildren().removeAll(dollInteract, arrowM);
                                 suspense.play();
                                 GameManager.chasedMusic.play();
                                 lighting.setImage(new Image("sprites/shadows/shadow11_2.png"));
                                 map.setImage(new Image("sprites/maps/map11_2.png"));
                                 GameManager.key3Used = true;
-
                             });
 
                         });
@@ -229,6 +242,26 @@ public class Map12Pane extends Pane {
             } else {
                 // player is not colliding with door
                 arrowM.setVisible(false);
+            }
+        });
+
+        //Right Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(rightBound.getBoundsInParent())) {
+                player.canMoveRight = false;
+
+            } else {
+                player.canMoveRight = true;
+            }
+        });
+
+        //Left Boundary
+        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            if (newBounds.intersects(leftBound.getBoundsInParent())) {
+                player.canMoveLeft = false;
+
+            } else {
+                player.canMoveLeft = true;
             }
         });
 

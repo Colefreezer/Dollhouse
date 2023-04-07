@@ -92,6 +92,8 @@ public class Map4Pane extends Pane {
                     doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(75);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map3Scene());

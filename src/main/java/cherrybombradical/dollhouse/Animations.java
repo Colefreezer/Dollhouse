@@ -2,6 +2,7 @@ package cherrybombradical.dollhouse;
 
 import javafx.animation.*;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -15,19 +16,21 @@ import java.io.File;
 import java.util.Random;
 
 public class Animations {
-
+    public static String[] footstepPaths = {
+            "Audio/Sounds/SFX_footstep1.mp3",
+            "Audio/Sounds/SFX_footstep2.mp3",
+            "Audio/Sounds/SFX_footstep3.mp3",
+            "Audio/Sounds/SFX_footstep4.mp3",
+            "Audio/Sounds/SFX_footstep5.mp3"
+    };
+    public static Random randomFootstep = new Random();
+    public static AudioPlayer footstepSounds = new AudioPlayer(footstepPaths[randomFootstep.nextInt(5)], false);
 
     public static Timeline spriteWalk (Player player, ImageView imageView, Image[] sprites) {
-        String[] footstepPaths = {
-                "Audio/Sounds/SFX_footstep1.mp3",
-                "Audio/Sounds/SFX_footstep2.mp3",
-                "Audio/Sounds/SFX_footstep3.mp3",
-                "Audio/Sounds/SFX_footstep4.mp3",
-                "Audio/Sounds/SFX_footstep5.mp3"
-        };
-        Random randomFootstep = new Random();
+
+
         Random randomVolume = new Random();
-        AudioPlayer footstepSounds = new AudioPlayer(footstepPaths[randomFootstep.nextInt(5)], false);
+
         KeyFrame frame1 = new KeyFrame(
                 Duration.millis(0),
                 e -> {
@@ -70,6 +73,7 @@ public class Animations {
                 frame5
         );
         walking.setCycleCount(Animation.INDEFINITE);
+
         return walking;
     }
 

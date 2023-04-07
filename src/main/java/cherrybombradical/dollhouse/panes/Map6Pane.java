@@ -26,6 +26,8 @@ public class Map6Pane extends Pane {
         if (GameManager.backgroundMusicIndoors.isPlaying()){
             GameManager.backgroundMusicIndoors.stop();
             GameManager.backgroundMusicUpstairs.play();
+        }else {
+            GameManager.backgroundMusicUpstairs.play();
         }
         if (GameManager.musicBoxBackgroundMusic.isPlaying()){
             GameManager.musicBoxBackgroundMusic.stop();
@@ -110,7 +112,7 @@ public class Map6Pane extends Pane {
                 // player is colliding with door
                 arrowL.setVisible(true);
                 this.setOnMouseClicked(event -> {
-                    if (GameManager.UpstairsDoorBlocked == true) {
+                    if (GameManager.UpstairsDoorBlocked) {
                         doorLockedSFX.play();
                         lockedDoorText.setVisible(true);
 
@@ -122,6 +124,8 @@ public class Map6Pane extends Pane {
                         doorSFX.play();
                         //Location for next scene
                         GameManager.setNewLocation(510);
+                        //Stop the players movement animation
+                        player.stopMoving();
                         fadeTransition.setOnFinished(event1 -> {
                             //Load Scene
                             Game.mainStage.setScene(new Map9Scene());
@@ -155,6 +159,8 @@ public class Map6Pane extends Pane {
                     doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(150);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map10Scene());
@@ -182,6 +188,8 @@ public class Map6Pane extends Pane {
                     doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(580);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map5Scene());

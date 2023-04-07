@@ -100,7 +100,7 @@ public class Player extends Pane {
     public void stopMoving(){
         isMoving = false;
         if (walkingAnimation != null) {
-            walkingAnimation.pause();
+            walkingAnimation.stop();
             walkingAnimation = null;
             imageView.setImage(sprites[0]);
         }

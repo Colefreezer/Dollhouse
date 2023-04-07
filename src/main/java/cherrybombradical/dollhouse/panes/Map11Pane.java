@@ -152,6 +152,8 @@ public class Map11Pane extends Pane {
                     Dumbwaiter.play();
                     //Location for next scene
                     GameManager.setNewLocation(210);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
 
                         //Load Scene
@@ -180,6 +182,8 @@ public class Map11Pane extends Pane {
                     //Door Sound
                     //Location for next scene
                     GameManager.setNewLocation(25);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map8Scene());
@@ -313,7 +317,8 @@ public class Map11Pane extends Pane {
                             // Set an event listener for when the UI move animation is finished
                             uiMoveAni.setOnFinished(event1 -> {
                                 // Remove the key lock and back button from the scene
-                                this.getChildren().removeAll(KeyLock, backButton);
+                                this.getChildren().removeAll(KeyLock, backButton, KeyIn, keyUnlock);
+                                requestFocus();
                             });
                         });
                     });

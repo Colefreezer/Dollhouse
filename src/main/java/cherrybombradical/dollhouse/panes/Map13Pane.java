@@ -122,6 +122,8 @@ public class Map13Pane extends Pane {
                     GameManager.doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(540);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
 
                         //Load Scene

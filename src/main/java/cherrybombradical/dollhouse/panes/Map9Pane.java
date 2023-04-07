@@ -28,6 +28,10 @@ public class Map9Pane extends Pane {
     private final AudioPlayer chairMove = new AudioPlayer("Audio/Sounds/SFX_ChairMove.mp3", false);
     public boolean inEvent = false;
     public Map9Pane(){
+        if (GameManager.backgroundMusicBasement.isPlaying()){
+            GameManager.backgroundMusicBasement.stop();
+            GameManager.backgroundMusicUpstairs.play();
+        }
         System.out.println("Map 9 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
         // EVENT STUFF
@@ -144,6 +148,8 @@ public class Map9Pane extends Pane {
                     doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(210);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map6Scene());
@@ -170,7 +176,8 @@ public class Map9Pane extends Pane {
                     fadeTransition.play();
                     //Door Sound
                     chairMove.play();
-                    //Location for next scene
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         GameManager.chairMoved = true;
                         GameManager.UpstairsDoorBlocked = false;

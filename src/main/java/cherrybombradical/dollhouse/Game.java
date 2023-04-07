@@ -20,7 +20,7 @@ public class Game extends Application {
     // Constants for the splash screen
     private static final int SPLASH_SCREEN_WIDTH = 500;
     private static final int SPLASH_SCREEN_HEIGHT = 500;
-    private static final int SPLASH_SCREEN_DURATION = 1;
+    private static final int SPLASH_SCREEN_DURATION = 4000;
     // Stage for the splash screen
     private Stage splashScreenStage;
     // Main stage of the game
@@ -38,7 +38,7 @@ public class Game extends Application {
         Timeline splashScreenTimer = new Timeline(
                 new KeyFrame(Duration.millis(SPLASH_SCREEN_DURATION), event -> {
                     splashScreenStage.close();
-                    mainStage.setScene(new Map5Scene());
+                    mainStage.setScene(new LogoCutscene());
                     mainStage.show();
                 })
         );

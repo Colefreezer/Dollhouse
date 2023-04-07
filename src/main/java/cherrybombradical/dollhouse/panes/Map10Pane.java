@@ -99,6 +99,8 @@ public class Map10Pane extends Pane {
                     doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(440);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map6Scene());

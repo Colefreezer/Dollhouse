@@ -24,17 +24,17 @@ public class Map2Scene extends Scene {
             switch (event.getCode()){
                 case A -> Map2Pane.player.moveLeft();
                 case D -> Map2Pane.player.moveRight();
-                case TAB -> GameManager.toggleMap((Pane) this.getRoot());
+                case TAB -> {
+                    GameManager.toggleMap((Pane) this.getRoot());
+                    Map2Pane.hud.setMariaImage("Map");
+                }
             }
             event.consume();
         });
 
         this.getRoot().setOnKeyReleased(event -> {
             switch (event.getCode()){
-                case TAB -> {
-                    GameManager.toggleMap((Pane) this.getRoot());
-                    Map2Pane.hud.setMariaImage("Map");
-                }
+                case A, D -> Map2Pane.player.stopMoving();
             }
             event.consume();
         });

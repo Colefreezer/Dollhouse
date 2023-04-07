@@ -14,6 +14,9 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import cherrybombradical.dollhouse.Animations;
 import cherrybombradical.dollhouse.Game;
+
+import java.io.*;
+
 public class SettingsPane extends Group {
     // Constructor for the SettingsPane class
     public SettingsPane(){
@@ -30,9 +33,9 @@ public class SettingsPane extends Group {
         musicToggle.setFont(pixelFontButItsSmaller);
         musicToggle.setStyle("-fx-background-color: #000000; -fx-text-fill: #FF0000; ");
         // Create the sound effects toggle button
-        ToggleButton soundFXToggle = new ToggleButton("Sound Effects: On");
-        soundFXToggle.setFont(pixelFontButItsSmaller);
-        soundFXToggle.setStyle("-fx-background-color: #000000; -fx-text-fill: #FF0000; ");
+        Button clearScores = new Button("Clear Scores");
+        clearScores.setFont(pixelFontButItsSmaller);
+        clearScores.setStyle("-fx-background-color: #000000; -fx-text-fill: #FF0000; ");
         // Create the back button
         Button back = new Button("Back");
         back.setFont(pixelFontButItsSmaller);
@@ -41,7 +44,7 @@ public class SettingsPane extends Group {
         HBox buttons = new HBox(20);
         buttons.setScaleX(2.25);
         buttons.setScaleY(2.25);
-        buttons.getChildren().addAll(musicToggle, soundFXToggle, back);
+        buttons.getChildren().addAll(musicToggle, clearScores, back);
         // Add all elements to the group
         this.getChildren().addAll(border, confirmation, buttons);
         // Set the layout of the elements
@@ -63,16 +66,15 @@ public class SettingsPane extends Group {
                 GameManager.backgroundMusicMainMenu.setVolume(0);
             }
         });
-        // Set the action for the sound effects toggle button
-        soundFXToggle.setOnAction(event -> {
-            boolean selected = soundFXToggle.isSelected();
-            System.out.println(selected);
-            if (selected) {
-                soundFXToggle.setText("Sound Effects: On");
-                GameManager.muteSFX();
-            } else {
-                soundFXToggle.setText("Sound Effects: Off");
-                GameManager.unmuteSFX();
+        // Set the action for the Clear Scores button
+        clearScores.setOnAction(event -> {
+            File scoresFile = new File("Scores.txt");
+            try {
+                PrintWriter writer = new PrintWriter(new FileWriter(scoresFile));
+                writer.print("");
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         // Set the action for the back button

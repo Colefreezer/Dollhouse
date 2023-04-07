@@ -21,6 +21,7 @@ public class Map1Pane extends Pane {
 
     public static Player player;
     public static HUDPane hud;
+    private final AudioPlayer doorLockedSFX = new AudioPlayer("Audio/Sounds/SFX_DoorLocked.mp3", false);
 
     public Map1Pane(){
         System.out.println("Map 1 Loaded");
@@ -82,6 +83,12 @@ public class Map1Pane extends Pane {
         lighting.setX(0);
         lighting.setY(0);
 
+        //Load door Locked Text
+        ImageView lockedDoorText = new ImageView(new Image("sprites/UI/Locked.png"));
+        lockedDoorText.setX(64);
+        lockedDoorText.setY(458);
+        lockedDoorText.setVisible(false);
+
         //Set Left Boundary
         Rectangle rightBound = new Rectangle(1400, 260, 50, 250);
         rightBound.setVisible(false);
@@ -93,7 +100,7 @@ public class Map1Pane extends Pane {
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowS, leftBound, rightBound);
+                player.getImageView(), lighting, lockedDoorText, arrowL, arrowR, arrowS, leftBound, rightBound);
 
 
 
@@ -104,22 +111,31 @@ public class Map1Pane extends Pane {
                 // player is colliding with door
                 arrowL.setVisible(true);
                 this.setOnMouseClicked(event -> {
-                    //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.3), this);
-                    fadeTransition.play();
-                    //Door Sound
-                    GameManager.doorSFX.play();
-                    //Location for next scene
-                    GameManager.setNewLocation(580);
-                    fadeTransition.setOnFinished(event1 -> {
-                        //Load Scene
-                        Game.mainStage.setScene(new Map2Scene());
+                    if (!GameManager.key3Used){
+                        //Fade Transition
+                        FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.3), this);
+                        fadeTransition.play();
+                        //Door Sound
+                        GameManager.doorSFX.play();
+                        //Location for next scene
+                        GameManager.setNewLocation(580);
+                        //Stop the players movement animation
+                        player.stopMoving();
+                        fadeTransition.setOnFinished(event1 -> {
+                            //Load Scene
+                            Game.mainStage.setScene(new Map2Scene());
 
-                    });
+                        });
+                    }else{
+                        doorLockedSFX.play();
+                        lockedDoorText.setVisible(true);
+                    }
+
                 });
 
             } else {
                 // player is not colliding with door
+                lockedDoorText.setVisible(false);
                 arrowL.setVisible(false);
             }
         });
@@ -140,6 +156,8 @@ public class Map1Pane extends Pane {
                     GameManager.doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(100);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map7Scene());
@@ -167,6 +185,8 @@ public class Map1Pane extends Pane {
                     GameManager.stairsSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(320);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map5Scene());

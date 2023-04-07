@@ -90,6 +90,8 @@ public class Map3Pane extends Pane {
                     GameManager.doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(75);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map4Scene());
@@ -114,6 +116,8 @@ public class Map3Pane extends Pane {
                     fadeTransition.play();
                     GameManager.setNewLocation(0);
                     GameManager.doorSFX.play();
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         Game.mainStage.setScene(new Map2Scene());
                     });

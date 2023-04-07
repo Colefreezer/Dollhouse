@@ -60,17 +60,6 @@ public class Map8Pane extends Pane {
         Rectangle rightArrowHitBox = new Rectangle(1250, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
 
-        //Load the Arrow Image for when near the middle door
-        ImageView arrowM = new ImageView(new Image("sprites/UI/arrow.png"));
-        arrowM.setX(595);
-        arrowM.setY(145);
-        arrowM.setVisible(false);
-        Animations.hover(Duration.millis(1000), arrowM).play();
-
-        //Set middle Arrow HitBox
-        Rectangle midArrowHitBox = new Rectangle(730, 260, 50, 250);
-        midArrowHitBox.setVisible(false);
-
         // Load the map image and the shadow overlay for the current map ID
         ImageView map = new ImageView(new Image("sprites/maps/map" + mapID + ".png"));
         map.setX(0);
@@ -90,7 +79,7 @@ public class Map8Pane extends Pane {
         // Add all the nodes to the group
 
         this.getChildren().addAll(map, leftArrowHitBox, rightArrowHitBox, hud,
-                player.getImageView(), lighting, arrowL, arrowR, arrowM, rightBound, leftBound);
+                player.getImageView(), lighting, arrowL, arrowR, rightBound, leftBound);
 
 
 
@@ -106,6 +95,8 @@ public class Map8Pane extends Pane {
                     fadeTransition.play();
                     //Location for next scene
                     GameManager.setNewLocation(650);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map11Scene());
@@ -135,6 +126,8 @@ public class Map8Pane extends Pane {
                     doorSFX.play();
                     //Location for next scene
                     GameManager.setNewLocation(470);
+                    //Stop the players movement animation
+                    player.stopMoving();
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map7Scene());
@@ -145,33 +138,6 @@ public class Map8Pane extends Pane {
             } else {
                 // player is not colliding with door
                 arrowR.setVisible(false);
-            }
-        });
-
-        // ============ STAIRS ============
-        //Detect if player (image) is colliding with the Right HitBox
-        player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-            if (newBounds.intersects(midArrowHitBox.getBoundsInParent())) {
-                // player is colliding with door
-                arrowM.setVisible(true);
-                this.setOnMouseClicked(event -> {
-                    //Fade Transition
-                    FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.3), this);
-                    fadeTransition.play();
-                    //Door Sound
-                    doorSFX.play();
-                    //Location for next scene
-                    GameManager.setNewLocation(580);
-                    fadeTransition.setOnFinished(event1 -> {
-                        //Load Scene
-                        Game.mainStage.setScene(new Map7Scene());
-
-                    });
-                });
-
-            } else {
-                // player is not colliding with door
-                arrowM.setVisible(false);
             }
         });
 
