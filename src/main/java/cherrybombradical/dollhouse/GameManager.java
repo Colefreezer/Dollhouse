@@ -51,6 +51,7 @@ public class GameManager {
     public static AudioPlayer backgroundMusicBasement = new AudioPlayer("Audio/Music/Basement.mp3", true);
     public static AudioPlayer backgroundMusicUpstairs = new AudioPlayer("Audio/Music/attic.mp3", true);
     public static AudioPlayer musicBoxBackgroundMusic = new AudioPlayer("Audio/Music/MusicBox.mp3", true);
+    public static AudioPlayer heartbeatSFX = new AudioPlayer("Audio/Music/Heartbeat.mp3", true);
     private static long startTime;
     private static AnimationTimer timer;
     public static String finalTime = "John's Time: 2:30";

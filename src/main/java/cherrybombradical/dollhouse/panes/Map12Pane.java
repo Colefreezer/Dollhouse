@@ -3,6 +3,7 @@ package cherrybombradical.dollhouse.panes;
 import cherrybombradical.dollhouse.*;
 import cherrybombradical.dollhouse.scenes.*;
 import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -23,28 +24,57 @@ public class Map12Pane extends Pane {
     private final AudioPlayer doorSFX = new AudioPlayer("Audio/Sounds/SFX_Door1.mp3", false);
     private final AudioPlayer musicBoxOpenSFX = new AudioPlayer("Audio/Sounds/SFX_MusicBoxOpen.mp3", false);
     private final AudioPlayer Dumbwaiter = new AudioPlayer("Audio/Sounds/SFX_Dumbwaiter.mp3", false);
+    private final AudioPlayer dollMoveHands = new AudioPlayer("Audio/Sounds/SFX_DollMove.mp3", false);
+    private final AudioPlayer dollLaugh = new AudioPlayer("Audio/Sounds/SFX_DollLaugh.mp3", false);
 
     private final AudioPlayer uIShow = new AudioPlayer("Audio/Sounds/SFX_UIShow.mp3", false);
     private final AudioPlayer uIMove = new AudioPlayer("Audio/Sounds/SFX_UIMove.mp3", false);
+    private final AudioPlayer keyGrab = new AudioPlayer("Audio/Sounds/SFX_GetKey.mp3", false);
     public boolean inEvent = false;
     public Map12Pane(){
         System.out.println("Map 12 Loaded");
         Animations.fadeIn(Duration.seconds(0.5), this).play();
 
-        if (!GameManager.backgroundMusicIndoors.isPlaying()){
+        if (GameManager.backgroundMusicIndoors.isPlaying()){
             GameManager.backgroundMusicIndoors.stop();
-            GameManager.backgroundMusicUpstairs.play();
+            GameManager.heartbeatSFX.play();
         }
+
         // EVENT STUFF
-        Button MusicButton = new Button();
-        Button keyButtonSilver = new Button();
+        Button moveHands = new Button();
+        Button keyButtonPick = new Button();
         Button backButton = new Button();
 
-        ImageView KeyLock = new ImageView(new Image("sprites/UI/ui_keyhole_Gold.png"));
-        ImageView keySilver = new ImageView(new Image("sprites/UI/ui_musicBox3.png"));
+        ImageView dollInteract = new ImageView(new Image("sprites/UI/ui_doll1.png"));
+        ImageView rubyKey = new ImageView(new Image("sprites/UI/ui_doll_key.png"));
 
-        keySilver.setOpacity(0);
-        KeyLock.setLayoutX(-600);
+        dollInteract.setLayoutX(-600);
+
+
+        moveHands.setScaleX(12);
+        moveHands.setScaleY(4);
+        moveHands.setLayoutX(220);
+        moveHands.setLayoutY(400);
+        moveHands.setOpacity(0);
+
+
+        rubyKey.setLayoutX(0);
+        rubyKey.setLayoutY(0);
+        rubyKey.setOpacity(0);
+
+        keyButtonPick.setScaleX(12);
+        keyButtonPick.setScaleY(4);
+        keyButtonPick.setLayoutX(220);
+        keyButtonPick.setLayoutY(400);
+        keyButtonPick.setOpacity(0);
+
+
+
+
+
+
+
+
 
 
 
@@ -70,15 +100,15 @@ public class Map12Pane extends Pane {
         Rectangle rightArrowHitBox = new Rectangle(1340, 260, 50, 250);
         rightArrowHitBox.setVisible(false);
 
-        //Load the Interact Image for when near the Gate
+        //Load the Interact Image for the doll
         ImageView arrowM = new ImageView(new Image("sprites/UI/interact.png"));
-        arrowM.setX(1010);
+        arrowM.setX(550);
         arrowM.setY(145);
         arrowM.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowM).play();
 
-        //Set middle Arrow HitBox
-        Rectangle midArrowHitBox = new Rectangle(1030, 260, 50, 250);
+        //Set doll Arrow HitBox
+        Rectangle midArrowHitBox = new Rectangle(550, 260, 50, 250);
         midArrowHitBox.setVisible(false);
 
         // Load the map image and the shadow overlay for the current map ID
@@ -110,7 +140,6 @@ public class Map12Pane extends Pane {
                     fadeTransition.setOnFinished(event1 -> {
                         //Load Scene
                         Game.mainStage.setScene(new Map5Scene());
-
                     });
                 });
 
@@ -127,10 +156,10 @@ public class Map12Pane extends Pane {
                 // player is colliding with door
                 arrowM.setVisible(true);
                 this.setOnMouseClicked(event -> {
-                    if (inEvent == false ){
+                    if (!inEvent){
                         arrowM.setVisible(false);
                         uIShow.play();
-                        KeyLock.setLayoutX(0);
+                        dollInteract.setLayoutX(0);
 
 
                         // Back Button
@@ -140,31 +169,49 @@ public class Map12Pane extends Pane {
                         backButton.setScaleX(4);
                         backButton.setScaleY(3);
 
-                        this.getChildren().addAll(KeyLock, backButton);
-                        Animations.UIShow(KeyLock).play();
+                        this.getChildren().addAll(dollInteract, backButton, moveHands);
+                        Animations.UIShow(dollInteract).play();
                         System.out.println("KeyHole showing");
                         inEvent = true;
                         GameManager.inventorySelect = true;
                     }
 
-                    keyButtonSilver.setOnAction((e) -> {
-                        keySilver.setOpacity(0);
+                    //Move doll hands to reveal Ruby Key
+                    moveHands.setOnAction((e) -> {
+                        dollMoveHands.play();
+                        dollInteract.setImage(new Image("sprites/UI/ui_doll2.png"));
+                        this.getChildren().addAll(rubyKey, keyButtonPick);
+                        rubyKey.setOpacity(255);
+                    });
+                    //Take Ruby Key
+                    keyButtonPick.setOnAction((e) -> {
+                        GameManager.heartbeatSFX.stop();
+                        keyGrab.play();
+                        this.getChildren().removeAll(keyButtonPick, rubyKey, backButton);
+                        PauseTransition pause = new PauseTransition(Duration.millis(3000));
+                        PauseTransition pause2 = new PauseTransition(Duration.millis(1200));
+                        pause.play();
 
-                        HUDPane.AddInventory("SilverKey");
-                        Image itemKey2 = new Image("sprites/UI/Icons/icn_key2.png");
-                        ImageView itemKey2view = new ImageView(itemKey2);
-                        itemKey2view.setX(600);
-                        itemKey2view.setY(615);
-                        this.getChildren().add(itemKey2view);
-                        GameManager.hasKey1 = true;
+                        pause.setOnFinished(event1 -> {
+                            dollLaugh.play();
+                            dollInteract.setImage(new Image("sprites/UI/ui_doll3.png"));
+                            pause2.play();
+                            pause2.setOnFinished(event2 -> {
+                                this.getChildren().remove(dollInteract);
+
+                            });
+
+                        });
+
+
                     });
                     backButton.setOnAction((e) -> {
                         uIMove.play();
-                        Animations.UIMove(KeyLock).play();
+                        Animations.UIMove(dollInteract).play();
+                        this.getChildren().removeAll(dollInteract, backButton);
                         inEvent = false;
                     });
                 });
-
             } else {
                 // player is not colliding with door
                 arrowM.setVisible(false);

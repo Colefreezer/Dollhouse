@@ -194,7 +194,7 @@ public class Map9Pane extends Pane {
                 if (!GameManager.hasKey2){
                     arrowM.setVisible(true);
                     this.setOnMouseClicked(event -> {
-                        if (inEvent == false ){
+                        if (!inEvent){
                             arrowM.setVisible(false);
                             uIShow.play();
                             MusicBox.setLayoutX(0);
