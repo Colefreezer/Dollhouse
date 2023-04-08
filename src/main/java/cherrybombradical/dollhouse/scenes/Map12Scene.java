@@ -16,8 +16,8 @@ public class Map12Scene extends Scene {
         super(new Map12Pane(), GameManager.SCREEN_WIDTH, GameManager.SCREEN_HEIGHT, Color.BLACK);
 
         this.getRoot().requestFocus();
-        GameManager.mapX = 750;
-        GameManager.mapY = 158;
+        GameManager.mapX = 618;
+        GameManager.mapY = 105;
 
 
         this.getRoot().setOnKeyPressed(event -> {

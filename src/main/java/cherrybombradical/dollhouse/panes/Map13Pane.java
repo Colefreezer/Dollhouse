@@ -76,13 +76,13 @@ public class Map13Pane extends Pane {
 
         //Load the Interact Image for when near the Gate
         ImageView arrowM = new ImageView(new Image("sprites/UI/interact.png"));
-        arrowM.setX(1010);
+        arrowM.setX(1210);
         arrowM.setY(145);
         arrowM.setVisible(false);
         Animations.hover(Duration.millis(1000), arrowM).play();
 
         //Set middle Arrow HitBox
-        Rectangle midArrowHitBox = new Rectangle(1030, 260, 50, 250);
+        Rectangle midArrowHitBox = new Rectangle(1230, 260, 50, 250);
         midArrowHitBox.setVisible(false);
 
         // Load the map image and the shadow overlay for the current map ID

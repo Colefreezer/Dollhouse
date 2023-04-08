@@ -27,9 +27,11 @@ public class LogoCutscene extends Scene {
         // Create the media player and view
         Media media = new Media(new File("Videos/CBRIntro.mp4").toURI().toString());
         mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setVolume(0.5);
         MediaView mediaView = new MediaView(mediaPlayer);
-        mediaView.setFitWidth(GameManager.SCREEN_WIDTH);
-        mediaView.setFitHeight(GameManager.SCREEN_HEIGHT);
+        mediaView.setFitWidth(1449);
+        mediaView.setFitHeight(1114);
+
         root.setCenter(mediaView);
         // When the video ends, switch to the main menu
         mediaPlayer.setOnEndOfMedia(() -> {

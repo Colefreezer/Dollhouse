@@ -138,7 +138,7 @@ public class Map11Pane extends Pane {
 
 
 
-        // ============ DOOR LEFT ============
+        // ============ Dumbwaiter ============
         //Detect if player (image) is colliding with the left HitBox
         player.getImageView().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
             if (newBounds.intersects(leftArrowHitBox.getBoundsInParent())) {
@@ -147,14 +147,17 @@ public class Map11Pane extends Pane {
                 this.setOnMouseClicked(event -> {
                     //Fade Transition
                     FadeTransition fadeTransition = Animations.fadeOut(Duration.seconds(0.6), this);
-                    fadeTransition.play();
+                    PauseTransition pause = new PauseTransition(Duration.millis(3000));
+                    SequentialTransition dumbwaiterAnimation = new SequentialTransition(fadeTransition, pause);
+                    dumbwaiterAnimation.play();
+
                     //Door Sound
                     Dumbwaiter.play();
                     //Location for next scene
                     GameManager.setNewLocation(210);
                     //Stop the players movement animation
                     player.stopMoving();
-                    fadeTransition.setOnFinished(event1 -> {
+                    dumbwaiterAnimation.setOnFinished(event1 -> {
 
                         //Load Scene
                         Game.mainStage.setScene(new Map9Scene());

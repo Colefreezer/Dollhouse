@@ -21,7 +21,7 @@ import javafx.util.Duration;
 
 public class EnterNamePane extends Group {
     private final AudioPlayer buttonClickSFX = new AudioPlayer("Audio/Sounds/Select_OK4.mp3", false);
-    private final AudioPlayer denySFX = new AudioPlayer("Audio/Sounds/deny.wav", false);
+    private final AudioPlayer denySFX = new AudioPlayer("Audio/Sounds/SFX_Denied.mp3", false);
 
     public EnterNamePane(Pane pane){
 
