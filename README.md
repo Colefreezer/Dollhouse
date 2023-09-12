@@ -23,3 +23,5 @@ Created in Java using JavaFX from scratch.
 # Known Issues:
 `- Moving in and out of a interactable and clicking anywhere else will cause to you to still interact with said item even when not in region of interactable.`
 
+`- When holding forward or backwards when interacting with a door there's a chance footsteps may loop continuously after transition.`
+
