@@ -7,7 +7,7 @@ Created in Java using JavaFX from scratch.
 
 
 ===========================================================================
-Controls:
+# Controls:
 A - Move Left
 D - Move RIght
 Mouse1 = Interact
@@ -15,6 +15,6 @@ Tab - Open Map Screen
 
 
 ===========================================================================
-Known Issues:
+# Known Issues:
 - Moving in and out of a interactable and clicking anywhere else will cause to you to still interact with said item even when not in region of interactable.
 
