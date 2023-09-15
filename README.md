@@ -10,6 +10,17 @@ Created in Java using JavaFX from scratch.
 
 ===========================================================================
 
+![Alt text](https://github.com/Colefreezer/Dollhouse/blob/main/SS2.png "Screenshot1")
+![Alt text](https://github.com/Colefreezer/Dollhouse/blob/main/SS3.png "Screenshot1")
+![Alt text](https://github.com/Colefreezer/Dollhouse/blob/main/SS5.png "Screenshot1")
+
+===========================================================================
+
+
+
+
+
+
 # Controls:
 | Button:               | Action:       |
 | --------------------- |:-------------:|
